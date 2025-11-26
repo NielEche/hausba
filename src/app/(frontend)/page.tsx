@@ -26,7 +26,7 @@ export default async function HomePage() {
             <h1
               style={{
                 paddingTop: '1rem',
-                paddingBottom: '0.5rem',
+                paddingBottom: '0.3rem',
               }}
             >
               Welcome to Hausba! We are re-creating our website right now.
@@ -34,9 +34,10 @@ export default async function HomePage() {
             <h3
               style={{
                 marginTop: '1rem',
-                fontSize: '1.5rem',
+                fontSize: '1rem',
                 paddingTop: '1rem',
                 fontWeight: '200',
+                lineHeight: '1.5rem',
               }}
             >
               Download Our{' '}
@@ -58,7 +59,7 @@ export default async function HomePage() {
       </div>
 
       {/* Client-only bubble invert */}
-      <BubbleInvertClient radius={200} />
+      <BubbleInvertClient radius={150} />
     </div>
   )
 }
