@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 :root {
   --font-mono: 'Roboto Mono', monospace;
 }
@@ -6,11 +8,31 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: 18px;
-  line-height: 32px;
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.otf') format('opentype');
+  font-style: normal;
+}
 
-  background: rgb(0, 0, 0);
+@font-face {
+  font-family: 'Montserrat-bold';
+  src: url('/fonts/Montserrat-Bold.otf') format('opentype');
+  font-style: normal;
+}
+
+/* Montserrat Regular */
+.montserrat-regular {
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+}
+
+/* Montserrat Bold */
+.montserrat-bold {
+  font-family: 'Montserrat-bold', sans-serif;
+  font-style: normal;
+}
+
+html {
   -webkit-font-smoothing: antialiased;
 }
 
@@ -20,55 +42,10 @@ body,
   height: 100%;
 }
 
-body {
-  font-family: system-ui;
-  font-size: 18px;
-  line-height: 32px;
-
-  margin: 0;
-  color: rgb(1000, 1000, 1000);
-
-  @media (max-width: 1024px) {
-    font-size: 15px;
-    line-height: 24px;
-  }
-}
-
 img {
   max-width: 100%;
   height: auto;
   display: block;
-}
-
-h1 {
-  margin: 40px 0;
-  font-size: 64px;
-  line-height: 70px;
-  font-weight: bold;
-
-  @media (max-width: 1024px) {
-    margin: 24px 0;
-    font-size: 42px;
-    line-height: 42px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 38px;
-    line-height: 38px;
-  }
-
-  @media (max-width: 400px) {
-    font-size: 32px;
-    line-height: 32px;
-  }
-}
-
-p {
-  margin: 24px 0;
-
-  @media (max-width: 1024px) {
-    margin: calc(var(--base) * 0.75) 0;
-  }
 }
 
 a {
@@ -89,186 +66,10 @@ svg {
   vertical-align: middle;
 }
 
-.home {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100vh;
-  padding: 45px;
-  max-width: 1024px;
-  margin: 0 auto;
-  overflow: hidden;
-
-  @media (max-width: 400px) {
-    padding: 24px;
-  }
-
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-
-    h1 {
-      text-align: center;
-    }
-  }
-
-  .links {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-
-    a {
-      text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .admin {
-      color: rgb(0, 0, 0);
-      background: rgb(1000, 1000, 1000);
-      border: 1px solid rgb(0, 0, 0);
-    }
-
-    .docs {
-      color: rgb(1000, 1000, 1000);
-      background: rgb(0, 0, 0);
-      border: 1px solid rgb(1000, 1000, 1000);
-    }
-  }
-
-  .footer {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    @media (max-width: 1024px) {
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .codeLink {
-      text-decoration: none;
-      padding: 0 0.5rem;
-      background: rgb(60, 60, 60);
-      border-radius: 4px;
-    }
-  }
+.hausba-orange {
+  color: #ff6f3c;
 }
 
-/* styles.css */
-
-/* Base page: dark background and white text */
-.home {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(180deg, #000000 50%, #000000 100%);
-  color: white;
-  overflow: hidden;
-  position: relative;
+.hausba-grey {
+  color: #686666;
 }
-
-/* content box for layout */
-.content {
-  max-width: 920px;
-  width: 100%;
-
-  text-align: center;
-  z-index: 1;
-  position: relative;
-}
-
-/* Make copies of content to be inverted — we'll rely on ::before to duplicate */
-.bubble-wrap {
-  position: absolute;
-  inset: 0;
-  pointer-events: none; /* let pointer go to underlying controls/content */
-  --mx: 50%;
-  --my: 50%;
-  --r: 0px; /* radius in px, updated by component */
-  transition: --r 160ms linear;
-  z-index: 3;
-}
-
-/* The inverted layer covers the full area but we clip it into a circle.
-   We use background: inherit and mix-blend or filter to invert visually.
-   We produce the inverted appearance by using backdrop-filter + filter trick:
-   duplicate the page via transform: scale(1) and filter invert(1).
-*/
-.bubble-inverted-layer {
-  position: absolute;
-  inset: 0;
-  /* Use clip-path circle based on CSS vars to create the bubble */
-  clip-path: circle(var(--r) at var(--mx) var(--my));
-  -webkit-clip-path: circle(var(--r) at var(--mx) var(--my));
-  /* show inverted visuals */
-  /* we create a pseudo duplicate using backdrop-filter isn't widely supported for what we need,
-     so instead we'll use mix-blend with a full-screen pseudo-element trick */
-  pointer-events: none;
-  z-index: 3;
-}
-
-/* Inside the inverted layer we will create a pseudo-element that covers everything
-   and uses 'filter: invert(1)' combined with 'mix-blend-mode: difference' to create the inversion effect.
-   Many browsers will properly invert text color if we overlay an inverted copy.
-*/
-.bubble-inverted-layer::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  transform: translateZ(0);
-  filter: invert(1) saturate(1);
-  mix-blend-mode: normal;
-  /* The pseudo-element itself will be visible only inside the clip-path of the parent */
-  /* To smooth edges */
-  transition: clip-path 120ms linear;
-}
-
-/* Small polish: invert icons/images contrast (if needed) */
-.bubble-inverted-layer img {
-  filter: invert(1);
-}
-
-/* If you prefer text inside bubble to be strictly black, also override color inside the bubble:
-   we rely on the inverted layer to produce black text; in some edge cases we can force it:
-*/
-.bubble-inverted-layer,
-.bubble-inverted-layer * {
-  color: black !important;
-  -webkit-text-fill-color: black !important;
-  text-shadow: none !important;
-}
-
-/* Ensure main content stays above background but below inverted layer */
-.home .content {
-  z-index: 2;
-  position: relative;
-}
-
-/* optional styling for logo and heading */
-.content img {
-  width: 200px;
-  height: auto;
-  margin-bottom: 24px;
-  display: inline-block;
-}
-
-.content h1 {
-  margin: 0;
-  color: white;
-  transition: color 120ms linear;
-}
-
-/* When the inverted bubble is covering text, the pseudo-element will make the text appear black via invert filter.
-   For accessibility, ensure contrasts outside bubble are fine. */
