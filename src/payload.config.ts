@@ -5,7 +5,6 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -37,22 +36,7 @@ export default buildConfig({
     },
   }),
   sharp,
-  upload: {
-    limits: {
-      fileSize: 5000000, // 5MB, adjust as needed
-    },
-  },
   plugins: [
-    vercelBlobStorage({
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-      collections: {
-        media: {
-          generateFileURL: ({ filename }) =>
-            `https://we8zjxs9yfjtuy8b.public.blob.vercel-storage.com/${filename}`,
-          disableLocalStorage: true,
-          prefix: '',
-        },
-      },
-    }),
+    // storage-adapter-placeholder
   ],
 })
