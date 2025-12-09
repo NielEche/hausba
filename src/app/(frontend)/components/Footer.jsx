@@ -107,6 +107,7 @@ export default function Footer() {
               width={160}
               height={50}
               className="cursor-pointer"
+              unoptimized
             />
           </Link>
         </div>
@@ -201,6 +202,7 @@ export default function Footer() {
                   width={24}
                   height={24}
                   className="hover:opacity-80 transition-opacity"
+                  unoptimized
                 />
               </Link>
             ))}
