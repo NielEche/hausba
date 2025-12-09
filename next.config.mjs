@@ -1,4 +1,4 @@
-import { withPayload } from '@payloadcms/next/withPayload';
+import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,15 +9,19 @@ const nextConfig = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
       '.mjs': ['.mts', '.mjs'],
-    };
+    }
 
-    return webpackConfig;
+    return webpackConfig
   },
 
-  // 👇 UPDATE THIS SECTION 👇
-  // Remove the 'experimental' wrapper and use the new top-level key
+  // 👇 KEEP THIS AS IT IS 👇
   serverExternalPackages: ['pino', 'thread-stream'],
-  // 👆 UPDATED SECTION 👆
-};
 
-export default withPayload(nextConfig, { devBundleServerPackages: false });
+  // 👇 ADD THIS BLOCK 👇
+  images: {
+    unoptimized: false, // enables normal Next.js image optimization
+  },
+  // 👆 END OF IMAGE FIX 👆
+}
+
+export default withPayload(nextConfig, { devBundleServerPackages: false })
