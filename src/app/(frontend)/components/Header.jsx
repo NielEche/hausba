@@ -1,22 +1,119 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
 
 export default function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [lastScrollY, setLastScrollY] = useState(0)
+  const [scrollingUp, setScrollingUp] = useState(false)
+  const [logoColor, setLogoColor] = useState('white') // 'white' or 'black'
+
+  useEffect(() => {
+    const detectBackground = () => {
+      // Temporarily hide header to detect what's behind it
+      const header = document.querySelector('header')
+      if (!header) return
+
+      const originalPointerEvents = header.style.pointerEvents
+      header.style.pointerEvents = 'none'
+
+      // Check center of where logo would be
+      const logoX = 100
+      const logoY = 40
+
+      const element = document.elementFromPoint(logoX, logoY)
+
+      // Restore header
+      header.style.pointerEvents = originalPointerEvents
+
+      if (element) {
+        // Get the actual background color by checking element and parents
+        let bgColor = null
+        let current = element
+        let attempts = 0
+
+        while (current && attempts < 15) {
+          const styles = window.getComputedStyle(current)
+          const bg = styles.backgroundColor
+
+          if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+            bgColor = bg
+            break
+          }
+
+          current = current.parentElement
+          attempts++
+        }
+
+        if (bgColor) {
+          const rgb = bgColor.match(/\d+/g)
+          if (rgb && rgb.length >= 3) {
+            const r = parseInt(rgb[0])
+            const g = parseInt(rgb[1])
+            const b = parseInt(rgb[2])
+
+            // Calculate perceived brightness
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000
+
+            // If background is dark (brightness < 128), use white logo
+            // If background is light (brightness >= 128), use black logo
+            setLogoColor(brightness < 128 ? 'white' : 'black')
+
+            console.log(
+              'Detected color:',
+              bgColor,
+              'Brightness:',
+              brightness,
+              'Logo:',
+              brightness < 128 ? 'white' : 'black',
+            )
+          }
+        }
+      }
+    }
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY
+      const heroHeight = window.innerHeight
+
+      const isScrollingUp = currentScrollY < lastScrollY
+      setScrollingUp(isScrollingUp)
+
+      const shouldHideMenu = currentScrollY > heroHeight - 100 && !isScrollingUp
+      setScrolled(shouldHideMenu)
+
+      detectBackground()
+      setLastScrollY(currentScrollY)
+    }
+
+    // Initial detection
+    setTimeout(detectBackground, 100)
+    setTimeout(detectBackground, 500)
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('resize', detectBackground, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', detectBackground)
+    }
+  }, [lastScrollY])
 
   const navItems = [
     { label: 'ABOUT US', href: '/about' },
-    { label: 'SOLUTIONS', href: '/services' },
+    { label: 'SOLUTIONS', href: '/solutions' },
     { label: 'OUR WORK', href: '/contact' },
     { label: 'ESTIMATOR', href: '/estimator' },
     { label: 'SCHEDULE CONSULTATION', href: '/schedule' },
   ]
+
+  const logoSrc = logoColor === 'white' ? '/hausba-logo-wh.png' : '/hausba-logo-bl.png'
 
   return (
     <>
@@ -30,46 +127,69 @@ export default function Header() {
           {/* LOGO */}
           <Link href="/" className="px-6">
             <Image
-              src="/hausba-logo-wh.png"
+              src={logoSrc}
               alt="Hausba Logo"
               width={160}
               height={50}
               className="cursor-pointer"
+              key={logoSrc}
             />
           </Link>
 
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex text-xs bg-black backdrop-blur-md montserrat-regular">
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const isActive = pathname === item.href
 
               return (
-                <Link
+                <motion.div
                   key={item.href}
-                  href={item.href}
-                  className="relative border-r p-6 overflow-hidden group"
-                  style={{ borderColor: '#2B2B2B' }}
+                  initial={false}
+                  animate={
+                    scrolled
+                      ? {
+                          width: 0,
+                          opacity: 0,
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                        }
+                      : {
+                          width: 'auto',
+                          opacity: 1,
+                        }
+                  }
+                  transition={{
+                    duration: 0.3,
+                    delay: scrolled ? (navItems.length - index - 1) * 0.05 : index * 0.05,
+                    ease: [0.4, 0, 0.2, 1],
+                  }}
+                  style={{ overflow: 'hidden' }}
                 >
-                  <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
-                    {item.label}
-                  </span>
-
-                  {isActive && (
-                    <span
-                      className="
-                        relative z-10 ml-3
-                        text-[#9CA3AF]
-                        group-hover:text-white
-                        transition-colors duration-300
-                      "
-                    >
-                      +
+                  <Link
+                    href={item.href}
+                    className="relative border-r p-6 overflow-hidden group whitespace-nowrap block"
+                    style={{ borderColor: '#2B2B2B' }}
+                  >
+                    <span className="relative z-10 transition-colors duration-300 group-hover:text-white">
+                      {item.label}
                     </span>
-                  )}
 
-                  {/* SLIDE UP BACKGROUND */}
-                  <div className="absolute inset-0 bg-[#FF7800] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
-                </Link>
+                    {isActive && (
+                      <span
+                        className="
+                          relative z-10 ml-3
+                          text-[#9CA3AF]
+                          group-hover:text-white
+                          transition-colors duration-300
+                        "
+                      >
+                        +
+                      </span>
+                    )}
+
+                    <div className="absolute inset-0 bg-[#FF7800] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
+                  </Link>
+                </motion.div>
               )
             })}
 
@@ -98,7 +218,6 @@ export default function Header() {
                 />
               </div>
 
-              {/* SLIDE UP BACKGROUND */}
               <div className="absolute inset-0 bg-[#FF7800] translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0" />
             </button>
           </nav>
@@ -130,7 +249,6 @@ export default function Header() {
       <AnimatePresence>
         {open && (
           <>
-            {/* BACKDROP */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -140,7 +258,6 @@ export default function Header() {
               onClick={() => setOpen(false)}
             />
 
-            {/* MENU PANEL */}
             <motion.div
               initial={{ y: '-100%', opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -151,7 +268,6 @@ export default function Header() {
               }}
               className="fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-black via-black to-black/95"
             >
-              {/* LOGO */}
               <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -170,7 +286,6 @@ export default function Header() {
                 </Link>
               </motion.div>
 
-              {/* CLOSE BUTTON */}
               <motion.button
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -248,7 +363,6 @@ export default function Header() {
                   })}
                 </div>
 
-                {/* DECORATIVE ELEMENT */}
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}

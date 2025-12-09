@@ -1,30 +1,550 @@
 'use client'
 
-export default function HomepageContent() {
+import { motion } from 'framer-motion'
+import { useState, useRef } from 'react'
+import Image from 'next/image'
+
+export default function HomepageContent({
+  applications = [],
+  solutions = [],
+  testimonials = [],
+  brands = [],
+}) {
+  // Group applications by type
+  const grouped = applications.reduce((acc, app) => {
+    const type = app.type || 'other'
+    if (!acc[type]) acc[type] = []
+    acc[type].push(app)
+    return acc
+  }, {})
+
+  // Group solutions by type/category
+  const groupedSolutions = solutions.reduce((acc, sol) => {
+    const type = sol.type || sol.category || 'other'
+    if (!acc[type]) acc[type] = []
+    acc[type].push(sol)
+    return acc
+  }, {})
+
+  const solutionTypes = Object.keys(groupedSolutions)
+  const [activeTab, setActiveTab] = useState(solutionTypes[0] || '')
+  const scrollContainerRef = useRef(null)
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(false)
+  const testimonialRef = useRef(null)
+
+  const scrollTestimonials = (direction) => {
+    if (!testimonialRef.current) return
+    const scrollAmount = 400
+    testimonialRef.current.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth',
+    })
+  }
+
+  const handleScroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
-    <div className="text-white">
+    <div className="text-white bg-white">
       {/* HERO SECTION */}
       <div className="h-screen relative flex items-center justify-center text-center">
-        {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: "url('/home1.jpg')" }}
         />
-
-        {/* Black Overlay */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
-
-        {/* Centered Content */}
-        <div className="relative z-10 px-4">
-          <h1 className="text-4xl md:text-5xl montserrat-bold  leading-tight mx-auto max-w-[950px]">
+        <motion.div
+          className="relative z-10 px-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl md:text-5xl montserrat-bold leading-tight mx-auto max-w-[950px]">
             Crafting personalised luxury experiences
           </h1>
-
           <h3 className="mt-4 text-lg md:text-xl montserrat-regular opacity-90 font-semibold hausba-orange">
             Since 2010
           </h3>
+        </motion.div>
+      </div>
+      {/* APPLICATION SECTIONS */}
+      <div className="bg-black">
+        <div className="max-w-7xl px-4 mx-auto py-26 space-y-24">
+          <motion.h2
+            className="text-xs montserrat-regular text-center capitalize pb-6"
+            initial={{ opacity: 0.9 }}
+            whileHover={{ opacity: 1 }}
+          >
+            [ OUR APPLICATIONS ]
+          </motion.h2>
+
+          {Object.entries(grouped).map(([type, items], sectionIndex) => {
+            const gridCols = type === 'commercial' ? 'md:grid-cols-2' : 'md:grid-cols-3'
+
+            return (
+              <motion.section
+                key={type}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {/* Section Heading */}
+                <h2 className="text-lg montserrat-regular capitalize mb-12"> {type} </h2>
+
+                {/* Grid */}
+                <div className={`grid grid-cols-1 ${gridCols} gap-8`}>
+                  {items.map((app, index) => (
+                    <motion.div
+                      key={app.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      whileHover={{ y: -8 }}
+                      className="relative h-120 overflow-hidden group cursor-pointer"
+                    >
+                      {/* Background Image */}
+                      <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                        style={{
+                          backgroundImage: app.image?.url
+                            ? `url(${app.image.url})`
+                            : "url('/placeholder.jpg')",
+                        }}
+                      />
+
+                      {/* Dark Overlay */}
+                      <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
+
+                      {/* Orange Gradient Overlay on Hover */}
+                      <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          background:
+                            'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                        }}
+                      ></div>
+
+                      {/* Title at Bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                        <motion.h3
+                          className="text-xl montserrat-bold"
+                          initial={{ opacity: 0.9 }}
+                          whileHover={{ opacity: 1 }}
+                        >
+                          {app.title}
+                        </motion.h3>
+
+                        {app.description && (
+                          <motion.p className="hidden mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {app.description}
+                          </motion.p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.section>
+            )
+          })}
         </div>
       </div>
+      {/* SOLUTIONS SECTION */}
+      {solutionTypes.length > 0 && (
+        <div className="bg-black">
+          <motion.div
+            className="max-w-7xl mx-auto pb-24"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.h2
+              className="text-xs montserrat-regular text-center capitalize pt-4 pb-24"
+              initial={{ opacity: 0.9 }}
+              whileHover={{ opacity: 1 }}
+            >
+              [ OUR SOLUTIONS ]
+            </motion.h2>
+
+            {/* Tabs */}
+            <div className="flex justify-start gap-4 mb-12 flex-wrap px-4">
+              {solutionTypes.map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setActiveTab(type)}
+                  className={`
+                  px-6 py-3 montserrat-regular text-sm capitalize
+                  border transition-all duration-300 cursor-pointer
+                  ${
+                    activeTab === type
+                      ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 hauba-orange'
+                      : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
+                  }
+                `}
+                >
+                  {type}
+                </button>
+              ))}
+            </div>
+
+            {/* Slider Container */}
+            <div
+              className="relative px-4"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect()
+                const x = e.clientX - rect.left
+                const width = rect.width
+
+                // Show left arrow when hovering left 20% of container
+                setShowLeftArrow(x < width * 0.2)
+                // Show right arrow when hovering right 20% of container
+                setShowRightArrow(x > width * 0.8)
+              }}
+              onMouseLeave={() => {
+                setShowLeftArrow(false)
+                setShowRightArrow(false)
+              }}
+            >
+              {/* Left Arrow */}
+              <button
+                onClick={() => handleScroll('left')}
+                className={`absolute rounded-full cursor-pointer left-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 hover:bg-[#ff6f3c] p-3 transition-all duration-300 md:opacity-0 ${
+                  showLeftArrow ? 'md:opacity-100' : ''
+                }`}
+                aria-label="Scroll left"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {/* Right Arrow */}
+              <button
+                onClick={() => handleScroll('right')}
+                className={`absolute rounded-full cursor-pointer right-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 hover:bg-[#ff6f3c] p-3 transition-all duration-300 md:opacity-0 ${
+                  showRightArrow ? 'md:opacity-100' : ''
+                }`}
+                aria-label="Scroll right"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path
+                    d="M9 18l6-6-6-6"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              {/* Slider */}
+              <div
+                ref={scrollContainerRef}
+                className="flex gap-8 overflow-x-auto scroll-smooth hide-scrollbar pr-12"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {groupedSolutions[activeTab]?.map((solution, index) => (
+                  <motion.div
+                    key={solution.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ y: -8 }}
+                    className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
+                  >
+                    {/* Background Image */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                      style={{
+                        backgroundImage: solution.image?.url
+                          ? `url(${solution.image.url})`
+                          : "url('/placeholder.jpg')",
+                      }}
+                    />
+
+                    {/* Dark Overlay */}
+                    <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
+
+                    {/* Orange Gradient Overlay on Hover */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background:
+                          'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                      }}
+                    ></div>
+
+                    {/* Title at Bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                      <h3 className="text-xl montserrat-bold">{solution.title}</h3>
+                      {solution.description && (
+                        <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {solution.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            <style jsx>{`
+              .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+              }
+            `}</style>
+          </motion.div>
+        </div>
+      )}
+      {/* TESTIMONIALS SECTION */}
+      {testimonials && testimonials.length > 0 && (
+        <motion.div
+          className="max-w-7xl mx-auto py-24"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="relative px-4 lg:flex justify-between">
+            {/* Always-visible arrows (left side) */}
+
+            <div className="text-black pr-10 w-80 pb-10">
+              <motion.h4
+                className="text-xs montserrat-bold text-left capitalize "
+                initial={{ opacity: 0.9 }}
+                whileHover={{ opacity: 1 }}
+              >
+                [ TESTIMONIAL ]
+              </motion.h4>
+              <h4 className="text-3xl my-4 montserrat-regular capitalize">Our Client Quotes</h4>
+
+              <div className="relative flex gap-3 z-20">
+                <button
+                  onClick={() => scrollTestimonials('left')}
+                  className="p-3 bg-black hover:bg-[#ff6f3c] rounded-full text-white cursor-pointer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M15 18l-6-6 6-6"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+
+                <button
+                  onClick={() => scrollTestimonials('right')}
+                  className="p-3 bg-black hover:bg-[#ff6f3c] rounded-full text-white cursor-pointer"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M9 18l6-6-6-6"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Slider */}
+            <div
+              ref={testimonialRef}
+              className="overflow-x-auto flex gap-6 scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              <style>
+                {`
+                  div::-webkit-scrollbar {
+                    display: none;
+                  }
+                `}
+              </style>
+
+              {testimonials.map((t, index) => (
+                <motion.div
+                  key={t.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="min-w-[400px] max-w-[450px] relative overflow-hidden"
+                >
+                  {/* NUMBER LABEL (now visible on ALL cards) */}
+                  <div className="absolute top-0 left-0 p-8 z-[30] hausba-grey  text-sm montserrat-bold">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+
+                  {/* BACKGROUND IMAGE */}
+                  {t.image?.url && (
+                    <div
+                      className="absolute inset-0 bg-cover bg-center z-[5]"
+                      style={{ backgroundImage: `url(${t.image.url})` }}
+                    ></div>
+                  )}
+
+                  {/* GRADIENT OVERLAY */}
+                  <div
+                    className="absolute inset-0 z-[10] opacity-75"
+                    style={{
+                      background: `
+                    linear-gradient(
+                      to bottom right,
+                      rgba(0, 0, 0, 1) 0%,
+                      rgba(0, 0, 0, 0.83) 35%,
+                      #ff6f3c 70%,
+                      rgba(255, 79, 15, 0.83) 100%
+                    )
+                  `,
+                    }}
+                  ></div>
+
+                  {/* CONTENT */}
+                  <div className="relative z-10 p-8 text-white">
+                    <p className="text-sm leading-relaxed opacity-95 montserrat-regular pt-20">
+                      “{t.testimony}”
+                    </p>
+
+                    <div className="mt-6">
+                      <h4 className="text-lg montserrat-bold capitalize">{t.name}</h4>
+                      {t.company && <p className="text-sm opacity-80 mt-1">{t.company}</p>}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
+      {/* GET ESTIMATE SECTION */}
+      <div className="bg-black">
+        <div className="max-w-7xl mx-auto px-4 py-20 ">
+          <div
+            className="relative border-2 hausba-orange-border overflow-hidden flex items-center"
+            style={{ minHeight: '220px' }}
+          >
+            {/* BACKGROUND IMAGE */}
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{ backgroundImage: `url('/estimate.jpg')` }}
+            ></div>
+
+            {/* DARK LEFT OVERLAY (prominent black fading at center) */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 100%)',
+              }}
+            ></div>
+
+            {/* CONTENT */}
+            <div className="relative z-10  flex flex-col md:flex-row items-center justify-between w-full px-8 py-16">
+              {/* TEXT */}
+              <div className="text-white max-w-lg lg:px-10">
+                <h3 className="text-xl md:text-2xl montserrat-bold mb-2">
+                  Get an instant estimate for your project
+                </h3>
+                <p className="text-sm md:text-base montserrat-regular opacity-90">
+                  Use our smart home estimator to get an estimate for your smart home project. It’ll
+                  only take 5 minutes.
+                </p>
+              </div>
+
+              {/* BUTTON */}
+              <div className="mt-4 md:mt-0 flex justify-start md:justify-center w-full lg:pl-26 py-4">
+                <button className="hausba-orange-bg cursor-pointer hover:bg-[#d94d1a] text-white font-semibold py-3 px-6 montserrat-regular transition">
+                  Get an Estimate
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BRANDS SECTION */}
+      {brands && brands.length > 0 && (
+        <div className="bg-black">
+          <div className="max-w-7xl mx-auto pb-24 px-4 text-white">
+            <h3 className="text-3xl montserrat-bold mb-8 py-6 text-white text-center">
+              TRUSTED <br />
+              BY THE BEST
+            </h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-4">
+              {brands.map((brand, index) => {
+                const total = brands.length
+                const colCount = 4
+                const rowCount = Math.ceil(total / colCount)
+
+                const row = Math.floor(index / colCount)
+                const col = index % colCount
+
+                // border logic
+                const borderTop = row === 0 ? '' : 'border-t border-gray-700'
+                const borderBottom = row === rowCount - 1 ? '' : 'border-b border-gray-700'
+                const borderLeft = col === 0 ? '' : 'border-l border-gray-700'
+                const borderRight = col === colCount - 1 ? '' : 'border-r border-gray-700'
+
+                return (
+                  <div
+                    key={brand.id}
+                    className={`flex items-center justify-center p-4 ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
+                  >
+                    {/* Fixed square container for consistency */}
+                    <div className="w-24 h-24 flex items-center justify-center">
+                      {brand.link ? (
+                        <a
+                          href={brand.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative w-full h-full"
+                        >
+                          {brand.image?.url && (
+                            <Image
+                              src={brand.image.url}
+                              alt={brand.name}
+                              fill
+                              className="object-contain filter brightness-0 invert"
+                            />
+                          )}
+                        </a>
+                      ) : (
+                        brand.image?.url && (
+                          <div className="relative w-full h-full">
+                            <Image
+                              src={brand.image.url}
+                              alt={brand.name}
+                              fill
+                              className="object-contain filter brightness-0 invert"
+                            />
+                          </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

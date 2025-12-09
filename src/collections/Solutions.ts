@@ -1,21 +1,22 @@
 import type { CollectionConfig } from 'payload'
 import slugify from 'slugify'
 
-export const Applications: CollectionConfig = {
-  slug: 'applications',
+export const Solutions: CollectionConfig = {
+  slug: 'solutions',
   labels: {
-    singular: 'Application',
-    plural: 'Applications',
+    singular: 'Solution',
+    plural: 'Solutions',
   },
+
   admin: {
     useAsTitle: 'title',
   },
 
-  // Auto-generate slug if empty
+  // Auto-generate slug
   hooks: {
     beforeValidate: [
       ({ data }) => {
-        if (!data) return data // TS-safe
+        if (!data) return data
 
         if (!data.slug && data.title) {
           data.slug = slugify(data.title, {
@@ -30,7 +31,7 @@ export const Applications: CollectionConfig = {
   },
 
   fields: [
-    // Core fields
+    // Title
     {
       name: 'title',
       type: 'text',
@@ -38,6 +39,7 @@ export const Applications: CollectionConfig = {
       label: 'Title',
     },
 
+    // Slug
     {
       name: 'slug',
       type: 'text',
@@ -49,11 +51,12 @@ export const Applications: CollectionConfig = {
       },
     },
 
+    // Category / Type (adjust options if needed)
     {
-      name: 'type',
+      name: 'category',
       type: 'select',
+      label: 'Solution Category',
       required: true,
-      label: 'Application Type',
       options: [
         { label: 'Residential', value: 'residential' },
         { label: 'Commercial', value: 'commercial' },
@@ -69,18 +72,18 @@ export const Applications: CollectionConfig = {
       label: 'Main Image',
     },
 
-    // Description
+    // Short description
     {
       name: 'description',
       type: 'textarea',
       label: 'Short Description',
     },
 
-    // Case Study Sections
+    // Detail sections (similar to case study)
     {
-      name: 'caseStudy',
+      name: 'sections',
       type: 'array',
-      label: 'Case Study Sections',
+      label: 'Content Sections',
       fields: [
         {
           name: 'sectionTitle',
@@ -89,26 +92,20 @@ export const Applications: CollectionConfig = {
           label: 'Section Title',
         },
         {
-          name: 'header',
-          type: 'text',
-          required: true,
-          label: 'Header',
-        },
-        {
-          name: 'sectionDescription',
+          name: 'content',
           type: 'textarea',
           required: true,
-          label: 'Section Description',
+          label: 'Content',
         },
         {
-          name: 'backgroundImage',
+          name: 'icon',
           type: 'upload',
           relationTo: 'media',
-          label: 'Background Image',
+          label: 'Optional Icon',
         },
       ],
     },
   ],
 }
 
-export default Applications
+export default Solutions

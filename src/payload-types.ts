@@ -70,6 +70,10 @@ export interface Config {
     users: User;
     media: Media;
     applications: Application;
+    solutions: Solution;
+    testimonials: Testimonial;
+    brands: Brand;
+    awards: Award;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +84,10 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     applications: ApplicationsSelect<false> | ApplicationsSelect<true>;
+    solutions: SolutionsSelect<false> | SolutionsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    brands: BrandsSelect<false> | BrandsSelect<true>;
+    awards: AwardsSelect<false> | AwardsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -166,24 +174,85 @@ export interface Media {
  */
 export interface Application {
   id: number;
-  residential?: {
-    items?:
-      | {
-          title: string;
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  commercial?: {
-    items?:
-      | {
-          title: string;
-          image: number | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
+  title: string;
+  slug: string;
+  type: 'residential' | 'commercial';
+  image: number | Media;
+  description?: string | null;
+  caseStudy?:
+    | {
+        sectionTitle: string;
+        header: string;
+        sectionDescription: string;
+        backgroundImage?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions".
+ */
+export interface Solution {
+  id: number;
+  title: string;
+  slug: string;
+  category: 'residential' | 'commercial';
+  image: number | Media;
+  description?: string | null;
+  sections?:
+    | {
+        sectionTitle: string;
+        content: string;
+        icon?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  name: string;
+  testimony: string;
+  company?: string | null;
+  image?: (number | null) | Media;
+  /**
+   * Mark this testimonial as featured to highlight it
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands".
+ */
+export interface Brand {
+  id: number;
+  name: string;
+  image: number | Media;
+  /**
+   * Enter full URL, e.g. https://example.com
+   */
+  website?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "awards".
+ */
+export interface Award {
+  id: number;
+  title: string;
+  image: number | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -222,6 +291,22 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'applications';
         value: number | Application;
+      } | null)
+    | ({
+        relationTo: 'solutions';
+        value: number | Solution;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'brands';
+        value: number | Brand;
+      } | null)
+    | ({
+        relationTo: 'awards';
+        value: number | Award;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -310,28 +395,75 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "applications_select".
  */
 export interface ApplicationsSelect<T extends boolean = true> {
-  residential?:
+  title?: T;
+  slug?: T;
+  type?: T;
+  image?: T;
+  description?: T;
+  caseStudy?:
     | T
     | {
-        items?:
-          | T
-          | {
-              title?: T;
-              image?: T;
-              id?: T;
-            };
+        sectionTitle?: T;
+        header?: T;
+        sectionDescription?: T;
+        backgroundImage?: T;
+        id?: T;
       };
-  commercial?:
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions_select".
+ */
+export interface SolutionsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  category?: T;
+  image?: T;
+  description?: T;
+  sections?:
     | T
     | {
-        items?:
-          | T
-          | {
-              title?: T;
-              image?: T;
-              id?: T;
-            };
+        sectionTitle?: T;
+        content?: T;
+        icon?: T;
+        id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  name?: T;
+  testimony?: T;
+  company?: T;
+  image?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "brands_select".
+ */
+export interface BrandsSelect<T extends boolean = true> {
+  name?: T;
+  image?: T;
+  website?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "awards_select".
+ */
+export interface AwardsSelect<T extends boolean = true> {
+  title?: T;
+  image?: T;
   updatedAt?: T;
   createdAt?: T;
 }

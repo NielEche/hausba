@@ -73,3 +73,15 @@ svg {
 .hausba-grey {
   color: #686666;
 }
+
+.hausba-orange-border {
+  border-color: #ff6f3c;
+}
+
+.hausba-orange-bg {
+  background-color: #ff6f3c;
+}
+
+.hausba-grey-bg {
+  background-color: #686666;
+}

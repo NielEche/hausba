@@ -1,6 +1,7 @@
 import React from 'react'
 import './styles.css'
 import Header from './components/Header'
+import Footer from './components/Footer'
 
 export const metadata = {
   description: 'Welcome to Hausba !',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
       <body className="bg-black text-white">
         <Header />
         <main>{children}</main>
+        <Footer />
       </body>
     </html>
   )
