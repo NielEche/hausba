@@ -2,9 +2,7 @@ import { withPayload } from '@payloadcms/next/withPayload'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ... (existing webpack config) ...
   webpack: (webpackConfig) => {
-    // ... (existing extensionAlias config) ...
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
@@ -14,14 +12,18 @@ const nextConfig = {
     return webpackConfig
   },
 
-  // 👇 KEEP THIS AS IT IS 👇
   serverExternalPackages: ['pino', 'thread-stream'],
 
-  // 👇 ADD THIS BLOCK 👇
+  // 👇 REQUIRED for Next.js <Image> to work inside Payload apps
   images: {
-    unoptimized: false, // enables normal Next.js image optimization
+    loader: 'default', // <— force Next.js to use its real image loader
+    unoptimized: false, // <— allow optimization (instead of being disabled by Payload)
   },
-  // 👆 END OF IMAGE FIX 👆
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withPayload(nextConfig, {
+  devBundleServerPackages: false,
+
+  // 👇 REQUIRED for Payload 2.x — prevents Payload from disabling image optimization
+  disableNextImageOptimization: false,
+})
