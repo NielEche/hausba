@@ -121,7 +121,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
       <section className="relative min-h-screen">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image src="/home1.jpg" alt="Hausba Philosophy" fill className="object-cover" priority />
+          <Image src="/home1.jpg" alt="Hausba Philosophy" fill className="object-cover" priority unoptimized/>
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/70" />
         </div>

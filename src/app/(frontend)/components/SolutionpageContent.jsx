@@ -72,7 +72,14 @@ export default function SolutionpageContent({ solutions = [] }) {
       <section className="relative h-screen flex items-center justify-start">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image src="/home1.jpg" alt="Solutions" fill className="object-cover" priority />
+          <Image
+            src="/home1.jpg"
+            alt="Solutions"
+            fill
+            className="object-cover"
+            priority
+            unoptimized
+          />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/60" />
         </div>
@@ -127,7 +134,13 @@ export default function SolutionpageContent({ solutions = [] }) {
                 >
                   {/* Icon */}
                   <div className="w-12 h-12 mb-6 relative">
-                    <Image src={item.icon} alt={item.title} fill className="object-contain" />
+                    <Image
+                      src={item.icon}
+                      alt={item.title}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
                   </div>
 
                   {/* Title */}
