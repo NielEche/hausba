@@ -133,6 +133,7 @@ export default function Header() {
               height={50}
               className="cursor-pointer"
               key={logoSrc}
+              unoptimized
             />
           </Link>
 
