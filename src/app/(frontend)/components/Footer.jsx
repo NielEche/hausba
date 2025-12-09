@@ -5,10 +5,22 @@ import Image from 'next/image'
 
 export default function Footer() {
   const socials = [
-    { name: 'Facebook', icon: '/social/fb.png', href: 'https://www.facebook.com/3Dandstlprobables' },
-    { name: 'Instagram', icon: '/social/insta.png', href: 'https://www.instagram.com/hausbaexperience/' },
+    {
+      name: 'Facebook',
+      icon: '/social/fb.png',
+      href: 'https://www.facebook.com/3Dandstlprobables',
+    },
+    {
+      name: 'Instagram',
+      icon: '/social/insta.png',
+      href: 'https://www.instagram.com/hausbaexperience/',
+    },
     { name: 'X', icon: '/social/x.png', href: 'https://x.com/hausba' },
-    { name: 'LinkedIn', icon: '/social/linkedin.png', href: 'https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng' },
+    {
+      name: 'LinkedIn',
+      icon: '/social/linkedin.png',
+      href: 'https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng',
+    },
   ]
 
   const menu = [
