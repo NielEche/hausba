@@ -40,12 +40,18 @@ export default buildConfig({
   plugins: [
     uploadthingStorage({
       collections: {
-        media: true, // apply UploadThing to Media collection
+        media: true,
       },
       options: {
-        token: process.env.UPLOADTHING_TOKEN, // set this in your .env
-        acl: 'public-read', // optional, defaults to public-read
+        token: process.env.UPLOADTHING_TOKEN,
+        acl: 'public-read',
       },
     }),
   ],
+  // Debug logging to verify token is loaded
+  onInit: async (payload) => {
+    payload.logger.info('🔍 UploadThing Token Present:', !!process.env.UPLOADTHING_TOKEN)
+    payload.logger.info('🔍 Token Length:', process.env.UPLOADTHING_TOKEN?.length)
+    payload.logger.info('🔍 Token First 10 chars:', process.env.UPLOADTHING_TOKEN?.substring(0, 10))
+  },
 })
