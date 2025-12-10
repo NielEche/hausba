@@ -3,6 +3,22 @@ import config from '@payload-config'
 
 import HomepageContent from './components/HomepageContent'
 
+// Helper to transform image URLs to use UploadThing
+function transformImageUrl(image) {
+  if (!image) return null
+
+  // If _key exists, construct the UploadThing URL
+  if (image._key) {
+    return {
+      ...image,
+      url: `https://utfs.io/f/${image._key}`,
+    }
+  }
+
+  // Fallback to original URL
+  return image
+}
+
 export default async function HomePage() {
   const payload = await getPayload({ config })
 
@@ -35,15 +51,36 @@ export default async function HomePage() {
     collection: 'brands',
     depth: 1,
     sort: 'name',
-    limit: 8, // <-- limit to 8 brands
+    limit: 8,
   })
+
+  // Transform all image URLs to use UploadThing
+  const transformedApps = applications.docs.map((app) => ({
+    ...app,
+    image: transformImageUrl(app.image),
+  }))
+
+  const transformedSolutions = solutions.docs.map((sol) => ({
+    ...sol,
+    image: transformImageUrl(sol.image),
+  }))
+
+  const transformedTestimonials = testimonials.docs.map((t) => ({
+    ...t,
+    image: transformImageUrl(t.image),
+  }))
+
+  const transformedBrands = brands.docs.map((b) => ({
+    ...b,
+    image: transformImageUrl(b.image),
+  }))
 
   return (
     <HomepageContent
-      applications={applications.docs ?? []}
-      solutions={solutions.docs ?? []}
-      testimonials={testimonials.docs ?? []}
-      brands={brands.docs ?? []}
+      applications={transformedApps}
+      solutions={transformedSolutions}
+      testimonials={transformedTestimonials}
+      brands={transformedBrands}
     />
   )
 }
