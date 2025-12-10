@@ -118,7 +118,7 @@ export default function HomepageContent({
                         style={{
                           backgroundImage: app.image?.url
                             ? `url(${app.image.url})`
-                            : "url('/placeholder.jpg')",
+                            : "url('/XAMIRAHEIGHTS.webp')",
                         }}
                       />
 
@@ -272,7 +272,7 @@ export default function HomepageContent({
                       style={{
                         backgroundImage: solution.image?.url
                           ? `url(${solution.image.url})`
-                          : "url('/placeholder.jpg')",
+                          : "url('/XAMIRAHEIGHTS.webp')",
                       }}
                     />
 
