@@ -3,6 +3,8 @@ import config from '@payload-config'
 
 import HomepageContent from './components/HomepageContent'
 
+export const revalidate = 60
+
 // Helper to transform image URLs to use UploadThing
 function transformImageUrl(image) {
   if (!image) return null
