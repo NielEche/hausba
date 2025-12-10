@@ -75,6 +75,12 @@ export default async function HomePage() {
     image: transformImageUrl(b.image),
   }))
 
+  // Debug: Check transformed URLs
+  console.log('=== TRANSFORMED IMAGE CHECK ===')
+  console.log('First app image URL:', transformedApps[0]?.image?.url)
+  console.log('First brand image URL:', transformedBrands[0]?.image?.url)
+  console.log('===============================')
+
   return (
     <HomepageContent
       applications={transformedApps}
