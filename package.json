@@ -21,6 +21,7 @@
     "@payloadcms/db-postgres": "^3.64.0",
     "@payloadcms/next": "^3.64.0",
     "@payloadcms/richtext-lexical": "^3.64.0",
+    "@payloadcms/storage-uploadthing": "^3.68.1",
     "@payloadcms/storage-vercel-blob": "^3.67.0",
     "@payloadcms/ui": "^3.64.0",
     "@tailwindcss/postcss": "^4.1.17",

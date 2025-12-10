@@ -1,8 +1,7 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import path from 'path'
 import { buildConfig } from 'payload'
+import path from 'path'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
@@ -13,6 +12,8 @@ import { Solutions } from './collections/Solutions'
 import { Testimonials } from './collections/Testimonials'
 import { Brands } from './collections/Brands'
 import { Awards } from './collections/Awards'
+
+import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,6 +38,14 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    // storage-adapter-placeholder
+    uploadthingStorage({
+      collections: {
+        media: true, // apply UploadThing to Media collection
+      },
+      options: {
+        token: process.env.UPLOADTHING_TOKEN, // set this in your .env
+        acl: 'public-read', // optional, defaults to public-read
+      },
+    }),
   ],
 })
