@@ -50,8 +50,10 @@ export default buildConfig({
   ],
   // Debug logging to verify token is loaded
   onInit: async (payload) => {
-    payload.logger.info('🔍 UploadThing Token Present:', !!process.env.UPLOADTHING_TOKEN)
-    payload.logger.info('🔍 Token Length:', process.env.UPLOADTHING_TOKEN?.length)
-    payload.logger.info('🔍 Token First 10 chars:', process.env.UPLOADTHING_TOKEN?.substring(0, 10))
+    payload.logger.info(`🔍 UploadThing Token Present: ${!!process.env.UPLOADTHING_TOKEN}`)
+    payload.logger.info(`🔍 Token Length: ${process.env.UPLOADTHING_TOKEN?.length}`)
+    payload.logger.info(
+      `🔍 Token First 10 chars: ${process.env.UPLOADTHING_TOKEN?.substring(0, 10)}`,
+    )
   },
 })
