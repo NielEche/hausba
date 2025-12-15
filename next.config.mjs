@@ -19,10 +19,11 @@ const nextConfig = {
   images: {
     loader: 'default',
     unoptimized: false, // Keep optimization enabled (works for remote/CMS images)
+    domains: ['utfs.io'],
   },
 }
 
 export default withPayload(nextConfig, {
   devBundleServerPackages: false,
   disableNextImageOptimization: false,
-})
+})  
