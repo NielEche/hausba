@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 export default function HomepageContent({
   applications = [],
@@ -79,7 +80,7 @@ export default function HomepageContent({
       <div className="bg-black">
         <div className="max-w-7xl px-4 mx-auto py-26 space-y-24">
           <motion.h2
-            className="text-xs montserrat-regular text-center capitalize pb-6"
+            className="text-xs montserrat-regular text-left capitalize "
             initial={{ opacity: 0.9 }}
             whileHover={{ opacity: 1 }}
           >
@@ -103,54 +104,55 @@ export default function HomepageContent({
                 {/* Grid */}
                 <div className={`grid grid-cols-1 ${gridCols} gap-8`}>
                   {items.map((app, index) => (
-                    <motion.div
-                      key={app.id}
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      whileHover={{ y: -8 }}
-                      className="relative h-120 overflow-hidden group cursor-pointer"
-                    >
-                      {/* Background Image */}
-                      <div
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
-                        style={{
-                          backgroundImage: app.image?.url
-                            ? `url(${app.image.url})`
-                            : "url('/XAMIRAHEIGHTS.webp')",
-                        }}
-                      />
+                    <Link key={app.id} href={`/applications/${app.slug}`}>
+                      <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        whileHover={{ y: -8 }}
+                        className="relative h-120 overflow-hidden group cursor-pointer"
+                      >
+                        {/* Background Image */}
+                        <div
+                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                          style={{
+                            backgroundImage: app.image?.url
+                              ? `url(${app.image.url})`
+                              : "url('/XAMIRAHEIGHTS.webp')",
+                          }}
+                        />
 
-                      {/* Dark Overlay */}
-                      <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
+                        {/* Dark Overlay */}
+                        <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
 
-                      {/* Orange Gradient Overlay on Hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                          background:
-                            'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
-                        }}
-                      ></div>
+                        {/* Orange Gradient Overlay on Hover */}
+                        <div
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          style={{
+                            background:
+                              'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                          }}
+                        ></div>
 
-                      {/* Title at Bottom */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                        <motion.h3
-                          className="text-xl montserrat-bold"
-                          initial={{ opacity: 0.9 }}
-                          whileHover={{ opacity: 1 }}
-                        >
-                          {app.title}
-                        </motion.h3>
+                        {/* Title at Bottom */}
+                        <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                          <motion.h3
+                            className="text-xl montserrat-bold"
+                            initial={{ opacity: 0.9 }}
+                            whileHover={{ opacity: 1 }}
+                          >
+                            {app.title}
+                          </motion.h3>
 
-                        {app.description && (
-                          <motion.p className="hidden mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            {app.description}
-                          </motion.p>
-                        )}
-                      </div>
-                    </motion.div>
+                          {app.description && (
+                            <motion.p className="hidden mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              {app.description}
+                            </motion.p>
+                          )}
+                        </div>
+                      </motion.div>
+                    </Link>
                   ))}
                 </div>
               </motion.section>
@@ -169,7 +171,7 @@ export default function HomepageContent({
             transition={{ duration: 0.6 }}
           >
             <motion.h2
-              className="text-xs montserrat-regular text-center capitalize pt-4 pb-24"
+              className="text-xs montserrat-regular text-left capitalize pt-4 pb-24"
               initial={{ opacity: 0.9 }}
               whileHover={{ opacity: 1 }}
             >
@@ -205,9 +207,7 @@ export default function HomepageContent({
                 const x = e.clientX - rect.left
                 const width = rect.width
 
-                // Show left arrow when hovering left 20% of container
                 setShowLeftArrow(x < width * 0.2)
-                // Show right arrow when hovering right 20% of container
                 setShowRightArrow(x > width * 0.8)
               }}
               onMouseLeave={() => {
@@ -258,46 +258,47 @@ export default function HomepageContent({
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {groupedSolutions[activeTab]?.map((solution, index) => (
-                  <motion.div
-                    key={solution.id}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
-                    className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
-                  >
-                    {/* Background Image */}
-                    <div
-                      className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
-                      style={{
-                        backgroundImage: solution.image?.url
-                          ? `url(${solution.image.url})`
-                          : "url('/XAMIRAHEIGHTS.webp')",
-                      }}
-                    />
+                  <Link key={solution.id} href={`/solutions/${solution.slug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      whileHover={{ y: -8 }}
+                      className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
+                    >
+                      {/* Background Image */}
+                      <div
+                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                        style={{
+                          backgroundImage: solution.image?.url
+                            ? `url(${solution.image.url})`
+                            : "url('/XAMIRAHEIGHTS.webp')",
+                        }}
+                      />
 
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
+                      {/* Dark Overlay */}
+                      <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
 
-                    {/* Orange Gradient Overlay on Hover */}
-                    <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{
-                        background:
-                          'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
-                      }}
-                    ></div>
+                      {/* Orange Gradient Overlay on Hover */}
+                      <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          background:
+                            'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                        }}
+                      ></div>
 
-                    {/* Title at Bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                      <h3 className="text-xl montserrat-bold">{solution.title}</h3>
-                      {solution.description && (
-                        <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          {solution.description}
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
+                      {/* Title at Bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                        <h3 className="text-xl montserrat-bold">{solution.title}</h3>
+                        {solution.description && (
+                          <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            {solution.description}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -320,8 +321,6 @@ export default function HomepageContent({
           transition={{ duration: 0.6 }}
         >
           <div className="relative px-4 lg:flex justify-between">
-            {/* Always-visible arrows (left side) */}
-
             <div className="text-black pr-10 w-80 pb-10">
               <motion.h4
                 className="text-xs montserrat-bold text-left capitalize "
@@ -363,7 +362,6 @@ export default function HomepageContent({
               </div>
             </div>
 
-            {/* Slider */}
             <div
               ref={testimonialRef}
               className="overflow-x-auto flex gap-6 scroll-smooth"
@@ -386,12 +384,10 @@ export default function HomepageContent({
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="min-w-[400px] max-w-[450px] relative overflow-hidden"
                 >
-                  {/* NUMBER LABEL (now visible on ALL cards) */}
                   <div className="absolute top-0 left-0 p-8 z-[30] hausba-grey  text-sm montserrat-bold">
                     {String(index + 1).padStart(2, '0')}
                   </div>
 
-                  {/* BACKGROUND IMAGE */}
                   {t.image?.url && (
                     <div
                       className="absolute inset-0 bg-cover bg-center z-[5]"
@@ -399,7 +395,6 @@ export default function HomepageContent({
                     ></div>
                   )}
 
-                  {/* GRADIENT OVERLAY */}
                   <div
                     className="absolute inset-0 z-[10] opacity-75"
                     style={{
@@ -415,10 +410,9 @@ export default function HomepageContent({
                     }}
                   ></div>
 
-                  {/* CONTENT */}
                   <div className="relative z-10 p-8 text-white">
                     <p className="text-sm leading-relaxed opacity-95 montserrat-regular pt-20">
-                      “{t.testimony}”
+                      "{t.testimony}"
                     </p>
 
                     <div className="mt-6">
@@ -439,13 +433,11 @@ export default function HomepageContent({
             className="relative border-2 hausba-orange-border overflow-hidden flex items-center"
             style={{ minHeight: '220px' }}
           >
-            {/* BACKGROUND IMAGE */}
             <div
               className="absolute inset-0 bg-cover bg-center"
               style={{ backgroundImage: `url('/estimate.jpg')` }}
             ></div>
 
-            {/* DARK LEFT OVERLAY (prominent black fading at center) */}
             <div
               className="absolute inset-0"
               style={{
@@ -454,20 +446,17 @@ export default function HomepageContent({
               }}
             ></div>
 
-            {/* CONTENT */}
             <div className="relative z-10  flex flex-col md:flex-row items-center justify-between w-full px-8 py-16">
-              {/* TEXT */}
               <div className="text-white max-w-lg lg:px-10">
                 <h3 className="text-xl md:text-2xl montserrat-bold mb-2">
                   Get an instant estimate for your project
                 </h3>
                 <p className="text-sm md:text-base montserrat-regular opacity-90">
-                  Use our smart home estimator to get an estimate for your smart home project. It’ll
+                  Use our smart home estimator to get an estimate for your smart home project. It'll
                   only take 5 minutes.
                 </p>
               </div>
 
-              {/* BUTTON */}
               <div className="mt-4 md:mt-0 flex justify-start md:justify-center w-full lg:pl-26 py-4">
                 <button className="hausba-orange-bg cursor-pointer hover:bg-[#d94d1a] text-white font-semibold py-3 px-6 montserrat-regular transition">
                   Get an Estimate
@@ -496,7 +485,6 @@ export default function HomepageContent({
                 const row = Math.floor(index / colCount)
                 const col = index % colCount
 
-                // border logic
                 const borderTop = row === 0 ? '' : 'border-t border-gray-700'
                 const borderBottom = row === rowCount - 1 ? '' : 'border-b border-gray-700'
                 const borderLeft = col === 0 ? '' : 'border-l border-gray-700'
@@ -507,7 +495,6 @@ export default function HomepageContent({
                     key={brand.id}
                     className={`flex items-center justify-center p-4 ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
                   >
-                    {/* Fixed square container for consistency */}
                     <div className="w-24 h-24 flex items-center justify-center">
                       {brand.link ? (
                         <a

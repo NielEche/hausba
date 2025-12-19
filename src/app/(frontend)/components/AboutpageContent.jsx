@@ -121,7 +121,14 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
       <section className="relative min-h-screen">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image src="/home1.jpg" alt="Hausba Philosophy" fill className="object-cover" priority unoptimized/>
+          <Image
+            src="/home1.jpg"
+            alt="Hausba Philosophy"
+            fill
+            className="object-cover"
+            priority
+            unoptimized
+          />
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/70" />
         </div>
@@ -321,9 +328,9 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className=" mb-20"
           >
-            <span className="text-white montserrat-regular text-xs font-semibold tracking-widest">
+            <span className="text-white text-left montserrat-regular text-xs font-semibold tracking-widest">
               [ WHY CHOOSE US ]
             </span>
           </motion.div>

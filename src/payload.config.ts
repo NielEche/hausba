@@ -12,6 +12,7 @@ import { Solutions } from './collections/Solutions'
 import { Testimonials } from './collections/Testimonials'
 import { Brands } from './collections/Brands'
 import { Awards } from './collections/Awards'
+import { Projects } from './collections/Projects'
 
 import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Applications, Solutions, Testimonials, Brands, Awards],
+  collections: [Users, Media, Applications, Solutions, Testimonials, Brands, Awards, Projects],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

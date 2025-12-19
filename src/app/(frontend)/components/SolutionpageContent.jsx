@@ -266,47 +266,48 @@ export default function SolutionpageContent({ solutions = [] }) {
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {filteredSolutions.map((solution, index) => (
-                <motion.div
-                  key={solution.id}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
-                  className="relative min-w-[350px] md:min-w-[450px] h-[450px] md:h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
-                >
-                  {/* Background Image */}
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
-                    style={{
-                      backgroundImage: solution.image?.url
-                        ? `url(${solution.image.url})`
-                        : "url('/home1.jpg')",
-                    }}
-                  />
+                <Link key={solution.id} href={`/solutions/${solution.slug}`} className="block">
+                  <motion.div
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ y: -8 }}
+                    className="relative min-w-[350px] md:min-w-[450px] h-[450px] md:h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
+                  >
+                    {/* Background Image */}
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                      style={{
+                        backgroundImage: solution.image?.url
+                          ? `url(${solution.image.url})`
+                          : "url('/home1.jpg')",
+                      }}
+                    />
 
-                  {/* Dark Overlay */}
-                  <div className="absolute inset-0 bg-black/40 transition-opacity duration-300" />
+                    {/* Dark Overlay */}
+                    <div className="absolute inset-0 bg-black/40 transition-opacity duration-300" />
 
-                  {/* Orange Gradient on Hover */}
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background:
-                        'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
-                    }}
-                  />
+                    {/* Orange Gradient on Hover */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background:
+                          'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                      }}
+                    />
 
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-10 text-white">
-                    <h3 className="text-xl montserrat-bold mb-2">{solution.title}</h3>
+                    {/* Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 z-10 text-white">
+                      <h3 className="text-xl montserrat-bold mb-2">{solution.title}</h3>
 
-                    {solution.description && (
-                      <p className="text-sm montserrat-regular opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        {solution.description}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
+                      {solution.description && (
+                        <p className="text-sm montserrat-regular opacity-0 group-hover:opacity-100 transition-opacity duration-300 line-clamp-3">
+                          {solution.description}
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                </Link>
               ))}
             </div>
           </div>

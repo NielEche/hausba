@@ -14,8 +14,30 @@ export default function Header() {
   const [scrollingUp, setScrollingUp] = useState(false)
   const [logoColor, setLogoColor] = useState('white') // 'white' or 'black'
 
+  // Force white logo on solutions detail pages
+  const isSolutionDetailPage = pathname?.startsWith('/solutions/') && pathname !== '/solutions'
+
   useEffect(() => {
+    // If on solution detail page, always use white logo
+    if (isSolutionDetailPage) {
+      setLogoColor('white')
+      return
+    }
+
     const detectBackground = () => {
+      // Check if page has data-header-theme attribute
+      const pageElement = document.querySelector('[data-header-theme]')
+      if (pageElement) {
+        const theme = pageElement.getAttribute('data-header-theme')
+        if (theme === 'dark') {
+          setLogoColor('white')
+          return
+        } else if (theme === 'light') {
+          setLogoColor('black')
+          return
+        }
+      }
+
       // Temporarily hide header to detect what's behind it
       const header = document.querySelector('header')
       if (!header) return
@@ -64,15 +86,6 @@ export default function Header() {
             // If background is dark (brightness < 128), use white logo
             // If background is light (brightness >= 128), use black logo
             setLogoColor(brightness < 128 ? 'white' : 'black')
-
-            console.log(
-              'Detected color:',
-              bgColor,
-              'Brightness:',
-              brightness,
-              'Logo:',
-              brightness < 128 ? 'white' : 'black',
-            )
           }
         }
       }
@@ -80,7 +93,13 @@ export default function Header() {
 
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      const heroHeight = window.innerHeight
+
+      // Check if we're on a solution detail page with custom hero height
+      let heroHeight = window.innerHeight
+      if (isSolutionDetailPage) {
+        // 70vh hero on solution pages
+        heroHeight = window.innerHeight * 0.7
+      }
 
       const isScrollingUp = currentScrollY < lastScrollY
       setScrollingUp(isScrollingUp)
@@ -103,12 +122,12 @@ export default function Header() {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', detectBackground)
     }
-  }, [lastScrollY])
+  }, [lastScrollY, isSolutionDetailPage])
 
   const navItems = [
     { label: 'ABOUT US', href: '/about' },
     { label: 'SOLUTIONS', href: '/solutions' },
-    { label: 'OUR WORK', href: '/contact' },
+    { label: 'OUR WORK', href: '/projects' },
     { label: 'ESTIMATOR', href: '/estimator' },
     { label: 'SCHEDULE CONSULTATION', href: '/schedule' },
   ]
@@ -362,6 +381,104 @@ export default function Header() {
                       </motion.div>
                     )
                   })}
+
+                  {/* CONTACT BOX */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{
+                      duration: 0.4,
+                      delay: 0.1 + navItems.length * 0.06,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                    className="border border-[#2B2B2B] p-8 relative overflow-hidden"
+                  >
+                    <h3 className="text-white text-sm montserrat-bold mb-6">GET IN TOUCH</h3>
+
+                    {/* Contact Info */}
+                    <div className="space-y-4 mb-6">
+                      <a
+                        href="tel:+2348100999555"
+                        className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
+                      >
+                        +234 8100 999 555
+                      </a>
+                      <a
+                        href="mailto:experience@hausba.com"
+                        className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
+                      >
+                        experience@hausba.com
+                      </a>
+                    </div>
+
+                    {/* Social Media Icons */}
+                    <div className="flex gap-4">
+                      <a
+                        href="https://www.facebook.com/3Dandstlprobables"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity"
+                      >
+                        <Image
+                          src="/social/fb.png"
+                          alt="Facebook"
+                          width={24}
+                          height={24}
+                          className="filter invert"
+                          unoptimized
+                        />
+                      </a>
+                      <a
+                        href="https://www.instagram.com/hausbaexperience/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity"
+                      >
+                        <Image
+                          src="/social/insta.png"
+                          alt="Instagram"
+                          width={24}
+                          height={24}
+                          className="filter invert"
+                          unoptimized
+                        />
+                      </a>
+                      <a
+                        href="https://x.com/hausba"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity"
+                      >
+                        <Image
+                          src="/social/x.png"
+                          alt="X"
+                          width={24}
+                          height={24}
+                          className="filter invert"
+                          unoptimized
+                        />
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:opacity-70 transition-opacity"
+                      >
+                        <Image
+                          src="/social/linkedin.png"
+                          alt="LinkedIn"
+                          width={24}
+                          height={24}
+                          className="filter invert"
+                          unoptimized
+                        />
+                      </a>
+                    </div>
+
+                    {/* Decorative gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FF7800]/5 to-transparent pointer-events-none" />
+                  </motion.div>
                 </div>
 
                 <motion.div
