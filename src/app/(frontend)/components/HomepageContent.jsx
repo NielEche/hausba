@@ -146,7 +146,7 @@ export default function HomepageContent({
                           </motion.h3>
 
                           {app.description && (
-                            <motion.p className="hidden mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <motion.p className=" mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               {app.description}
                             </motion.p>
                           )}
