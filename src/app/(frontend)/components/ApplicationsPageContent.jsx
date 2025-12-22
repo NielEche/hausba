@@ -10,9 +10,7 @@ export default function ApplicationsPageContent({ applications = [] }) {
   const scrollRef = useRef(null)
 
   const filteredApplications =
-    activeType === 'all'
-      ? applications
-      : applications.filter((a) => a.type === activeType)
+    activeType === 'all' ? applications : applications.filter((a) => a.type === activeType)
 
   return (
     <div className="min-h-screen bg-white">
@@ -31,15 +29,13 @@ export default function ApplicationsPageContent({ applications = [] }) {
         </div>
 
         <div className="relative z-10 max-w-7xl px-6 text-white">
-          <h1 className="text-4xl montserrat-bold">
-            Our Applications
-          </h1>
+          <h1 className="text-4xl montserrat-bold">Our Applications</h1>
         </div>
       </section>
 
       {/* FILTER TABS */}
       <section className="bg-black px-6 pt-24">
-        <div className="flex gap-4">
+        <div className="max-w-7xl mx-auto flex gap-4">
           <button
             onClick={() => setActiveType('all')}
             className={`px-8 py-3 text-sm border ${
@@ -76,17 +72,13 @@ export default function ApplicationsPageContent({ applications = [] }) {
       </section>
 
       {/* APPLICATION CARDS */}
-      <section className="bg-black px-6 py-24">
+      <section className="bg-black px-6 py-24 ">
         <div
           ref={scrollRef}
-          className="flex gap-8 overflow-x-auto hide-scrollbar"
+          className="max-w-7xl mx-auto flex gap-8 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {filteredApplications.map((application) => (
-            <Link
-              key={application.id}
-              href={`/applications/${application.slug}`}
-              className="block"
-            >
+            <Link key={application.id} href={`/applications/${application.slug}`} className="block">
               <motion.div
                 whileHover={{ y: -8 }}
                 className="relative min-w-[350px] md:min-w-[450px] h-[450px] md:h-[500px] overflow-hidden"
@@ -103,9 +95,7 @@ export default function ApplicationsPageContent({ applications = [] }) {
                 <div className="absolute inset-0 bg-black/40" />
 
                 <div className="absolute bottom-0 p-6 text-white">
-                  <h3 className="text-xl montserrat-bold mb-2">
-                    {application.title}
-                  </h3>
+                  <h3 className="text-xl montserrat-bold mb-2">{application.title}</h3>
 
                   {application.description && (
                     <p className="text-sm montserrat-regular opacity-80 line-clamp-3">

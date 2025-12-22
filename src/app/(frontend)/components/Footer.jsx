@@ -1,9 +1,30 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
 
-export default function Footer() {
+async function getSolutions() {
+  try {
+    const payload = await getPayloadHMR({ config: configPromise })
+    const solutions = await payload.find({
+      collection: 'solutions',
+      limit: 100,
+      sort: 'title',
+    })
+    return solutions.docs || []
+  } catch (error) {
+    console.error('Error fetching solutions:', error)
+    return []
+  }
+}
+
+export default async function Footer() {
+  const solutions = await getSolutions()
+
+  // Filter solutions by category and limit to 4 each
+  const residential = solutions.filter((s) => s.category === 'residential').slice(0, 4)
+  const commercial = solutions.filter((s) => s.category === 'commercial').slice(0, 4)
+
   const socials = [
     {
       name: 'Facebook',
@@ -25,21 +46,9 @@ export default function Footer() {
 
   const menu = [
     { label: 'About Us', href: '/about' },
-    { label: 'Our Portfolio', href: '/' },
-    { label: 'Terms and Conditions', href: '/' },
-  ]
-
-  const residential = [
-    { label: 'Home Cinema', href: '/' },
-    { label: 'Audio', href: '/' },
-    { label: 'Smart Lighting', href: '/' },
-    { label: 'Home Automation', href: '/' },
-  ]
-
-  const commercial = [
-    { label: 'Meeting Rooms', href: '/' },
-    { label: 'Boardrooms', href: '/' },
-    { label: 'Auditoriums', href: '/' },
+    { label: 'Our Portfolio', href: '/projects' },
+    { label: 'Applications', href: '/applications' },
+    { label: 'Solutions', href: '/solutions' },
   ]
 
   const experience = [
@@ -52,7 +61,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4">
         {/* NEWSLETTER SECTION */}
         <div className="bg-gray-100 py-20">
-          <div className="max-w-7xl mx-auto  text-black">
+          <div className="max-w-7xl mx-auto text-black">
             {/* Heading */}
             <h3 className="text-3xl montserrat-bold mb-4">Stay up to date with our Newsletter</h3>
 
@@ -102,7 +111,7 @@ export default function Footer() {
         <div className="pt-6 pb-8 flex justify-center md:justify-start">
           <Link href="/" className="pb-4">
             <Image
-              src="/hausba-logo-bl.png" // black logo version
+              src="/hausba-logo-bl.png"
               alt="Hausba Logo"
               width={160}
               height={50}
@@ -152,13 +161,20 @@ export default function Footer() {
           <div>
             <h4 className="text-lg montserrat-bold mb-4">Residential Solutions</h4>
             <ul className="space-y-2 text-sm">
-              {residential.map((item, i) => (
-                <li key={i}>
-                  <Link href={item.href} className="hover:underline montserrat-regular">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {residential.length > 0 ? (
+                residential.map((solution) => (
+                  <li key={solution.id}>
+                    <Link
+                      href={`/solutions/${solution.slug}`}
+                      className="hover:underline montserrat-regular"
+                    >
+                      {solution.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm opacity-60 montserrat-regular">No solutions available</li>
+              )}
             </ul>
           </div>
 
@@ -166,13 +182,20 @@ export default function Footer() {
           <div>
             <h4 className="text-lg montserrat-bold mb-4">Commercial Solutions</h4>
             <ul className="space-y-2 text-sm">
-              {commercial.map((item, i) => (
-                <li key={i}>
-                  <Link href={item.href} className="hover:underline montserrat-regular">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {commercial.length > 0 ? (
+                commercial.map((solution) => (
+                  <li key={solution.id}>
+                    <Link
+                      href={`/solutions/${solution.slug}`}
+                      className="hover:underline montserrat-regular"
+                    >
+                      {solution.title}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <li className="text-sm opacity-60 montserrat-regular">No solutions available</li>
+              )}
             </ul>
           </div>
 
