@@ -4,7 +4,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 
 export const metadata = {
-  description: 'Welcome to Hausba !',
+  description: 'HAUSBA | Premium Audiovisual Solutions',
   title: 'Hausba',
 }
 

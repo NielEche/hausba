@@ -131,7 +131,7 @@ export default function HomepageContent({
                           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           style={{
                             background:
-                              'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                              'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
                           }}
                         ></div>
 
@@ -284,7 +284,7 @@ export default function HomepageContent({
                         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                         style={{
                           background:
-                            'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                            'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
                         }}
                       ></div>
 
@@ -402,9 +402,9 @@ export default function HomepageContent({
                     linear-gradient(
                       to bottom right,
                       rgba(0, 0, 0, 1) 0%,
-                      rgba(0, 0, 0, 0.83) 35%,
-                      #ff6f3c 70%,
-                      rgba(255, 79, 15, 0.83) 100%
+                      rgba(0, 0, 0, 1) 35%,
+                      #000000ff 70%,
+                      rgba(0, 0, 0, 0.83) 100%
                     )
                   `,
                     }}
@@ -426,7 +426,7 @@ export default function HomepageContent({
           </div>
         </motion.div>
       )}
-      {/* GET ESTIMATE SECTION */}
+      {/* CONTACT US SECTION */}
       <div className="bg-black">
         <div className="max-w-7xl mx-auto px-4 py-20 ">
           <div
@@ -447,20 +447,90 @@ export default function HomepageContent({
             ></div>
 
             <div className="relative z-10  flex flex-col md:flex-row items-center justify-between w-full px-8 py-16">
-              <div className="text-white max-w-lg lg:px-10">
-                <h3 className="text-xl md:text-2xl montserrat-bold mb-2">
-                  Get an instant estimate for your project
-                </h3>
-                <p className="text-sm md:text-base montserrat-regular opacity-90">
-                  Use our smart home estimator to get an estimate for your smart home project. It'll
-                  only take 5 minutes.
-                </p>
+              <div className=" flex justify-center md:justify-center w-full  py-2">
+                <h3 className="text-xl md:text-2xl montserrat-bold mb-2">Contact us today</h3>
               </div>
 
-              <div className="mt-4 md:mt-0 flex justify-start md:justify-center w-full lg:pl-26 py-4">
-                <button className="hausba-orange-bg cursor-pointer hover:bg-[#d94d1a] text-white font-semibold py-3 px-6 montserrat-regular transition">
-                  Get an Estimate
-                </button>
+              <div className=" flex justify-center md:justify-center w-full  py-2">
+                <div className="space-y-4">
+                  <a
+                    href="tel:+2348100999555"
+                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
+                  >
+                    +234 8100 999 555
+                  </a>
+                  <a
+                    href="mailto:experience@hausba.com"
+                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
+                  >
+                    experience@hausba.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-4 md:mt-0 flex justify-center md:justify-center w-full  py-4">
+                <div className="flex gap-4">
+                  <a
+                    href="https://www.facebook.com/3Dandstlprobables"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    <Image
+                      src="/social/fb.png"
+                      alt="Facebook"
+                      width={35}
+                      height={35}
+                      className="filter invert"
+                      unoptimized
+                    />
+                  </a>
+                  <a
+                    href="https://www.instagram.com/hausbaexperience/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    <Image
+                      src="/social/insta.png"
+                      alt="Instagram"
+                      width={35}
+                      height={35}
+                      className="filter invert"
+                      unoptimized
+                    />
+                  </a>
+                  <a
+                    href="https://x.com/hausba"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    <Image
+                      src="/social/x.png"
+                      alt="X"
+                      width={35}
+                      height={35}
+                      className="filter invert"
+                      unoptimized
+                    />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                  >
+                    <Image
+                      src="/social/linkedin.png"
+                      alt="LinkedIn"
+                      width={35}
+                      height={35}
+                      className="filter invert"
+                      unoptimized
+                    />
+                  </a>
+                </div>
               </div>
             </div>
           </div>

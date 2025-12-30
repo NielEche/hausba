@@ -135,7 +135,6 @@ export default function Header() {
     { label: 'ABOUT US', href: '/about' },
     { label: 'SOLUTIONS', href: '/solutions' },
     { label: 'OUR WORK', href: '/projects' },
-    { label: 'ESTIMATOR', href: '/estimator' },
     { label: 'SCHEDULE CONSULTATION', href: '/schedule' },
   ]
 
