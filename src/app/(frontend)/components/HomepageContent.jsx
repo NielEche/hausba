@@ -27,7 +27,12 @@ export default function HomepageContent({
     return acc
   }, {})
 
-  const solutionTypes = Object.keys(groupedSolutions)
+  const solutionTypes = Object.keys(groupedSolutions).sort((a, b) => {
+    if (a === 'residential') return -1
+    if (b === 'residential') return 1
+    return 0
+  })
+
   const [activeTab, setActiveTab] = useState(solutionTypes[0] || '')
   const scrollContainerRef = useRef(null)
   const [showLeftArrow, setShowLeftArrow] = useState(false)
