@@ -5,6 +5,77 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
+// Simple rich text serializer for Payload
+const serializeRichText = (content) => {
+  if (!content) return null
+
+  // If it's already a string, return it
+  if (typeof content === 'string') return content
+
+  // Handle Payload rich text structure
+  const serialize = (node) => {
+    if (!node) return ''
+
+    // Handle text nodes
+    if (node.text !== undefined) {
+      let text = node.text
+
+      // Apply formatting
+      if (node.bold) text = `<strong>${text}</strong>`
+      if (node.italic) text = `<em>${text}</em>`
+      if (node.underline) text = `<u>${text}</u>`
+      if (node.code) text = `<code>${text}</code>`
+
+      return text
+    }
+
+    // Handle element nodes with children
+    if (node.children) {
+      const children = node.children.map((child) => serialize(child)).join('')
+
+      switch (node.type) {
+        case 'h1':
+          return `<h1 class="text-3xl montserrat-bold mb-6">${children}</h1>`
+        case 'h2':
+          return `<h2 class="text-2xl montserrat-bold mb-5">${children}</h2>`
+        case 'h3':
+          return `<h3 class="text-xl montserrat-bold mb-4">${children}</h3>`
+        case 'h4':
+          return `<h4 class="text-lg montserrat-bold mb-3">${children}</h4>`
+        case 'blockquote':
+          return `<blockquote class="border-l-4 border-[#ff6f3c] pl-4 italic my-4">${children}</blockquote>`
+        case 'ul':
+          return `<ul class="list-disc list-inside mb-4 space-y-2 ml-4">${children}</ul>`
+        case 'ol':
+          return `<ol class="list-decimal list-inside mb-4 space-y-2 ml-4">${children}</ol>`
+        case 'li':
+          return `<li class="mb-2">${children}</li>`
+        case 'link':
+          const href = node.url || '#'
+          const target = node.newTab ? '_blank' : '_self'
+          const rel = node.newTab ? 'noopener noreferrer' : ''
+          return `<a href="${href}" target="${target}" rel="${rel}" class="text-[#ff6f3c] hover:underline">${children}</a>`
+        default:
+          // Default to paragraph for unknown types
+          return `<p class="mb-4">${children}</p>`
+      }
+    }
+
+    return ''
+  }
+
+  // Handle array of nodes or root object
+  if (Array.isArray(content)) {
+    return content.map((node) => serialize(node)).join('')
+  }
+
+  if (content.root && Array.isArray(content.root.children)) {
+    return content.root.children.map((node) => serialize(node)).join('')
+  }
+
+  return serialize(content)
+}
+
 export default function ProjectDetailContent({ project }) {
   const [selectedImage, setSelectedImage] = useState(null)
 
@@ -103,11 +174,10 @@ export default function ProjectDetailContent({ project }) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="prose prose-lg max-w-none"
             >
               <div
                 className="text-gray-700 montserrat-regular leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: project.content }}
+                dangerouslySetInnerHTML={{ __html: serializeRichText(project.content) }}
               />
             </motion.div>
           </div>
