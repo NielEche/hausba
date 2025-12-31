@@ -292,7 +292,7 @@ export default function SolutionpageContent({ solutions = [] }) {
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       style={{
                         background:
-                          'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                          'linear-gradient(to top, rgba(4, 4, 4, 0.7) 0%, transparent 60%)',
                       }}
                     />
 

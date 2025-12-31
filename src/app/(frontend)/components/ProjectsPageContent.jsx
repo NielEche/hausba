@@ -126,8 +126,7 @@ export default function ProjectsPageContent({ projects = [] }) {
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{
-                      background:
-                        'linear-gradient(to top, rgba(255, 111, 60, 0.7) 0%, transparent 60%)',
+                      background: 'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
                     }}
                   />
 

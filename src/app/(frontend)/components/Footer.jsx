@@ -74,10 +74,7 @@ export default async function Footer() {
               <br />
               <br />
               By subscribing to receive email newsletter, you agree to receive recurring autodialed
-              marketing text messages (e.g. cart reminders) to the email address used at opt-in.
-              Email frequency may vary. Consent is not a condition of purchase. Msg & data rates may
-              apply. Reply HELP for help and STOP to cancel. See our Terms and Conditions and
-              Privacy Policy.
+              marketing emails to the email address used at opt-in. Email frequency may vary.
             </p>
 
             {/* Form */}

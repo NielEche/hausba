@@ -25,6 +25,7 @@ export default async function SolutionPage() {
 
   const solutions = await payload.find({
     collection: 'solutions',
+    sort: 'updatedAt',
     limit: 100,
   })
 
