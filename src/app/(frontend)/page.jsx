@@ -34,7 +34,7 @@ export default async function HomePage() {
   const solutions = await payload.find({
     collection: 'solutions',
     depth: 1,
-    sort: '-createdAt',
+    sort: 'updatedAt',
     limit: 20,
   })
 
