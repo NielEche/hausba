@@ -52,8 +52,11 @@ export default async function Footer() {
   ]
 
   const experience = [
-    { label: 'Abuja Experience - 49B Agadez Street, Wuse 2 Abuja', href: '/' },
-    { label: 'Lagos Experience - 24 Providence Street, Lekki Phase 1, Lagos', href: '/' },
+    { label: 'Lagos Office - Plot 24 Providence Street, Lekki Phase 1, Lagos', href: '/' },
+    {
+      label: 'Experience  Center - Soundhous,  17 Adeyemo Alakija Street, Victoria Island Lagos',
+      href: '/',
+    },
   ]
 
   return (

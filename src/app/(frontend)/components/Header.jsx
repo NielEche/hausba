@@ -135,7 +135,6 @@ export default function Header() {
     { label: 'ABOUT US', href: '/about' },
     { label: 'SOLUTIONS', href: '/solutions' },
     { label: 'OUR WORK', href: '/projects' },
-    { label: 'SCHEDULE CONSULTATION', href: '/schedule' },
   ]
 
   const logoSrc = logoColor === 'white' ? '/hausba-logo-wh.png' : '/hausba-logo-bl.png'
