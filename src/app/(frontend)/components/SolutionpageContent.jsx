@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -10,6 +10,7 @@ export default function SolutionpageContent({ solutions = [] }) {
   const scrollContainerRef = useRef(null)
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -65,6 +66,39 @@ export default function SolutionpageContent({ solutions = [] }) {
 
   // Case study solutions (remaining or all)
   const caseStudySolutions = solutions.slice(4, 7)
+
+  // Auto-scroll effect for solutions - continuous loop
+  useEffect(() => {
+    if (!scrollContainerRef.current || isHovering || filteredSolutions.length === 0) return
+
+    const container = scrollContainerRef.current
+    let animationFrameId
+
+    const scroll = () => {
+      if (!container) return
+
+      // Continuous smooth scrolling
+      container.scrollLeft += 1 // Adjust speed by changing this value
+
+      const scrollWidth = container.scrollWidth
+      const clientWidth = container.clientWidth
+
+      // When we reach the end, instantly reset to start (seamless loop)
+      if (container.scrollLeft >= scrollWidth - clientWidth) {
+        container.scrollLeft = 0
+      }
+
+      animationFrameId = requestAnimationFrame(scroll)
+    }
+
+    animationFrameId = requestAnimationFrame(scroll)
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+    }
+  }, [activeCategory, isHovering, filteredSolutions.length])
 
   return (
     <div className="min-h-screen bg-white">
@@ -210,6 +244,12 @@ export default function SolutionpageContent({ solutions = [] }) {
           {/* Slider Container */}
           <div
             className="relative px-4"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => {
+              setIsHovering(false)
+              setShowLeftArrow(false)
+              setShowRightArrow(false)
+            }}
             onMouseMove={(e) => {
               const rect = e.currentTarget.getBoundingClientRect()
               const x = e.clientX - rect.left
@@ -217,10 +257,6 @@ export default function SolutionpageContent({ solutions = [] }) {
 
               setShowLeftArrow(x < width * 0.2)
               setShowRightArrow(x > width * 0.8)
-            }}
-            onMouseLeave={() => {
-              setShowLeftArrow(false)
-              setShowRightArrow(false)
             }}
           >
             {/* Left Arrow */}
@@ -265,12 +301,17 @@ export default function SolutionpageContent({ solutions = [] }) {
               className="flex gap-8 overflow-x-auto scroll-smooth hide-scrollbar pr-12"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
-              {filteredSolutions.map((solution, index) => (
-                <Link key={solution.id} href={`/solutions/${solution.slug}`} className="block">
+              {/* Duplicate items for seamless loop */}
+              {[...filteredSolutions, ...filteredSolutions].map((solution, index) => (
+                <Link
+                  key={`${solution.id}-${index}`}
+                  href={`/solutions/${solution.slug}`}
+                  className="block"
+                >
                   <motion.div
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    transition={{ duration: 0.5, delay: (index % filteredSolutions.length) * 0.1 }}
                     whileHover={{ y: -8 }}
                     className="relative min-w-[350px] md:min-w-[450px] h-[450px] md:h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
                   >

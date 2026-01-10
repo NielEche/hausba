@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -37,7 +37,41 @@ export default function HomepageContent({
   const scrollContainerRef = useRef(null)
   const [showLeftArrow, setShowLeftArrow] = useState(false)
   const [showRightArrow, setShowRightArrow] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
   const testimonialRef = useRef(null)
+
+  // Auto-scroll effect for solutions - continuous loop
+  useEffect(() => {
+    if (!scrollContainerRef.current || isHovering) return
+
+    const container = scrollContainerRef.current
+    let animationFrameId
+
+    const scroll = () => {
+      if (!container) return
+
+      // Continuous smooth scrolling
+      container.scrollLeft += 1 // Adjust speed by changing this value
+
+      const scrollWidth = container.scrollWidth
+      const clientWidth = container.clientWidth
+
+      // When we reach the end, instantly reset to start (seamless loop)
+      if (container.scrollLeft >= scrollWidth - clientWidth) {
+        container.scrollLeft = 0
+      }
+
+      animationFrameId = requestAnimationFrame(scroll)
+    }
+
+    animationFrameId = requestAnimationFrame(scroll)
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId)
+      }
+    }
+  }, [activeTab, isHovering])
 
   const scrollTestimonials = (direction) => {
     if (!testimonialRef.current) return
@@ -207,6 +241,8 @@ export default function HomepageContent({
             {/* Slider Container */}
             <div
               className="relative px-4"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
               onMouseMove={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect()
                 const x = e.clientX - rect.left
@@ -214,10 +250,6 @@ export default function HomepageContent({
 
                 setShowLeftArrow(x < width * 0.2)
                 setShowRightArrow(x > width * 0.8)
-              }}
-              onMouseLeave={() => {
-                setShowLeftArrow(false)
-                setShowRightArrow(false)
               }}
             >
               {/* Left Arrow */}
@@ -262,49 +294,55 @@ export default function HomepageContent({
                 className="flex gap-8 overflow-x-auto scroll-smooth hide-scrollbar pr-12"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {groupedSolutions[activeTab]?.map((solution, index) => (
-                  <Link key={solution.id} href={`/solutions/${solution.slug}`}>
-                    <motion.div
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      whileHover={{ y: -8 }}
-                      className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
-                    >
-                      {/* Background Image */}
-                      <div
-                        className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
-                        style={{
-                          backgroundImage: solution.image?.url
-                            ? `url(${solution.image.url})`
-                            : "url('/XAMIRAHEIGHTS.webp')",
+                {/* Duplicate items for seamless loop */}
+                {[...groupedSolutions[activeTab], ...groupedSolutions[activeTab]]?.map(
+                  (solution, index) => (
+                    <Link key={`${solution.id}-${index}`} href={`/solutions/${solution.slug}`}>
+                      <motion.div
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: (index % groupedSolutions[activeTab]?.length) * 0.1,
                         }}
-                      />
+                        whileHover={{ y: -8 }}
+                        className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
+                      >
+                        {/* Background Image */}
+                        <div
+                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                          style={{
+                            backgroundImage: solution.image?.url
+                              ? `url(${solution.image.url})`
+                              : "url('/XAMIRAHEIGHTS.webp')",
+                          }}
+                        />
 
-                      {/* Dark Overlay */}
-                      <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
+                        {/* Dark Overlay */}
+                        <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
 
-                      {/* Orange Gradient Overlay on Hover */}
-                      <div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                          background:
-                            'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
-                        }}
-                      ></div>
+                        {/* Orange Gradient Overlay on Hover */}
+                        <div
+                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          style={{
+                            background:
+                              'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
+                          }}
+                        ></div>
 
-                      {/* Title at Bottom */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                        <h3 className="text-xl montserrat-bold">{solution.title}</h3>
-                        {solution.description && (
-                          <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            {solution.description}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  </Link>
-                ))}
+                        {/* Title at Bottom */}
+                        <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                          <h3 className="text-xl montserrat-bold">{solution.title}</h3>
+                          {solution.description && (
+                            <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              {solution.description}
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ),
+                )}
               </div>
             </div>
 
@@ -571,9 +609,9 @@ export default function HomepageContent({
                     className={`flex items-center justify-center p-4 ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
                   >
                     <div className="w-24 h-24 flex items-center justify-center">
-                      {brand.link ? (
-                        <a
-                          href={brand.link}
+                      {brand.website ? (
+                        <Link
+                          href={brand.website}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="relative w-full h-full"
@@ -586,7 +624,7 @@ export default function HomepageContent({
                               className="object-contain filter brightness-0 invert"
                             />
                           )}
-                        </a>
+                        </Link>
                       ) : (
                         brand.image?.url && (
                           <div className="relative w-full h-full">

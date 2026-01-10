@@ -53,7 +53,7 @@ export default async function HomePage() {
     collection: 'brands',
     depth: 1,
     sort: 'name',
-    limit: 8,
+    limit: 12,
   })
 
   // Transform all image URLs to use UploadThing
