@@ -56,8 +56,9 @@ export default function HomepageContent({
       const scrollWidth = container.scrollWidth
       const clientWidth = container.clientWidth
 
-      // When we reach the end, instantly reset to start (seamless loop)
-      if (container.scrollLeft >= scrollWidth - clientWidth) {
+      // When we reach halfway (the original content end), reset to start
+      // This works because we duplicated the content, so halfway = one full loop
+      if (container.scrollLeft >= scrollWidth / 4) {
         container.scrollLeft = 0
       }
 

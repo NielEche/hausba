@@ -520,9 +520,9 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
                   >
                     {/* Fixed square container for consistency */}
                     <div className="w-24 h-24 flex items-center justify-center">
-                      {brand.link ? (
+                      {brand.website ? (
                         <a
-                          href={brand.link}
+                          href={brand.website}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="relative w-full h-full"
