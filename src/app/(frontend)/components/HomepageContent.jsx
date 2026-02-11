@@ -615,7 +615,7 @@ export default function HomepageContent({
                           href={brand.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="relative w-full h-full"
+                          className="relative w-full h-full py-2"
                         >
                           {brand.image?.url && (
                             <Image
@@ -628,7 +628,7 @@ export default function HomepageContent({
                         </Link>
                       ) : (
                         brand.image?.url && (
-                          <div className="relative w-full h-full">
+                          <div className="relative w-full h-full py-2">
                             <Image
                               src={brand.image.url}
                               alt={brand.name}
