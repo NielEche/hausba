@@ -1,25 +1,86 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useRef, useEffect } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
+const BADGE_CIRCLE_STYLE = `
+  .badge-circle .orange-draw {
+    stroke: none;
+    stroke-dasharray: 565;
+    stroke-dashoffset: 565;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke 0s 0.8s;
+  }
+  .badge-circle:hover .orange-draw {
+    stroke: #FF7800;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke 0s 0s;
+  }
+`
+
+const PROCESS_STEPS = [
+  {
+    num: '01',
+    title: 'Customer Discovery',
+    desc: 'Understand how live and work',
+  },
+  {
+    num: '02',
+    title: 'Design Thinking',
+    desc: 'Shape the experience around you',
+  },
+  {
+    num: '03',
+    title: 'Proposal Design',
+    desc: 'A clear considered plan',
+  },
+  {
+    num: '04',
+    title: 'Engineering Design',
+    desc: 'Specified to professional standards',
+  },
+  {
+    num: '05',
+    title: 'Project Delivery',
+    desc: 'Precise coordinated installation',
+  },
+  {
+    num: '06',
+    title: 'Experience Assurance',
+    desc: 'Care that lasts beyond handover',
+  },
+]
+
+function BadgeCircle({ children }) {
+  return (
+    <div className="badge-circle relative aspect-square flex flex-col items-center justify-center gap-2 cursor-default">
+      <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="96" stroke="#374151" strokeWidth="1.5" />
+        <circle
+          className="orange-draw"
+          cx="100"
+          cy="100"
+          r="96"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+      <div className="relative z-10 flex flex-col items-center justify-center gap-2">
+        {children}
+      </div>
+    </div>
+  )
+}
+
 export default function HomepageContent({
-  applications = [],
+  projects = [],
   solutions = [],
   testimonials = [],
   brands = [],
 }) {
-  // Group applications by type
-  const grouped = applications.reduce((acc, app) => {
-    const type = app.type || 'other'
-    if (!acc[type]) acc[type] = []
-    acc[type].push(app)
-    return acc
-  }, {})
-
-  // Group solutions by type/category
   const groupedSolutions = solutions.reduce((acc, sol) => {
     const type = sol.type || sol.category || 'other'
     if (!acc[type]) acc[type] = []
@@ -33,619 +94,548 @@ export default function HomepageContent({
     return 0
   })
 
-  const [activeTab, setActiveTab] = useState(solutionTypes[0] || '')
-  const scrollContainerRef = useRef(null)
-  const [showLeftArrow, setShowLeftArrow] = useState(false)
-  const [showRightArrow, setShowRightArrow] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-  const testimonialRef = useRef(null)
+  const [activeSolTab, setActiveSolTab] = useState(solutionTypes[0] || '')
 
-  // Auto-scroll effect for solutions - continuous loop
-  useEffect(() => {
-    if (!scrollContainerRef.current || isHovering) return
+  const groupedProjects = projects.reduce((acc, project) => {
+    const type = project.type || 'other'
+    if (!acc[type]) acc[type] = []
+    acc[type].push(project)
+    return acc
+  }, {})
 
-    const container = scrollContainerRef.current
-    let animationFrameId
+  const projectTypes = Object.keys(groupedProjects).sort((a, b) => {
+    if (a === 'residential') return -1
+    if (b === 'residential') return 1
+    return 0
+  })
 
-    const scroll = () => {
-      if (!container) return
-
-      // Continuous smooth scrolling
-      container.scrollLeft += 1 // Adjust speed by changing this value
-
-      const scrollWidth = container.scrollWidth
-      const clientWidth = container.clientWidth
-
-      // When we reach halfway (the original content end), reset to start
-      // This works because we duplicated the content, so halfway = one full loop
-      if (container.scrollLeft >= scrollWidth / 4) {
-        container.scrollLeft = 0
-      }
-
-      animationFrameId = requestAnimationFrame(scroll)
-    }
-
-    animationFrameId = requestAnimationFrame(scroll)
-
-    return () => {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId)
-      }
-    }
-  }, [activeTab, isHovering])
-
-  const scrollTestimonials = (direction) => {
-    if (!testimonialRef.current) return
-    const scrollAmount = 400
-    testimonialRef.current.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth',
-    })
-  }
-
-  const handleScroll = (direction) => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth',
-      })
-    }
-  }
+  const [activeProjectTab, setActiveProjectTab] = useState(projectTypes[0] || '')
+  const [testimonialIndex, setTestimonialIndex] = useState(0)
+  const activeTestimonial = testimonials[testimonialIndex]
 
   return (
     <div className="text-white bg-white">
-      {/* HERO SECTION */}
-      <div className="h-screen relative flex items-center justify-center text-center">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/home1.jpg')" }}
+      <style>{BADGE_CIRCLE_STYLE}</style>
+
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section className="h-screen relative flex items-end justify-start overflow-hidden">
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/hero-bg.mp4"
+          poster="/home1.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
         />
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute inset-0 bg-black opacity-40" />
         <motion.div
-          className="relative z-10 px-4"
+          className="relative z-10 w-full text-center pb-16 px-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-4xl md:text-5xl montserrat-bold leading-tight mx-auto max-w-[950px]">
-            Crafting personalised luxury experiences
-          </h1>
-          <h3 className="mt-4 text-lg md:text-xl montserrat-regular opacity-90 font-semibold hausba-orange">
-            Since 2010
-          </h3>
+          <p className="text-sm md:text-base montserrat-bold tracking-[0.2em] uppercase mb-3 text-white">
+            Transforming the way you live
+          </p>
+          <p className="text-sm montserrat-regular text-white/90 max-w-lg mx-auto">
+            Bespoke audiovisual automation systems for the most extraordinary residential and
+            commercial spaces.
+          </p>
         </motion.div>
-      </div>
-      {/* APPLICATION SECTIONS */}
-      <div className="bg-black">
-        <div className="max-w-7xl px-4 mx-auto py-26 space-y-24">
-          <motion.h2
-            className="text-xs montserrat-regular text-left capitalize "
-            initial={{ opacity: 0.9 }}
-            whileHover={{ opacity: 1 }}
-          >
-            [ OUR APPLICATIONS ]
-          </motion.h2>
+      </section>
 
-          {Object.entries(grouped).map(([type, items], sectionIndex) => {
-            const gridCols = type === 'commercial' ? 'md:grid-cols-2' : 'md:grid-cols-3'
+      {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
+      <section className="bg-black py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
+            WHAT WE DO
+          </p>
 
-            return (
-              <motion.section
-                key={type}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-100px' }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+          <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
+            <div className="lg:w-1/2 md:w-full flex flex-col justify-between min-h-[420px]">
+              <div>
+                <h2 className="text-5xl md:text-5xl montserrat-bold leading-[1.1] mb-8">
+                  Intelligent
+                  <br />
+                  automation &amp; AV
+                  <br />
+                  integration for
+                  <br />
+                  <span className="hausba-orange">every kind of space</span>
+                </h2>
+                <p className="text-sm montserrat-bold text-gray-300 leading-relaxed max-w-sm">
+                  Across private residences, hospitality, workspace and commercial projects, we
+                  craft bespoke luxury experiences engineered to professional standards, and trusted
+                  on work of every scale.
+                </p>
+              </div>
+              <Link
+                href="/contact"
+                className="inline-block border border-white text-white text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-white hover:text-black! transition-colors duration-300 mt-12 self-start"
               >
-                {/* Section Heading */}
-                <h2 className="text-lg montserrat-regular capitalize mb-12"> {type} </h2>
+                Become a Partner
+              </Link>
+            </div>
 
-                {/* Grid */}
-                <div className={`grid grid-cols-1 ${gridCols} gap-8`}>
-                  {items.map((app, index) => (
-                    <Link key={app.id} href={`/applications/${app.slug}`}>
+            <div className="w-full lg:w-1/2 md:w-full grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
+              <BadgeCircle>
+                <span className="text-5xl montserrat-bold text-gray-300">15+</span>
+                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                  Years
+                </span>
+              </BadgeCircle>
+
+              <BadgeCircle>
+                <span className="text-5xl montserrat-bold text-gray-300">200+</span>
+                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                  Spaces
+                </span>
+              </BadgeCircle>
+
+              <BadgeCircle>
+                <div className="relative w-36 h-24">
+                  <Image
+                    src="/avixalogo.webp"
+                    alt="AVIXA Member"
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
+                </div>
+                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                  Member
+                </span>
+              </BadgeCircle>
+
+              <BadgeCircle>
+                <div className="relative w-36 h-24">
+                  <Image
+                    src="/cedia.png"
+                    alt="CEDIA Certified"
+                    fill
+                    className="object-contain"
+                    unoptimized
+                  />
+                </div>
+                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                  Certified
+                </span>
+              </BadgeCircle>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── BRAND PARTNERS STRIP ─────────────────────────────────────────── */}
+      {brands && brands.length > 0 && (
+        <section className="bg-[#0F0F0F] py-2 px-6 overflow-hidden">
+          <div className="max-w-7xl mx-auto py-10 mb-6">
+            <p className="text-[12px] montserrat-regular text-[#6B6666] text-center uppercase tracking-widest">
+              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" /> Trusted by the
+              world's leading industry partners{' '}
+              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
+            </p>
+          </div>
+
+          <div
+            className="relative mb-10"
+            style={{
+              maskImage:
+                'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+            }}
+          >
+            <div className="flex animate-marquee gap-15 w-max">
+              {[...brands, ...brands].map((brand, i) => (
+                <div
+                  key={`${brand.id}-${i}`}
+                  className="w-32 h-18 relative flex-shrink-0 flex items-center justify-center"
+                >
+                  {brand.image?.url ? (
+                    <Image
+                      src={brand.image.url}
+                      alt={brand.name}
+                      fill
+                      className="object-contain filter brightness-0 invert opacity-50 hover:opacity-90 transition-opacity duration-300"
+                      unoptimized
+                    />
+                  ) : (
+                    <span className="text-xs montserrat-bold text-gray-500 uppercase whitespace-nowrap">
+                      {brand.name}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── SELECTED WORK ─────────────────────────────────────────────────── */}
+      {projects.length > 0 && (
+        <section className="bg-black py-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
+              SELECTED WORK
+            </p>
+
+            <div className="flex items-end justify-between mb-14 flex-wrap gap-4">
+              <h2 className="text-3xl md:text-4xl montserrat-bold">Spaces we've brought to life</h2>
+            </div>
+
+            <div className="flex items-end justify-between flex-wrap gap-4">
+              <div className="flex gap-3 mb-8 flex-wrap">
+                {projectTypes.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setActiveProjectTab(type)}
+                    className={`px-5 py-4 rounded-full text-xs montserrat-bold uppercase tracking-widest border transition-all duration-300 cursor-pointer
+                    ${
+                      activeProjectTab === type
+                        ? 'bg-[#FF7800] border-[#FF7800] text-black'
+                        : 'border-gray-600 text-gray-400 hover:border-gray-400 hover:text-white'
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-4 mb-8">
+                <Link
+                  href="/projects"
+                  className="text-xs montserrat-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors"
+                >
+                  View All Projects →
+                </Link>
+              </div>
+            </div>
+
+            {groupedProjects[activeProjectTab] && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {groupedProjects[activeProjectTab][0] && (
+                  <Link href={`/projects/${groupedProjects[activeProjectTab][0].slug}`}>
+                    <motion.div
+                      whileHover={{ scale: 1.01 }}
+                      transition={{ duration: 0.3 }}
+                      className="relative h-[550px] overflow-hidden group cursor-pointer"
+                    >
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                        style={{
+                          backgroundImage: groupedProjects[activeProjectTab][0].image?.url
+                            ? `url(${groupedProjects[activeProjectTab][0].image.url})`
+                            : "url('/XAMIRAHEIGHTS.webp')",
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                      <div className="absolute bottom-0 left-0 p-6 z-10">
+                        <h3 className="text-xl montserrat-bold">
+                          {groupedProjects[activeProjectTab][0].title}
+                        </h3>
+                        {groupedProjects[activeProjectTab][0].location && (
+                          <p className="text-xs montserrat-regular text-gray-300 uppercase tracking-widest mt-1">
+                            {groupedProjects[activeProjectTab][0].location}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  </Link>
+                )}
+
+                <div className="flex flex-col gap-4">
+                  {groupedProjects[activeProjectTab].slice(1, 3).map((project) => (
+                    <Link key={project.id} href={`/projects/${project.slug}`}>
                       <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        whileHover={{ y: -8 }}
-                        className="relative h-120 overflow-hidden group cursor-pointer"
+                        whileHover={{ scale: 1.01 }}
+                        transition={{ duration: 0.3 }}
+                        className="relative h-[267px] overflow-hidden group cursor-pointer"
                       >
-                        {/* Background Image */}
                         <div
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
+                          className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                           style={{
-                            backgroundImage: app.image?.url
-                              ? `url(${app.image.url})`
+                            backgroundImage: project.image?.url
+                              ? `url(${project.image.url})`
                               : "url('/XAMIRAHEIGHTS.webp')",
                           }}
                         />
-
-                        {/* Dark Overlay */}
-                        <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
-
-                        {/* Orange Gradient Overlay on Hover */}
-                        <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          style={{
-                            background:
-                              'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
-                          }}
-                        ></div>
-
-                        {/* Title at Bottom */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                          <motion.h3
-                            className="text-xl montserrat-bold"
-                            initial={{ opacity: 0.9 }}
-                            whileHover={{ opacity: 1 }}
-                          >
-                            {app.title}
-                          </motion.h3>
-
-                          {app.description && (
-                            <motion.p className=" mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              {app.description}
-                            </motion.p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                        <div className="absolute bottom-0 left-0 p-5 z-10">
+                          <h3 className="text-base montserrat-bold">{project.title}</h3>
+                          {project.location && (
+                            <p className="text-[10px] montserrat-regular text-gray-300 uppercase tracking-widest mt-1">
+                              {project.location}
+                            </p>
                           )}
                         </div>
                       </motion.div>
                     </Link>
                   ))}
                 </div>
-              </motion.section>
-            )
-          })}
-        </div>
-      </div>
-      {/* SOLUTIONS SECTION */}
-      {solutionTypes.length > 0 && (
-        <div className="bg-black">
-          <motion.div
-            className="max-w-7xl mx-auto pb-24"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.h2
-              className="text-xs montserrat-regular text-left capitalize pt-4 pb-24"
-              initial={{ opacity: 0.9 }}
-              whileHover={{ opacity: 1 }}
-            >
-              [ OUR SOLUTIONS ]
-            </motion.h2>
-
-            {/* Tabs */}
-            <div className="flex justify-start gap-4 mb-12 flex-wrap px-4">
-              {solutionTypes.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setActiveTab(type)}
-                  className={`
-                  px-6 py-3 montserrat-regular text-sm capitalize
-                  border transition-all duration-300 cursor-pointer
-                  ${
-                    activeTab === type
-                      ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 hauba-orange'
-                      : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                  }
-                `}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-
-            {/* Slider Container */}
-            <div
-              className="relative px-4"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              onMouseMove={(e) => {
-                const rect = e.currentTarget.getBoundingClientRect()
-                const x = e.clientX - rect.left
-                const width = rect.width
-
-                setShowLeftArrow(x < width * 0.2)
-                setShowRightArrow(x > width * 0.8)
-              }}
-            >
-              {/* Left Arrow */}
-              <button
-                onClick={() => handleScroll('left')}
-                className={`absolute rounded-full cursor-pointer left-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 hover:bg-[#ff6f3c] p-3 transition-all duration-300 md:opacity-0 ${
-                  showLeftArrow ? 'md:opacity-100' : ''
-                }`}
-                aria-label="Scroll left"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path
-                    d="M15 18l-6-6 6-6"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {/* Right Arrow */}
-              <button
-                onClick={() => handleScroll('right')}
-                className={`absolute rounded-full cursor-pointer right-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 hover:bg-[#ff6f3c] p-3 transition-all duration-300 md:opacity-0 ${
-                  showRightArrow ? 'md:opacity-100' : ''
-                }`}
-                aria-label="Scroll right"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                  <path
-                    d="M9 18l6-6-6-6"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-
-              {/* Slider */}
-              <div
-                ref={scrollContainerRef}
-                className="flex gap-8 overflow-x-auto scroll-smooth hide-scrollbar pr-12"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-              >
-                {/* Duplicate items for seamless loop */}
-                {[...groupedSolutions[activeTab], ...groupedSolutions[activeTab]]?.map(
-                  (solution, index) => (
-                    <Link key={`${solution.id}-${index}`} href={`/solutions/${solution.slug}`}>
-                      <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{
-                          duration: 0.5,
-                          delay: (index % groupedSolutions[activeTab]?.length) * 0.1,
-                        }}
-                        whileHover={{ y: -8 }}
-                        className="relative min-w-[450px] h-[500px] overflow-hidden group cursor-pointer flex-shrink-0"
-                      >
-                        {/* Background Image */}
-                        <div
-                          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-500 group-hover:scale-110"
-                          style={{
-                            backgroundImage: solution.image?.url
-                              ? `url(${solution.image.url})`
-                              : "url('/XAMIRAHEIGHTS.webp')",
-                          }}
-                        />
-
-                        {/* Dark Overlay */}
-                        <div className="absolute inset-0 bg-black opacity-40 transition-opacity duration-300"></div>
-
-                        {/* Orange Gradient Overlay on Hover */}
-                        <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                          style={{
-                            background:
-                              'linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%)',
-                          }}
-                        ></div>
-
-                        {/* Title at Bottom */}
-                        <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                          <h3 className="text-xl montserrat-bold">{solution.title}</h3>
-                          {solution.description && (
-                            <p className="mt-2 text-sm text-gray-200 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              {solution.description}
-                            </p>
-                          )}
-                        </div>
-                      </motion.div>
-                    </Link>
-                  ),
-                )}
               </div>
-            </div>
-
-            <style jsx>{`
-              .hide-scrollbar::-webkit-scrollbar {
-                display: none;
-              }
-            `}</style>
-          </motion.div>
-        </div>
+            )}
+          </div>
+        </section>
       )}
-      {/* TESTIMONIALS SECTION */}
-      {testimonials && testimonials.length > 0 && (
-        <motion.div
-          className="max-w-7xl mx-auto py-24"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="relative px-4 lg:flex justify-between">
-            <div className="text-black pr-10 w-80 pb-10">
-              <motion.h4
-                className="text-xs montserrat-bold text-left capitalize "
-                initial={{ opacity: 0.9 }}
-                whileHover={{ opacity: 1 }}
-              >
-                [ TESTIMONIAL ]
-              </motion.h4>
-              <h4 className="text-3xl my-4 montserrat-regular capitalize">Our Client Quotes</h4>
 
-              <div className="relative flex gap-3 z-20">
-                <button
-                  onClick={() => scrollTestimonials('left')}
-                  className="p-3 bg-black hover:bg-[#ff6f3c] rounded-full text-white cursor-pointer"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path
-                      d="M15 18l-6-6 6-6"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
+      {/* ── HOW WE WORK ──────────────────────────────────────────────────── */}
+      <section className="bg-[#111111] py-32 px-6">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-[12px] montserrat-bold tracking-widest uppercase text-center hausba-orange mb-4">
+            HOW WE WORK
+          </p>
+          <h2 className="text-3xl md:text-4xl montserrat-bold text-white text-center mb-12">
+            A process built with you in mind
+          </h2>
 
-                <button
-                  onClick={() => scrollTestimonials('right')}
-                  className="p-3 bg-black hover:bg-[#ff6f3c] rounded-full text-white cursor-pointer"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path
-                      d="M9 18l6-6-6-6"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
+          {/* Timeline row */}
+          <div className="relative">
+            {/* Animated connecting line */}
+            <motion.div
+              className="hidden lg:block absolute top-[23px] left-[calc(100%/12)] right-[calc(100%/12)] h-[1px] bg-[#FF7800] origin-left"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 2.5, ease: 'easeInOut' }}
+            />
 
-            <div
-              ref={testimonialRef}
-              className="overflow-x-auto flex gap-6 scroll-smooth"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              <style>
-                {`
-                  div::-webkit-scrollbar {
-                    display: none;
-                  }
-                `}
-              </style>
-
-              {testimonials.map((t, index) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-12 gap-x-4">
+              {PROCESS_STEPS.map((step, i) => (
                 <motion.div
-                  key={t.id}
-                  initial={{ opacity: 0, y: 20 }}
+                  key={step.num}
+                  className="flex flex-col items-center text-center"
+                  initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="min-w-[400px] max-w-[450px] relative overflow-hidden"
+                  transition={{ duration: 0.6, delay: 0.5 + i * 0.3, ease: 'easeOut' }}
                 >
-                  <div className="absolute top-0 left-0 p-8 z-[30] hausba-grey  text-sm montserrat-bold">
-                    {String(index + 1).padStart(2, '0')}
-                  </div>
-
-                  {t.image?.url && (
-                    <div
-                      className="absolute inset-0 bg-cover bg-center z-[5]"
-                      style={{ backgroundImage: `url(${t.image.url})` }}
-                    ></div>
-                  )}
-
-                  <div
-                    className="absolute inset-0 z-[10] opacity-75"
-                    style={{
-                      background: `
-                    linear-gradient(
-                      to bottom right,
-                      rgba(0, 0, 0, 1) 0%,
-                      rgba(0, 0, 0, 1) 35%,
-                      #000000ff 70%,
-                      rgba(0, 0, 0, 0.83) 100%
-                    )
-                  `,
-                    }}
-                  ></div>
-
-                  <div className="relative z-10 p-8 text-white">
-                    <p className="text-sm leading-relaxed opacity-95 montserrat-regular pt-20">
-                      "{t.testimony}"
-                    </p>
-
-                    <div className="mt-6">
-                      <h4 className="text-lg montserrat-bold capitalize">{t.name}</h4>
-                      {t.company && <p className="text-sm opacity-80 mt-1">{t.company}</p>}
-                    </div>
-                  </div>
+                  {/* Circle */}
+                  <motion.div
+                    className="w-12 h-12 rounded-full border-2 border-[#FF7800] bg-[#111111] flex items-center justify-center mb-6 relative z-10"
+                    initial={{ scale: 0.6, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.4 + i * 0.3, ease: 'backOut' }}
+                  >
+                    <span className="text-lg montserrat-bold text-white">{step.num}</span>
+                  </motion.div>
+                  <h4 className="text-xs montserrat-bold text-white mb-2 leading-snug">
+                    {step.title}
+                  </h4>
+                  <p className="text-[10px] montserrat-regular text-gray-200 leading-none max-w-[120px]">
+                    {step.desc}
+                  </p>
                 </motion.div>
               ))}
             </div>
           </div>
-        </motion.div>
-      )}
-      {/* CONTACT US SECTION */}
-      <div className="bg-black">
-        <div className="max-w-7xl mx-auto px-4 py-20 ">
-          <div
-            className="relative border-2 hausba-orange-border overflow-hidden flex items-center"
-            style={{ minHeight: '220px' }}
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('/estimate.jpg')` }}
-            ></div>
+        </div>
+      </section>
 
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 100%)',
-              }}
-            ></div>
+      {/* ── OUR SOLUTIONS ────────────────────────────────────────────────── */}
+      {solutionTypes.length > 0 && (
+        <section className="bg-white py-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            {/* Eyebrow */}
+            <p className="text-[12px] montserrat-regular tracking-[0.3em] uppercase text-center mb-6 flex items-center justify-center gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f3c] inline-block" />
+              <span className="text-black">OUR SOLUTIONS</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f3c] inline-block" />
+            </p>
 
-            <div className="relative z-10  flex flex-col md:flex-row items-center justify-between w-full px-8 py-16">
-              <div className=" flex justify-center md:justify-center w-full  py-2">
-                <h3 className="text-xl md:text-2xl montserrat-bold mb-2">Contact us today</h3>
-              </div>
+            <h2 className="text-3xl md:text-4xl montserrat-bold text-black text-center mb-8">
+              Engineered for the extraordinary
+            </h2>
 
-              <div className=" flex justify-center md:justify-center w-full  py-2">
-                <div className="space-y-4">
-                  <a
-                    href="tel:+2348100999555"
-                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
+            {/* Sliding pill tab switcher */}
+            <div className="flex justify-center mb-10">
+              <div className="relative flex bg-[#545050] rounded-full p-1">
+                {solutionTypes.map((type) => (
+                  <button
+                    key={type}
+                    onClick={() => setActiveSolTab(type)}
+                    className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                  ${activeSolTab === type ? 'text-black' : 'text-white hover:text-white'}`}
                   >
-                    +234 8100 999 555
-                  </a>
-                  <a
-                    href="mailto:experience@hausba.com"
-                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
-                  >
-                    experience@hausba.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="mt-4 md:mt-0 flex justify-center md:justify-center w-full  py-4">
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.facebook.com/3Dandstlprobables"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/fb.png"
-                      alt="Facebook"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/hausbaexperience/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/insta.png"
-                      alt="Instagram"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://x.com/hausba"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/x.png"
-                      alt="X"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/linkedin.png"
-                      alt="LinkedIn"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                </div>
+                    {activeSolTab === type && (
+                      <motion.span
+                        layoutId="sol-pill"
+                        className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                      />
+                    )}
+                    <span className="relative z-10">{type}</span>
+                  </button>
+                ))}
               </div>
             </div>
+
+            {/* Cards grid */}
+            {groupedSolutions[activeSolTab] && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {groupedSolutions[activeSolTab].map((solution, index) => (
+                  <Link key={solution.id} href={`/solutions/${solution.slug}`}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.07 }}
+                      className="relative h-86 overflow-hidden group cursor-pointer"
+                    >
+                      <div
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                        style={{
+                          backgroundImage: solution.image?.url
+                            ? `url(${solution.image.url})`
+                            : 'linear-gradient(160deg, #5badec 0%, #3a7fc1 50%, #2d3e50 100%)',
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+                      {/* Title */}
+                      <div className="absolute bottom-0 left-0 p-5 z-10">
+                        {/* Number sits just above title */}
+                        <span className="text-[11px] montserrat-bold hausba-orange tracking-widest pb-4">
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <h3 className="text-lg montserrat-regular text-white">{solution.title}</h3>
+                      </div>
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      </div>
-
-      {/* BRANDS SECTION */}
-      {brands && brands.length > 0 && (
-        <div className="bg-black">
-          <div className="max-w-7xl mx-auto pb-24 px-4 text-white">
-            <h3 className="text-3xl montserrat-bold mb-8 py-6 text-white text-center">
-              TRUSTED <br />
-              BY THE BEST
-            </h3>
-
-            <div className="grid grid-cols-2 md:grid-cols-4">
-              {brands.map((brand, index) => {
-                const total = brands.length
-                const colCount = 4
-                const rowCount = Math.ceil(total / colCount)
-
-                const row = Math.floor(index / colCount)
-                const col = index % colCount
-
-                const borderTop = row === 0 ? '' : 'border-t border-gray-700'
-                const borderBottom = row === rowCount - 1 ? '' : 'border-b border-gray-700'
-                const borderLeft = col === 0 ? '' : 'border-l border-gray-700'
-                const borderRight = col === colCount - 1 ? '' : 'border-r border-gray-700'
-
-                return (
-                  <div
-                    key={brand.id}
-                    className={`flex items-center justify-center p-4 ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
-                  >
-                    <div className="w-24 h-24 flex items-center justify-center">
-                      {brand.website ? (
-                        <Link
-                          href={brand.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="relative w-full h-full py-2"
-                        >
-                          {brand.image?.url && (
-                            <Image
-                              src={brand.image.url}
-                              alt={brand.name}
-                              fill
-                              className="object-contain filter brightness-0 invert"
-                            />
-                          )}
-                        </Link>
-                      ) : (
-                        brand.image?.url && (
-                          <div className="relative w-full h-full py-2">
-                            <Image
-                              src={brand.image.url}
-                              alt={brand.name}
-                              fill
-                              className="object-contain filter brightness-0 invert"
-                            />
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </div>
+        </section>
       )}
+
+      {/* ── TESTIMONIAL ──────────────────────────────────────────────────── */}
+      {testimonials && testimonials.length > 0 && (
+        <section className="bg-black py-28 px-6">
+          <div className="max-w-4xl mx-auto text-center relative">
+            {/* Quote mark */}
+            <div className="text-8xl hausba-orange montserrat-bold leading-none select-none">
+              &#8221;
+            </div>
+
+            {/* Testimony */}
+            <motion.p
+              key={testimonialIndex}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-2xl md:text-4xl montserrat-bold leading-snug text-white"
+            >
+              {activeTestimonial?.testimony}
+            </motion.p>
+
+            {/* Name */}
+            <motion.p
+              key={`name-${testimonialIndex}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-xs montserrat-bold text-gray-500 uppercase tracking-[0.25em] mt-10"
+            >
+              {activeTestimonial?.name}
+              {activeTestimonial?.company && ` — ${activeTestimonial.company}`}
+            </motion.p>
+
+            {/* Navigation arrows — positioned right */}
+            {testimonials.length > 1 && (
+              <div className="flex items-center justify-center gap-6 mt-12">
+                <button
+                  onClick={() =>
+                    setTestimonialIndex((i) => (i - 1 + testimonials.length) % testimonials.length)
+                  }
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-white transition-colors cursor-pointer"
+                  aria-label="Previous testimonial"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M15 18l-6-6 6-6"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+
+                {/* Dots */}
+                <div className="flex gap-2">
+                  {testimonials.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setTestimonialIndex(i)}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                        i === testimonialIndex ? 'bg-[#FF7800] w-4' : 'bg-gray-600'
+                      }`}
+                      aria-label={`Go to testimonial ${i + 1}`}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setTestimonialIndex((i) => (i + 1) % testimonials.length)}
+                  className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-white transition-colors cursor-pointer"
+                  aria-label="Next testimonial"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path
+                      d="M9 18l6-6-6-6"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ── READY TO TRANSFORM CTA ───────────────────────────────────────── */}
+      <section className="relative overflow-hidden" style={{ minHeight: '480px' }}>
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/estimate.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/62" />
+        <div className="relative z-10 max-w-3xl mx-auto text-center py-32 px-6">
+          <p className="text-[12px] montserrat-bold uppercase tracking-[0.35em] hausba-orange mb-5">
+            WORK WITH US
+          </p>
+
+          <h2 className="text-6xl md:text-6xl montserrat-bold leading-[1.0] mb-10 text-white">
+            Ready to transform your space?
+          </h2>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/contact"
+              className="px-10 py-4 rounded-full bg-[#ff6f3c] text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-[#e55f2f] transition-colors duration-300 whitespace-nowrap"
+            >
+              Book a Consultation
+            </Link>
+            <Link
+              href="/experience-centre"
+              className="px-10 py-4 rounded-full border border-white/50 text-white text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-white/10 transition-colors duration-300 whitespace-nowrap"
+            >
+              Book an Experience Centre Visit
+            </Link>
+          </div>
+
+          <p className="text-xs montserrat-bold text-white mt-6">
+            Our team will be in touch within 24 hours
+          </p>
+        </div>
+      </section>
     </div>
   )
 }

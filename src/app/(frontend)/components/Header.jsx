@@ -135,6 +135,7 @@ export default function Header() {
     { label: 'ABOUT US', href: '/about' },
     { label: 'SOLUTIONS', href: '/solutions' },
     { label: 'APPLICATIONS', href: '/applications' },
+    { label: 'MAINTENANCE', href: '/maintenance' },
     { label: 'OUR WORK', href: '/projects' },
   ]
 
@@ -152,7 +153,7 @@ export default function Header() {
           {/* LOGO */}
           <Link href="/" className="px-6">
             <Image
-              src={logoSrc}
+              src="/hausba-logo-wh.png"
               alt="Hausba Logo"
               width={160}
               height={50}

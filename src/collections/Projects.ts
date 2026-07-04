@@ -11,7 +11,7 @@ export const Projects: CollectionConfig = {
 
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'tags'],
+    defaultColumns: ['title', 'type', 'featured', 'tags'],
   },
 
   // Auto-generate slug
@@ -148,6 +148,30 @@ export const Projects: CollectionConfig = {
       name: 'location',
       type: 'text',
       label: 'Project Location',
+    },
+
+    // Featured on Homepage
+    {
+      name: 'featured',
+      type: 'checkbox',
+      label: 'Feature on Homepage',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Show this project in the Selected Work section on the homepage.',
+      },
+    },
+
+    // Homepage Order
+    {
+      name: 'homepageOrder',
+      type: 'number',
+      label: 'Homepage Order',
+      admin: {
+        position: 'sidebar',
+        description: 'Lower numbers appear first. Only applies when featured.',
+        condition: (data) => data.featured,
+      },
     },
   ],
 }

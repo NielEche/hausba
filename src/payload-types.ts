@@ -75,6 +75,8 @@ export interface Config {
     brands: Brand;
     awards: Award;
     projects: Project;
+    'service-plans': ServicePlan;
+    faqs: Faq;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -90,6 +92,8 @@ export interface Config {
     brands: BrandsSelect<false> | BrandsSelect<true>;
     awards: AwardsSelect<false> | AwardsSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'service-plans': ServicePlansSelect<false> | ServicePlansSelect<true>;
+    faqs: FaqsSelect<false> | FaqsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -302,6 +306,91 @@ export interface Project {
   projectDate?: string | null;
   clientName?: string | null;
   location?: string | null;
+  /**
+   * Show this project in the Selected Work section on the homepage.
+   */
+  featured?: boolean | null;
+  /**
+   * Lower numbers appear first. Only applies when featured.
+   */
+  homepageOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Maintenance plan tiers shown on the Maintenance page (Basic, Standard, Premium, etc).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-plans".
+ */
+export interface ServicePlan {
+  id: number;
+  /**
+   * Which toggle tab this plan appears under on the Maintenance page.
+   */
+  planType: 'residential' | 'commercial';
+  /**
+   * Lower numbers show first (e.g. Basic = 1, Standard = 2, Premium = 3).
+   */
+  order?: number | null;
+  /**
+   * Small label above the plan name, e.g. "TIER 01".
+   */
+  tierLabel?: string | null;
+  /**
+   * e.g. "Basic Plan", "Standard Plan", "Premium Plan".
+   */
+  name: string;
+  /**
+   * Short description under the plan name, e.g. "Basic care for baseline reliability."
+   */
+  tagline?: string | null;
+  /**
+   * Numeric cost for this plan, e.g. 150000. Leave blank for "Custom Quote" plans.
+   */
+  price?: number | null;
+  priceCurrency?: ('NGN' | 'USD') | null;
+  /**
+   * How often this price is billed. Only shown if a price is set.
+   */
+  priceInterval?: ('one_time' | 'monthly' | 'quarterly' | 'yearly') | null;
+  features?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Visually emphasizes this plan card (e.g. the "Premium" tier in the design).
+   */
+  highlighted?: boolean | null;
+  /**
+   * e.g. "MOST RECOMMENDED" — only shown if Highlight is checked.
+   */
+  highlightLabel?: string | null;
+  ctaLabel?: string | null;
+  ctaLink?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Frequently asked questions, grouped by which page they appear on.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs".
+ */
+export interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+  /**
+   * Lets you reuse this collection for FAQ sections on other pages later.
+   */
+  page: 'maintenance' | 'homepage' | 'general';
+  /**
+   * Lower numbers show first in the accordion.
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -360,6 +449,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'service-plans';
+        value: number | ServicePlan;
+      } | null)
+    | ({
+        relationTo: 'faqs';
+        value: number | Faq;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -548,6 +645,46 @@ export interface ProjectsSelect<T extends boolean = true> {
   projectDate?: T;
   clientName?: T;
   location?: T;
+  featured?: T;
+  homepageOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-plans_select".
+ */
+export interface ServicePlansSelect<T extends boolean = true> {
+  planType?: T;
+  order?: T;
+  tierLabel?: T;
+  name?: T;
+  tagline?: T;
+  price?: T;
+  priceCurrency?: T;
+  priceInterval?: T;
+  features?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  highlighted?: T;
+  highlightLabel?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faqs_select".
+ */
+export interface FaqsSelect<T extends boolean = true> {
+  question?: T;
+  answer?: T;
+  page?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
 }
