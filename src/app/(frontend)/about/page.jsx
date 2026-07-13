@@ -8,7 +8,6 @@ export const revalidate = 60
 function transformImageUrl(image) {
   if (!image) return null
 
-  // If _key exists, construct the UploadThing URL
   if (image._key) {
     return {
       ...image,
@@ -16,8 +15,27 @@ function transformImageUrl(image) {
     }
   }
 
-  // Fallback to original URL
   return image
+}
+
+export async function generateMetadata() {
+  const payload = await getPayload({ config })
+
+  const seo = await payload.findGlobal({
+    slug: 'about-seo',
+  })
+
+  const ogImage = transformImageUrl(seo?.meta?.image)
+
+  return {
+    title: seo?.meta?.title || 'About | HAUSBA',
+    description: seo?.meta?.description || '',
+    openGraph: {
+      title: seo?.meta?.title,
+      description: seo?.meta?.description,
+      images: ogImage?.url ? [ogImage.url] : [],
+    },
+  }
 }
 
 export default async function AboutPage() {

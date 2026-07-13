@@ -338,9 +338,9 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
       <section className="pb-28 px-6 text-center">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl text-gray-300 md:text-4xl montserrat-bold mb-6">#HausbaCares</h2>
-          <p className="text-sm montserrat-regular text-white leading-relaxed">
+          <p className="text-xs montserrat-regular text-white leading-relaxed">
             Every Hausba space is built to be lived in and looked after. Our care doesn't end at
-            handover — it begins there. We stay close, so your home keeps feeling effortless, year
+            handover, it begins there. We stay close, so your home keeps feeling effortless, year
             after year.
           </p>
         </div>

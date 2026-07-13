@@ -103,8 +103,20 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'homepage-seo': HomepageSeo;
+    'about-seo': AboutSeo;
+    'maintenance-seo': MaintenanceSeo;
+    'projects-seo': ProjectsSeo;
+    'solutions-seo': SolutionsSeo;
+  };
+  globalsSelect: {
+    'homepage-seo': HomepageSeoSelect<false> | HomepageSeoSelect<true>;
+    'about-seo': AboutSeoSelect<false> | AboutSeoSelect<true>;
+    'maintenance-seo': MaintenanceSeoSelect<false> | MaintenanceSeoSelect<true>;
+    'projects-seo': ProjectsSeoSelect<false> | ProjectsSeoSelect<true>;
+    'solutions-seo': SolutionsSeoSelect<false> | SolutionsSeoSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -196,6 +208,22 @@ export interface Application {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -218,6 +246,22 @@ export interface Solution {
         id?: string | null;
       }[]
     | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -273,29 +317,84 @@ export interface Project {
   title: string;
   slug: string;
   type: 'residential' | 'commercial';
-  tags?:
+  systems?:
     | {
-        tag: string;
+        system: string;
         id?: string | null;
       }[]
     | null;
   coverImage: number | Media;
-  description: string;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
+  description?: string | null;
+  brief: {
+    heading?: string | null;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
         version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
+      };
+      [k: string]: unknown;
     };
-    [k: string]: unknown;
-  } | null;
+    image?: (number | null) | Media;
+  };
+  solution: {
+    heading?: string | null;
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    images?:
+      | {
+          image: number | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  extraDetails?: {
+    heading?: string | null;
+    content?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    image?: (number | null) | Media;
+  };
+  craft?: string | null;
+  specification?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
   gallery?:
     | {
         image: number | Media;
@@ -314,6 +413,22 @@ export interface Project {
    * Lower numbers appear first. Only applies when featured.
    */
   homepageOrder?: number | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -560,6 +675,15 @@ export interface ApplicationsSelect<T extends boolean = true> {
         backgroundImage?: T;
         id?: T;
       };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -580,6 +704,15 @@ export interface SolutionsSelect<T extends boolean = true> {
         content?: T;
         icon?: T;
         id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
       };
   updatedAt?: T;
   createdAt?: T;
@@ -626,15 +759,48 @@ export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   type?: T;
-  tags?:
+  systems?:
     | T
     | {
-        tag?: T;
+        system?: T;
         id?: T;
       };
   coverImage?: T;
   description?: T;
-  content?: T;
+  brief?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        image?: T;
+      };
+  solution?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        images?:
+          | T
+          | {
+              image?: T;
+              id?: T;
+            };
+      };
+  extraDetails?:
+    | T
+    | {
+        heading?: T;
+        content?: T;
+        image?: T;
+      };
+  craft?: T;
+  specification?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   gallery?:
     | T
     | {
@@ -647,6 +813,15 @@ export interface ProjectsSelect<T extends boolean = true> {
   location?: T;
   featured?: T;
   homepageOrder?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -727,6 +902,221 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-seo".
+ */
+export interface HomepageSeo {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-seo".
+ */
+export interface AboutSeo {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "maintenance-seo".
+ */
+export interface MaintenanceSeo {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-seo".
+ */
+export interface ProjectsSeo {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions-seo".
+ */
+export interface SolutionsSeo {
+  id: number;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Comma-separated main search terms this page should rank for.
+     */
+    primaryKeywords?: string | null;
+    /**
+     * Comma-separated supporting terms that broaden reach.
+     */
+    secondaryKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage-seo_select".
+ */
+export interface HomepageSeoSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-seo_select".
+ */
+export interface AboutSeoSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "maintenance-seo_select".
+ */
+export interface MaintenanceSeoSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects-seo_select".
+ */
+export interface ProjectsSeoSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "solutions-seo_select".
+ */
+export interface SolutionsSeoSelect<T extends boolean = true> {
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        primaryKeywords?: T;
+        secondaryKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

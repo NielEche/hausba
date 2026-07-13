@@ -17,6 +17,26 @@ function transformImageUrl(image) {
   return image
 }
 
+export async function generateMetadata() {
+  const payload = await getPayload({ config })
+
+  const seo = await payload.findGlobal({
+    slug: 'maintenance-seo',
+  })
+
+  const ogImage = transformImageUrl(seo?.meta?.image)
+
+  return {
+    title: seo?.meta?.title || 'Maintenance | HAUSBA',
+    description: seo?.meta?.description || '',
+    openGraph: {
+      title: seo?.meta?.title,
+      description: seo?.meta?.description,
+      images: ogImage?.url ? [ogImage.url] : [],
+    },
+  }
+}
+
 export default async function MaintenancePage() {
   const payload = await getPayload({ config })
 

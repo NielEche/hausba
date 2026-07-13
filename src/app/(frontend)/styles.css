@@ -70,7 +70,6 @@ svg {
   color: #ff7800;
 }
 
-
 .hausba-black {
   color: #000;
 }
@@ -89,6 +88,10 @@ svg {
 
 .hausba-grey-bg {
   background-color: #686666;
+}
+
+.hausba-grey-bg2 {
+  background-color: #1a1a1a;
 }
 
 @keyframes marquee {

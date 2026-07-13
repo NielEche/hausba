@@ -16,6 +16,12 @@ import { ServicePlans } from './collections/ServicePlans'
 import { Solutions } from './collections/Solutions'
 import { Testimonials } from './collections/Testimonials'
 import { Users } from './collections/Users'
+import { seoPlugin } from '@payloadcms/plugin-seo'
+import { HomepageSEO } from './globals/HomepageSEO'
+import { AboutSEO } from './globals/AboutSEO'
+import { MaintenanceSEO } from './globals/MaintenanceSEO'
+import { ProjectsSEO } from './globals/ProjectsSEO'
+import { SolutionsSEO } from './globals/SolutionsSEO'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -50,6 +56,7 @@ export default buildConfig({
     },
   }),
   sharp,
+  globals: [HomepageSEO, AboutSEO, MaintenanceSEO, ProjectsSEO, SolutionsSEO],
   plugins: [
     uploadthingStorage({
       collections: {
@@ -60,6 +67,33 @@ export default buildConfig({
         acl: 'public-read',
       },
     }),
+   seoPlugin({
+  collections: ['projects', 'solutions', 'applications'],
+  globals: ['homepage-seo', 'about-seo', 'maintenance-seo', 'projects-seo', 'solutions-seo'],
+  uploadsCollection: 'media',
+  tabbedUI: false,
+  generateTitle: ({ doc }) => `${doc?.title || 'HAUSBA'} | HAUSBA`,
+  generateDescription: ({ doc }) => doc?.excerpt || doc?.description || '',
+  fields: ({ defaultFields }) => [
+    ...defaultFields,
+    {
+      name: 'primaryKeywords',
+      type: 'text',
+      label: 'Primary Keywords',
+      admin: {
+        description: 'Comma-separated main search terms this page should rank for.',
+      },
+    },
+    {
+      name: 'secondaryKeywords',
+      type: 'text',
+      label: 'Secondary Keywords',
+      admin: {
+        description: 'Comma-separated supporting terms that broaden reach.',
+      },
+    },
+  ],
+}),
   ],
   // Debug logging to verify token is loaded — safe to remove once confirmed working.
   onInit: async (payload) => {

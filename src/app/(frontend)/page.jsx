@@ -18,6 +18,26 @@ function transformImageUrl(image) {
   return image
 }
 
+export async function generateMetadata() {
+  const payload = await getPayload({ config })
+
+  const seo = await payload.findGlobal({
+    slug: 'homepage-seo',
+  })
+
+  const ogImage = transformImageUrl(seo?.meta?.image)
+
+  return {
+    title: seo?.meta?.title || 'HAUSBA | Luxury Smart Home & AV Integration',
+    description: seo?.meta?.description || '',
+    openGraph: {
+      title: seo?.meta?.title,
+      description: seo?.meta?.description,
+      images: ogImage?.url ? [ogImage.url] : [],
+    },
+  }
+}
+
 export default async function HomePage() {
   const payload = await getPayload({ config })
 

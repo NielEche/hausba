@@ -26,8 +26,8 @@ export default function ProjectsPageContent({ projects = [] }) {
             priority
             unoptimized
           />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/60" />
+          {/* Bottom Black Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
         </div>
 
         {/* Content */}
@@ -50,46 +50,51 @@ export default function ProjectsPageContent({ projects = [] }) {
 
       {/* TABS SECTION */}
       <section className="bg-white px-6 py-12">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-center gap-4 flex-wrap">
+        <div className="max-w-7xl mx-auto flex justify-center">
+          <div className="relative flex bg-[#545050] rounded-full p-1">
             <button
               onClick={() => setActiveTab('all')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeTab === 'all'
-                    ? 'hausba-orange-bg hausba-orange-border text-white'
-                    : 'border-gray-300 text-gray-700 hover:border-[#ff6f3c]'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeTab === 'all' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              ALL
+              {activeTab === 'all' && (
+                <motion.span
+                  layoutId="projects-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">All</span>
             </button>
+
             <button
               onClick={() => setActiveTab('residential')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeTab === 'residential'
-                    ? 'hausba-orange-bg hausba-orange-border text-white'
-                    : 'border-gray-300 text-gray-700 hover:border-[#ff6f3c]'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeTab === 'residential' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              Residential
+              {activeTab === 'residential' && (
+                <motion.span
+                  layoutId="projects-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Residential</span>
             </button>
+
             <button
               onClick={() => setActiveTab('commercial')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeTab === 'commercial'
-                    ? 'hausba-orange-bg hausba-orange-border text-white'
-                    : 'border-gray-300 text-gray-700 hover:border-[#ff6f3c]'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeTab === 'commercial' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              Commercial
+              {activeTab === 'commercial' && (
+                <motion.span
+                  layoutId="projects-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Commercial</span>
             </button>
           </div>
         </div>

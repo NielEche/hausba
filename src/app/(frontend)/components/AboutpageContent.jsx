@@ -57,7 +57,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
       id: 2,
       title: 'Dedicated Support Team',
       description:
-        'The design, configuration and integration of system which consider the dimensions, acoustics, and interior decor of any given space allows HAUSBA to maximize the potential of modern architecture. By working together with trade professionals and/or homeowners, we are able to devise solutions that build upon the aesthetics of a room while still operating flawlessly',
+        'Our dedicated support team monitors your systems remotely, responds toissues proactively, and ensures your experience never falls below thestandard we promised. From routine maintenance to emergency support,we remain present long after the project is delivered',
       image: '/home.jpg',
     },
     {
@@ -78,63 +78,44 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section - White Background */}
-      <section className="relative  flex items-center justify-center px-6 py-32">
-        <div className="max-w-7xl mx-auto w-full">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center lg:flex justify-between "
-          >
-            <div>
-              <motion.h2
-                initial={{ opacity: 0.9 }}
-                whileHover={{ opacity: 1 }}
-                className="text-7xl md:text-9xl montserrat-bold lg:text-left text-center font-bold text-black mb-12 tracking-tight"
-              >
-                ABOUT
-              </motion.h2>
-
-              {/* Description */}
-              <div className="max-w-2xl mx-auto">
-                <p className="montserrat-regular text-sm md:text-sm lg:pr-26 lg:text-left text-center pb-8 text-gray-700 leading-relaxed">
-                  With over a decade of delivering technology in high-end smart home control
-                  projects, HAUSBA is the natural partner for developers, architects, interior
-                  designers, and technology providers in this space. Our portfolio includes high-car
-                  residences in Lagos and Abuja, where we seamlessly integrate technology with
-                  lifestyle.
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <h1 className="montserrat-bold text-7xl md:text-9xl font-bold text-black mb-12 tracking-tight text-center">
-                HAUSBA
-              </h1>
-            </div>
-          </motion.div>
-        </div>
+      {/* ── HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[85vh] flex items-end overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/home1.jpg')" }}
+          role="img"
+          aria-label="Hausba luxury audiovisual and smart home installation — Nigeria"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+        <motion.div
+          className="relative z-10 max-w-3xl lg:px-16 px-4 pb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl md:text-6xl leading-[1.15] mb-6">
+            <span className="montserrat-regular">About</span>{' '}
+            <span className="montserrat-bold">HAUSBA</span>
+          </h1>
+          <p className="text-sm montserrat-regular text-white max-w-lg">
+            With over a decade of delivering technology in high-end smart home control projects,
+            HAUSBA is the natural partner for developers, architects, interior designers, and
+            technology providers in this space. Our portfolio includes high-end residences in Lagos
+            and Abuja, where we seamlessly integrate technology with lifestyle.
+          </p>
+        </motion.div>
       </section>
 
       {/* Philosophy Section - Image + Black Overlay */}
       <section className="relative min-h-screen">
         {/* Background Image */}
         <div className="absolute inset-0">
-          <Image
-            src="/home1.jpg"
-            alt="Hausba Philosophy"
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-          />
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/70" />
+          <div className="absolute inset-0 bg-black" />
         </div>
 
         {/* Content */}
-        <div className="absolute mx-auto w-full lg:mt-18 mt-4 z-10 min-h-screen flex flex-col justify-center lg:px-6 px-4 py-20">
+        <div className="absolute mx-auto w-full lg:mt-10 mt-4 z-10 min-h-screen flex flex-col justify-center lg:px-6 px-4 py-10">
           {/* Top Section - Tag */}
           <div className="max-w-7xl mx-auto w-full text-center mb-8">
             <motion.div
@@ -151,40 +132,45 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
           </div>
 
           {/* Black Background Container for Tabs */}
-          <div className="max-w-7xl mx-auto w-full text-center bg-black">
+          <div className="max-w-7xl mx-auto w-full text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="bg-black/90 backdrop-blur-sm py-6 mt-10 px-6 inline-flex gap-4 rounded-sm"
+              className="flex justify-center my-10"
             >
-              <button
-                onClick={() => setActiveTab('mission')}
-                className={`
-                  px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                  ${
-                    activeTab === 'mission'
-                      ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 text-[#ff6f3c]'
-                      : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                  }
-                `}
-              >
-                Our Mission
-              </button>
-              <button
-                onClick={() => setActiveTab('vision')}
-                className={`
-                  px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                  ${
-                    activeTab === 'vision'
-                      ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 text-[#ff6f3c]'
-                      : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                  }
-                `}
-              >
-                Our Vision
-              </button>
+              <div className="relative flex bg-[#545050] rounded-full p-1">
+                <button
+                  onClick={() => setActiveTab('mission')}
+                  className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+          ${activeTab === 'mission' ? 'text-black' : 'text-white hover:text-white'}`}
+                >
+                  {activeTab === 'mission' && (
+                    <motion.span
+                      layoutId="about-pill"
+                      className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10">Our Mission</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveTab('vision')}
+                  className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+          ${activeTab === 'vision' ? 'text-black' : 'text-white hover:text-white'}`}
+                >
+                  {activeTab === 'vision' && (
+                    <motion.span
+                      layoutId="about-pill"
+                      className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                      transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10">Our Vision</span>
+                </button>
+              </div>
             </motion.div>
           </div>
 

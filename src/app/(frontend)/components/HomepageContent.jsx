@@ -8,8 +8,8 @@ import Link from 'next/link'
 const BADGE_CIRCLE_STYLE = `
   .badge-circle .orange-draw {
     stroke: none;
-    stroke-dasharray: 565;
-    stroke-dashoffset: 565;
+    stroke-dasharray: 604;
+    stroke-dashoffset: 604;
     transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1),
                 stroke 0s 0.8s;
   }
@@ -122,7 +122,7 @@ export default function HomepageContent({
         <video
           className="absolute inset-0 w-full h-full object-cover"
           src="/hero-bg.mp4"
-          poster="/home1.jpg"
+          poster="/heroplace.jpg"
           autoPlay
           muted
           loop
@@ -136,10 +136,10 @@ export default function HomepageContent({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <p className="text-sm md:text-base montserrat-bold tracking-[0.2em] uppercase mb-3 text-white">
+          <p className="text-xs md:text-base montserrat-bold tracking-[0.2em] uppercase mb-3 text-white">
             Transforming the way you live
           </p>
-          <p className="text-sm montserrat-regular text-white/90 max-w-lg mx-auto">
+          <p className="text-xs montserrat-regular text-white/90 max-w-lg mx-auto">
             Bespoke audiovisual automation systems for the most extraordinary residential and
             commercial spaces.
           </p>
@@ -157,7 +157,7 @@ export default function HomepageContent({
           <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
             <div className="lg:w-1/2 md:w-full flex flex-col justify-between min-h-[420px]">
               <div>
-                <h2 className="text-5xl md:text-5xl montserrat-bold leading-[1.1] mb-8">
+                <h2 className="text-4xl md:text-5xl montserrat-bold leading-[1.1] mb-8">
                   Intelligent
                   <br />
                   automation &amp; AV
@@ -172,12 +172,12 @@ export default function HomepageContent({
                   on work of every scale.
                 </p>
               </div>
-              <Link
-                href="/contact"
+              <a
+                href="mailto:experience@hausba.com?subject=Become%20a%20Partner"
                 className="inline-block border border-white text-white text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-white hover:text-black! transition-colors duration-300 mt-12 self-start"
               >
                 Become a Partner
-              </Link>
+              </a>
             </div>
 
             <div className="w-full lg:w-1/2 md:w-full grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
@@ -251,14 +251,17 @@ export default function HomepageContent({
           >
             <div className="flex animate-marquee gap-15 w-max">
               {[...brands, ...brands].map((brand, i) => (
-                <div
+                <a
                   key={`${brand.id}-${i}`}
+                  href={brand.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-32 h-18 relative flex-shrink-0 flex items-center justify-center"
                 >
                   {brand.image?.url ? (
                     <Image
                       src={brand.image.url}
-                      alt={brand.name}
+                      alt={brand.image?.alt || brand.name}
                       fill
                       className="object-contain filter brightness-0 invert opacity-50 hover:opacity-90 transition-opacity duration-300"
                       unoptimized
@@ -268,7 +271,7 @@ export default function HomepageContent({
                       {brand.name}
                     </span>
                   )}
-                </div>
+                </a>
               ))}
             </div>
           </div>
@@ -612,23 +615,24 @@ export default function HomepageContent({
             WORK WITH US
           </p>
 
-          <h2 className="text-6xl md:text-6xl montserrat-bold leading-[1.0] mb-10 text-white">
+          <h2 className="text-4xl md:text-6xl montserrat-bold leading-[1.0] mb-10 text-white">
             Ready to transform your space?
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link
-              href="/contact"
+            <a
+              href="mailto:experience@hausba.com?subject=Book%20a%20Consultation"
               className="px-10 py-4 rounded-full bg-[#ff6f3c] text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-[#e55f2f] transition-colors duration-300 whitespace-nowrap"
             >
               Book a Consultation
-            </Link>
-            <Link
-              href="/experience-centre"
+            </a>
+
+            <a
+              href="mailto:experience@hausba.com?subject=Book%20an%20Experience%20Centre%20Visit"
               className="px-10 py-4 rounded-full border border-white/50 text-white text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-white/10 transition-colors duration-300 whitespace-nowrap"
             >
               Book an Experience Centre Visit
-            </Link>
+            </a>
           </div>
 
           <p className="text-xs montserrat-bold text-white mt-6">

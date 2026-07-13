@@ -4,7 +4,6 @@ import Image from 'next/image'
 const NAV_LINKS = [
   { label: 'About Us', href: '/about' },
   { label: 'Our Portfolio', href: '/projects' },
-  { label: 'Applications', href: '/applications' },
   { label: 'Maintenance', href: '/maintenance' },
   { label: 'Solutions', href: '/solutions' },
 ]
@@ -73,7 +72,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 pt-24 pb-26">
         <h3 className="text-4xl md:text-5xl leading-tight mb-6">
           <span className="montserrat-regular">Stay ahead of the standard,</span>
-          <br />
+          <br className="hidden sm:block" />
           <span className="montserrat-regular">with our </span>
           <span className="montserrat-bold">Newsletter</span>
         </h3>
@@ -115,7 +114,7 @@ export default function Footer() {
             <Link href="/" className="inline-block mb-4">
               <Image
                 src="/hausba-logo-wh.png"
-                alt="Hausba"
+                alt="Hausba — luxury audiovisual and smart home systems, Nigeria"
                 width={135}
                 height={39}
                 className="filter"
