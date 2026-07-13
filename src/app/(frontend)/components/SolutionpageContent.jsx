@@ -191,7 +191,7 @@ export default function SolutionpageContent({ solutions = [] }) {
           <div className="relative flex bg-[#545050] rounded-full p-1">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeCategory === 'all' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeCategory === 'all' && (
@@ -206,7 +206,7 @@ export default function SolutionpageContent({ solutions = [] }) {
 
             <button
               onClick={() => setActiveCategory('residential')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeCategory === 'residential' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeCategory === 'residential' && (
@@ -221,7 +221,7 @@ export default function SolutionpageContent({ solutions = [] }) {
 
             <button
               onClick={() => setActiveCategory('commercial')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeCategory === 'commercial' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeCategory === 'commercial' && (

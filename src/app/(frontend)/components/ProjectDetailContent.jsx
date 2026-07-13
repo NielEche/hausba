@@ -90,72 +90,72 @@ export default function ProjectDetailContent({ project }) {
   ].filter(Boolean)
 
   return (
-    <div className="min-h-screen bg-black" data-header-theme="dark">
-  {/* HERO SECTION - title overlaid directly on the image */}
-  <section className="relative h-[70vh] flex items-end overflow-hidden">
-    <div className="absolute inset-0">
-      <Image
-        src={project.coverImage?.url || '/home1.jpg'}
-        alt={project.coverImage?.alt || project.title}
-        fill
-        className="object-cover"
-        priority
-        unoptimized
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
-    </div>
+    <div className="min-h-screen bg-black overflow-x-hidden" data-header-theme="dark">
+      {/* HERO SECTION - title overlaid directly on the image */}
+      <section className="relative h-[70vh] flex items-end overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src={project.coverImage?.url || '/home1.jpg'}
+            alt={project.coverImage?.alt || project.title}
+            fill
+            className="object-cover"
+            priority
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+        </div>
 
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="relative z-10 px-6 pb-10 max-w-7xl w-full mx-auto"
-    >
-      <h1 className="text-4xl lg:text-6xl montserrat-bold text-white leading-tight capitalize">
-        {project.title}
-      </h1>
-    </motion.div>
-  </section>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative z-10 px-6 pb-10 max-w-7xl w-full mx-auto"
+        >
+          <h1 className="text-4xl lg:text-6xl montserrat-bold text-white leading-tight capitalize break-words">
+            {project.title}
+          </h1>
+        </motion.div>
+      </section>
 
       {/* META BAR - Project Type / Systems / Location / Status */}
       <section className="hausba-grey-bg2 border-t border-white/10 border-b border-white/10 px-6 py-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 min-w-0">
           {project.type && (
-            <div className="px-6 first:pl-0 border-l border-white/10 first:border-l-0 py-2">
+            <div className="px-6 first:pl-0 border-l border-white/10 first:border-l-0 py-2 min-w-0">
               <span className="text-[10px] uppercase tracking-wider text-white/50 montserrat-regular block mb-1">
                 Project Type
               </span>
-              <span className="text-white text-base montserrat-regular capitalize py-2">
+              <span className="text-white text-base montserrat-regular capitalize py-2 break-words">
                 {project.type}
               </span>
             </div>
           )}
           {project.systems && project.systems.length > 0 && (
-            <div className="px-6 border-l border-white/10 py-2">
+            <div className="px-6 border-l border-white/10 py-2 min-w-0">
               <span className="text-[10px] uppercase tracking-wider text-white/50 montserrat-regular block mb-1">
                 Systems
               </span>
-              <span className="text-white text-base montserrat-regular py-2">
+              <span className="text-white text-base montserrat-regular py-2 break-words">
                 {project.systems.map((s) => s.system).join(' · ')}
               </span>
             </div>
           )}
           {project.location && (
-            <div className="px-6 border-l border-white/10 py-2">
+            <div className="px-6 border-l border-white/10 py-2 min-w-0">
               <span className="text-[10px] uppercase tracking-wider text-white/50 montserrat-regular block mb-1">
                 Location
               </span>
-              <span className="text-white text-base montserrat-regular py-2">
+              <span className="text-white text-base montserrat-regular py-2 break-words">
                 {project.location}
               </span>
             </div>
           )}
           {project.projectDate && (
-            <div className="px-6 border-l border-white/10 py-2">
+            <div className="px-6 border-l border-white/10 py-2 min-w-0">
               <span className="text-[10px] uppercase tracking-wider text-white/50 montserrat-regular block mb-1">
                 Status
               </span>
-              <span className="text-white text-base montserrat-regular">
+              <span className="text-white text-base montserrat-regular break-words">
                 Completed {new Date(project.projectDate).getFullYear()}
               </span>
             </div>
@@ -167,7 +167,7 @@ export default function ProjectDetailContent({ project }) {
       {project.description && (
         <section className="hausba-grey-bg2 px-6 py-10">
           <div className="max-w-4xl mx-auto">
-            <p className="text-white/80 text-base montserrat-regular leading-relaxed">
+            <p className="text-white/80 text-base montserrat-regular leading-relaxed break-words">
               {project.description}
             </p>
           </div>
@@ -188,7 +188,7 @@ export default function ProjectDetailContent({ project }) {
                 {brief.heading || 'The Brief'}
               </span>
               <div
-                className="text-white/80 montserrat-regular leading-relaxed"
+                className="text-white/80 montserrat-regular leading-relaxed break-words"
                 dangerouslySetInnerHTML={{ __html: serializeRichText(brief.content) }}
               />
             </motion.div>
@@ -222,13 +222,13 @@ export default function ProjectDetailContent({ project }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="px-10 py-16 flex flex-col justify-center"
+                className="px-10 py-16 flex flex-col justify-center min-w-0"
               >
                 <span className="text-xs uppercase tracking-wider text-[#ff6f3c] montserrat-regular block mb-4">
                   {solution.heading || 'The Solution'}
                 </span>
                 <div
-                  className="text-white/70 montserrat-regular leading-relaxed space-y-4"
+                  className="text-white/70 montserrat-regular leading-relaxed space-y-4 break-words"
                   dangerouslySetInnerHTML={{ __html: serializeRichText(solution.content) }}
                 />
               </motion.div>
@@ -267,7 +267,7 @@ export default function ProjectDetailContent({ project }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="px-10 py-16 flex flex-col justify-center"
+                className="px-10 py-16 flex flex-col justify-center min-w-0"
               >
                 {extraDetails.heading && (
                   <span className="text-xs uppercase tracking-wider text-white/50 montserrat-regular block mb-4">
@@ -275,7 +275,7 @@ export default function ProjectDetailContent({ project }) {
                   </span>
                 )}
                 <div
-                  className="text-white/70 montserrat-regular leading-relaxed"
+                  className="text-white/70 montserrat-regular leading-relaxed break-words"
                   dangerouslySetInnerHTML={{ __html: serializeRichText(extraDetails.content) }}
                 />
               </motion.div>
@@ -304,13 +304,13 @@ export default function ProjectDetailContent({ project }) {
                   </span>
 
                   {craftHeadline && (
-                    <h2 className="text-white/90 text-2xl lg:text-3xl montserrat-regular leading-snug mb-6 pr-20">
+                    <h2 className="text-white/90 text-2xl lg:text-3xl montserrat-regular leading-snug mb-6 pr-20 break-words">
                       {craftHeadline}
                     </h2>
                   )}
 
                   {craftBody.length > 0 && (
-                    <p className="text-white/60 text-base montserrat-regular leading-relaxed max-w-4xl">
+                    <p className="text-white/60 text-base montserrat-regular leading-relaxed max-w-4xl break-words">
                       {craftBody.join(' ')}
                     </p>
                   )}
@@ -329,11 +329,14 @@ export default function ProjectDetailContent({ project }) {
             </span>
             <div className="space-y-6">
               {project.specification.map((spec, i) => (
-                <div key={i} className="flex items-baseline gap-8 text-sm montserrat-regular">
+                <div
+                  key={i}
+                  className="flex items-baseline gap-8 text-sm montserrat-regular min-w-0"
+                >
                   <span className="text-white/40 uppercase tracking-wider text-xs w-40 shrink-0">
                     {spec.label}
                   </span>
-                  <span className="text-white text-base">{spec.value}</span>
+                  <span className="text-white text-base min-w-0 break-words">{spec.value}</span>
                 </div>
               ))}
             </div>
