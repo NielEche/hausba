@@ -67,47 +67,49 @@ function TaglineArrow() {
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="w-full">
       {/* ── NEWSLETTER ───────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 pt-24 pb-26">
-        <h3 className="text-4xl md:text-5xl leading-tight mb-6">
-          <span className="montserrat-regular">Stay ahead of the standard,</span>
-          <br className="hidden sm:block" />
-          <span className="montserrat-regular">with our </span>
-          <span className="montserrat-bold">Newsletter</span>
-        </h3>
+      <div className="bg-white w-full">
+        <div className="text-black max-w-7xl mx-auto px-6 pt-24 pb-26">
+          <h3 className="text-4xl md:text-5xl leading-tight mb-6">
+            <span className="montserrat-regular">Stay ahead of the standard, </span>
+            <br className="hidden sm:block" />
+            <span className="montserrat-regular">with our </span>
+            <span className="montserrat-bold">Newsletter</span>
+          </h3>
 
-        <p className="text-sm montserrat-regular text-gray-400 leading-relaxed max-w-2xl mb-8">
-          Be the first to get informed when we roll out latest products, offers and new services.
-          <br />
-          Your data is kept safe and confidential under our privacy and policy.
-          <br />
-          By subscribing to receive email newsletter, you agree to receive recurring autodialed
-          marketing emails to the email address used at opt-in. Email frequency may vary.
-        </p>
+          <p className="text-sm montserrat-regular text-black leading-relaxed max-w-2xl mb-8">
+            Be the first to get informed when we roll out latest products, offers and new services.
+            <br />
+            Your data is kept safe and confidential under our privacy and policy.
+            <br />
+            By subscribing to receive email newsletter, you agree to receive recurring autodialed
+            marketing emails to the email address used at opt-in. Email frequency may vary.
+          </p>
 
-        <form className="flex flex-col sm:flex-row gap-3 max-w-6xl">
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="flex-1 bg-[#1A1A1A] border border-gray-800 rounded text-white text-sm montserrat-regular px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-500"
-          />
-          <input
-            type="email"
-            placeholder="Your Email"
-            className="flex-1 bg-[#1A1A1A] border border-gray-800 rounded text-white text-sm montserrat-regular px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-500"
-          />
-          <button
-            type="submit"
-            className="bg-[#FF7800] rounded text-black text-xs montserrat-bold uppercase tracking-widest px-8 py-4 hover:bg-[#e06800] transition-colors duration-300 whitespace-nowrap cursor-pointer"
-          >
-            Subscribe
-          </button>
-        </form>
+          <form className="flex flex-col sm:flex-row gap-3 max-w-6xl">
+            <input
+              type="text"
+              placeholder="Your Name"
+              className="flex-1 bg-[#CCCCCC] border border-gray-900 rounded text-black text-sm montserrat-bold px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-600"
+            />
+            <input
+              type="email"
+              placeholder="Your Email"
+              className="flex-1 bg-[#CCCCCC] border border-gray-900 rounded text-black text-sm montserrat-bold px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-600"
+            />
+            <button
+              type="submit"
+              className="bg-[#FF7800] rounded text-black text-sm montserrat-bold uppercase tracking-widest px-8 py-4 hover:bg-[#e06800] transition-colors duration-300 whitespace-nowrap cursor-pointer"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* ── LINKS GRID ───────────────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 pb-16">
+      <div className="bg-black  max-w-7xl mx-auto px-6 py-16">
         <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-24">
           {/* Logo / tagline / contact */}
           <div className="md:w-1/4 md:flex-shrink-0">

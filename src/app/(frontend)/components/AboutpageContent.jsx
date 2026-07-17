@@ -126,7 +126,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
               className="inline-block"
             >
               <span className="text-white text-xs montserrat-regular font-semibold">
-                [ HAUSBA PHILOSOPHY ]
+                HAUSBA PHILOSOPHY
               </span>
             </motion.div>
           </div>
@@ -185,7 +185,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
               className="my-8 "
             >
               <span className="text-white montserrat-regular text-xs font-semibold">
-                [ OUR {activeTab.toUpperCase()} ]
+                OUR {activeTab.toUpperCase()}
               </span>
             </motion.div>
 
@@ -230,7 +230,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
             viewport={{ once: true }}
             className="mb-6"
           >
-            <span className="text-black montserrat-bold text-xs">[ THE PROFESSIONALS ]</span>
+            <span className="text-black montserrat-bold text-xs"> THE PROFESSIONALS </span>
           </motion.div>
 
           {/* Heading */}
@@ -273,7 +273,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
             viewport={{ once: true }}
             className="mb-12"
           >
-            <span className="text-black text-xs montserrat-bold ">[ CORE VALUES ]</span>
+            <span className="text-black text-xs montserrat-bold "> CORE VALUES </span>
           </motion.div>
 
           {/* Core Values Grid */}
@@ -317,7 +317,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
             className=" mb-20"
           >
             <span className="text-white text-left montserrat-regular text-xs font-semibold tracking-widest">
-              [ WHY CHOOSE US ]
+              WHY CHOOSE US
             </span>
           </motion.div>
 
@@ -480,7 +480,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
               className="text-center mb-20"
             >
               <span className="text-white montserrat-regular text-xs font-semibold tracking-widest">
-                [OUR BRANDS ]
+                OUR BRANDS
               </span>
             </motion.div>
 

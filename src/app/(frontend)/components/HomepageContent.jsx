@@ -58,12 +58,12 @@ function BadgeCircle({ children }) {
   return (
     <div className="badge-circle relative aspect-square flex flex-col items-center justify-center gap-2 cursor-default">
       <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200" fill="none">
-        <circle cx="100" cy="100" r="96" stroke="#374151" strokeWidth="1.5" />
+        <circle cx="100" cy="100" r="86" stroke="#374151" strokeWidth="1.5" />
         <circle
           className="orange-draw"
           cx="100"
           cy="100"
-          r="96"
+          r="86"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
@@ -95,6 +95,9 @@ export default function HomepageContent({
   })
 
   const [activeSolTab, setActiveSolTab] = useState(solutionTypes[0] || '')
+
+  const highlightedProject =
+    projects.find((p) => p.title?.toLowerCase().includes('gma residence')) || projects[0]
 
   const groupedProjects = projects.reduce((acc, project) => {
     const type = project.type || 'other'
@@ -147,71 +150,110 @@ export default function HomepageContent({
       </section>
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section className="bg-black py-24 px-6">
+      <section className="bg-white text-black py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
+          <motion.p
+            className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             WHAT WE DO
-          </p>
+          </motion.p>
 
-          <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
-            <div className="lg:w-1/2 md:w-full flex flex-col justify-between min-h-[420px]">
-              <div>
-                <h2 className="text-4xl md:text-5xl montserrat-bold leading-[1.1] mb-8">
-                  Intelligent
-                  <br />
-                  automation &amp; AV
-                  <br />
-                  integration for
-                  <br />
-                  <span className="hausba-orange">every kind of space</span>
-                </h2>
-                <p className="text-sm montserrat-bold text-gray-300 leading-relaxed max-w-sm">
-                  Across private residences, hospitality, workspace and commercial projects, we
-                  craft bespoke luxury experiences engineered to professional standards, and trusted
-                  on work of every scale.
-                </p>
-              </div>
-              <a
-                href="mailto:experience@hausba.com?subject=Become%20a%20Partner"
-                className="inline-block border border-white text-white text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-white hover:text-black! transition-colors duration-300 mt-12 self-start"
-              >
-                Become a Partner
-              </a>
-            </div>
+          <motion.h2
+            className="text-4xl md:text-5xl montserrat-regular leading-[1.1] mb-6 max-w-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Engineering spaces that
+            <br />
+            respond to you
+          </motion.h2>
 
-            <div className="w-full lg:w-1/2 md:w-full grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
-              <BadgeCircle>
-                <span className="text-5xl montserrat-bold text-gray-300">15+</span>
-                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
-                  Years
-                </span>
-              </BadgeCircle>
+          <motion.p
+            className="text-base montserrat-regular text-gray-600 max-w-xl mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            Lighting, sound, security and climate, working as one system
+          </motion.p>
 
-              <BadgeCircle>
-                <span className="text-5xl montserrat-bold text-gray-300">200+</span>
-                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+          <motion.a
+            href="/solutions"
+            className="inline-block border border-gray-600 bg-[#CCCCCC] text-black text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-black hover:text-white! transition-colors duration-300 mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Explore Our Solutions
+          </motion.a>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <BadgeCircle className="border border-gray-300">
+                <span className="text-5xl montserrat-bold text-gray-400">300+</span>
+                <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Spaces
                 </span>
               </BadgeCircle>
+            </motion.div>
 
-              <BadgeCircle>
-                <div className="relative w-36 h-24">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <BadgeCircle className="border hausba-orange-border">
+                <span className="text-5xl montserrat-bold text-gray-400">200+</span>
+                <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
+                  Clients
+                </span>
+              </BadgeCircle>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <BadgeCircle className="border border-gray-300">
+                <div className="relative w-30 h-22">
                   <Image
-                    src="/avixalogo.webp"
+                    src="/avixalogo.png"
                     alt="AVIXA Member"
                     fill
                     className="object-contain"
                     unoptimized
                   />
                 </div>
-                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Member
                 </span>
               </BadgeCircle>
+            </motion.div>
 
-              <BadgeCircle>
-                <div className="relative w-36 h-24">
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+            >
+              <BadgeCircle className="border border-gray-300">
+                <div className="relative w-30 h-22">
                   <Image
                     src="/cedia.png"
                     alt="CEDIA Certified"
@@ -220,23 +262,67 @@ export default function HomepageContent({
                     unoptimized
                   />
                 </div>
-                <span className="text-[11px] montserrat-regular text-gray-400 uppercase tracking-[0.2em]">
+                <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Certified
                 </span>
               </BadgeCircle>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* ── HIGHLIGHTED STORY ────────────────────────────────────────────── */}
+      {highlightedProject && (
+        <section className="relative overflow-hidden" style={{ minHeight: '640px' }}>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: highlightedProject.image?.url
+                ? `url(${highlightedProject.image.url})`
+                : "url('/XAMIRAHEIGHTS.webp')",
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
+
+          <div
+            className="relative z-10 max-w-7xl mx-auto flex items-end justify-end px-6"
+            style={{ minHeight: '640px' }}
+          >
+            <motion.div
+              className="max-w-lg text-right pb-20"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4">
+                HIGHLIGHTED STORY
+              </p>
+              <h2 className="text-4xl md:text-6xl montserrat-bold text-white leading-none mb-4">
+                {highlightedProject.title}
+              </h2>
+              {highlightedProject.description && (
+                <p className="text-sm montserrat-bold text-gray-200 leading mb-8">
+                  {highlightedProject.description}
+                </p>
+              )}
+              <Link
+                href={`/projects/${highlightedProject.slug}`}
+                className="inline-block border border-white text-white text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-white hover:text-black! transition-colors duration-300"
+              >
+                View Case Study
+              </Link>
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* ── BRAND PARTNERS STRIP ─────────────────────────────────────────── */}
       {brands && brands.length > 0 && (
         <section className="bg-[#0F0F0F] py-2 px-6 overflow-hidden">
           <div className="max-w-7xl mx-auto py-10 mb-6">
-            <p className="text-[12px] montserrat-regular text-[#6B6666] text-center uppercase tracking-widest">
-              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" /> Trusted by the
-              world's leading industry partners{' '}
-              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
+            <p className="text-[14px] montserrat-regular hausba-grey text-left uppercase tracking-widest">
+              TRUSTED PARTNERS
             </p>
           </div>
 
@@ -445,10 +531,8 @@ export default function HomepageContent({
         <section className="bg-white py-20 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Eyebrow */}
-            <p className="text-[12px] montserrat-regular tracking-[0.3em] uppercase text-center mb-6 flex items-center justify-center gap-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f3c] inline-block" />
-              <span className="text-black">OUR SOLUTIONS</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#ff6f3c] inline-block" />
+            <p className="text-[12px] montserrat-bold tracking-[0.3em] uppercase text-center mb-6 flex items-center justify-center gap-3">
+              <span className="hausba-grey">OUR SOLUTIONS</span>
             </p>
 
             <h2 className="text-3xl md:text-4xl montserrat-bold text-black text-center mb-8">

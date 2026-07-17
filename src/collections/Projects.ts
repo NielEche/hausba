@@ -97,9 +97,6 @@ export const Projects: CollectionConfig = {
       type: 'textarea',
       required: false,
       label: 'Project Description',
-      admin: {
-        hidden: true,
-      },
     },
 
     // THE BRIEF
