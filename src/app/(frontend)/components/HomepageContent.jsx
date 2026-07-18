@@ -140,11 +140,10 @@ export default function HomepageContent({
           transition={{ duration: 0.8 }}
         >
           <p className="text-xs md:text-base montserrat-bold tracking-[0.2em] uppercase mb-3 text-white">
-            Transforming the way you live
+            INTELLIGENCE DESIGNED INTO EVERY SPACE
           </p>
           <p className="text-xs montserrat-regular text-white/90 max-w-lg mx-auto">
-            Bespoke audiovisual automation systems for the most extraordinary residential and
-            commercial spaces.
+            Bespoke ProAV and automation systems for residential and commerical environments
           </p>
         </motion.div>
       </section>
