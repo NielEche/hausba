@@ -143,7 +143,8 @@ export default function HomepageContent({
             INTELLIGENCE DESIGNED <br className="lg:hidden display"></br> INTO EVERY SPACE
           </p>
           <p className="text-xs montserrat-regular text-white/90 max-w-lg mx-auto">
-            Bespoke ProAV and automation systems for residential and commerical environments
+            Bespoke ProAV and automation systems for residential<br className=""></br> and
+            commerical environments
           </p>
         </motion.div>
       </section>
