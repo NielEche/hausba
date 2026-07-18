@@ -94,6 +94,7 @@ svg {
   background-color: #1a1a1a;
 }
 
+
 @keyframes marquee {
   0% {
     transform: translateX(0%);
