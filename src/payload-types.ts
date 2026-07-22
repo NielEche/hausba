@@ -279,6 +279,10 @@ export interface Testimonial {
    * Mark this testimonial as featured to highlight it
    */
   featured?: boolean | null;
+  /**
+   * Lower numbers appear first. Only applies when featured.
+   */
+  featuredOrder?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -289,6 +293,7 @@ export interface Testimonial {
 export interface Brand {
   id: number;
   name: string;
+  type: 'partner' | 'brand';
   image: number | Media;
   /**
    * Enter full URL, e.g. https://example.com
@@ -502,9 +507,6 @@ export interface Faq {
    * Lets you reuse this collection for FAQ sections on other pages later.
    */
   page: 'maintenance' | 'homepage' | 'general';
-  /**
-   * Lower numbers show first in the accordion.
-   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -727,6 +729,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
   company?: T;
   image?: T;
   featured?: T;
+  featuredOrder?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -736,6 +739,7 @@ export interface TestimonialsSelect<T extends boolean = true> {
  */
 export interface BrandsSelect<T extends boolean = true> {
   name?: T;
+  type?: T;
   image?: T;
   website?: T;
   updatedAt?: T;

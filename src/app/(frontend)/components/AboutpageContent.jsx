@@ -57,7 +57,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
       id: 2,
       title: 'Dedicated Support Team',
       description:
-        'Our dedicated support team monitors your systems remotely, responds toissues proactively, and ensures your experience never falls below thestandard we promised. From routine maintenance to emergency support,we remain present long after the project is delivered',
+        'Our dedicated support team monitors your systems remotely, responds to issues proactively, and ensures your experience never falls below thestandard we promised. From routine maintenance to emergency support,we remain present long after the project is delivered',
       image: '/home.jpg',
     },
     {
@@ -94,7 +94,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl md:text-6xl leading-[1.15] mb-6">
-            <span className="montserrat-regular">About</span>{' '}
+            <span className="montserrat-regular italic!">About</span>{' '}
             <span className="montserrat-bold">HAUSBA</span>
           </h1>
           <p className="text-sm montserrat-regular text-white max-w-lg">
@@ -177,17 +177,6 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
           {/* Mission/Vision Content */}
           <div className="max-w-7xl mx-auto text-center bg-black pb-20 w-full">
             {/* Dynamic Tag */}
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="my-8 "
-            >
-              <span className="text-white montserrat-regular text-xs font-semibold">
-                OUR {activeTab.toUpperCase()}
-              </span>
-            </motion.div>
 
             {/* Dynamic Statement */}
             <motion.h2
@@ -253,15 +242,12 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
             className="max-w-5xl mb-20"
           >
             <p className="text-sm md:text-base text-gray-700 montserrat-regular leading-relaxed">
-              We are systems integrators. Furthermore, we understand that the demand for complex
-              system integration will persistently increase. Additionally, today's Millennials
-              aspire to embrace the luxuries of smart living. Moreover, individuals seek greater
-              safety, intelligence and enjoyment within their dwellings. In light of this,
-              governments, developers and forward-thinking individuals seek inner peace of mind. In
-              this regard, at HAUSBA, we wholeheartedly commit to addressing these challenges.
-              Through the most practical, efficient, and user-friendly home solutions, we pledge
-              ourselves to serve you with distinction, guaranteeing your utmost satisfaction, now
-              and in the imminent.
+              We’re systems integrators for a world that’s only getting more connected. As demand
+              for complex home integration grows, today’s homeowners want more than a house: they
+              want a space that’s smart, safe, and effortless to live in. Developers and
+              forward-thinking individuals alike are looking for that same peace of mind. At HAUSBA,
+              we build the practical, efficient, user-friendly solutions that make it possible, and
+              we back every install with a commitment to lasting satisfaction.
             </p>
           </motion.div>
 
@@ -365,8 +351,10 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
                   />
 
                   {/* Content */}
-                  <div className="relative z-10 p-6 text-white h-full flex flex-col justify-between">
-                    <h3 className="text-lg montserrat-bold leading-tight">{item.title}</h3>
+                  <div className="relative z-10 p-6 text-white h-full flex flex-col">
+                    <h3 className="text-lg montserrat-bold leading-tight min-h-[3.5rem] mb-18">
+                      {item.title}
+                    </h3>
                     <p className="text-sm montserrat-regular leading-tight">{item.description}</p>
                   </div>
                 </motion.div>
@@ -502,10 +490,10 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
                 return (
                   <div
                     key={brand.id}
-                    className={`flex items-center justify-center p-4 ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
+                    className={`flex items-center justify-center ${borderTop} ${borderBottom} ${borderLeft} ${borderRight}`}
                   >
                     {/* Fixed square container for consistency */}
-                    <div className="w-24 h-24 flex items-center justify-center">
+                    <div className="w-76 h-76 flex items-center justify-center">
                       {brand.website ? (
                         <a
                           href={brand.website}
@@ -518,7 +506,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
                               src={brand.image.url}
                               alt={brand.name}
                               fill
-                              className="object-contain filter brightness-0 invert"
+                              className="object-contain"
                             />
                           )}
                         </a>
@@ -529,7 +517,7 @@ export default function AboutpageContent({ awards = [], brands = [] }) {
                               src={brand.image.url}
                               alt={brand.name}
                               fill
-                              className="object-contain filter brightness-0 invert"
+                              className="object-contain"
                             />
                           </div>
                         )

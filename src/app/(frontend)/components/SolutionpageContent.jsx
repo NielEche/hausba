@@ -118,7 +118,7 @@ export default function SolutionpageContent({ solutions = [] }) {
           <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.4em] uppercase mb-4">
             What We Offer
           </p>
-          <h1 className="text-4xl md:text-5xl montserrat-regular leading-[1.15] mb-2">
+          <h1 className="text-4xl md:text-5xl montserrat-regular leading-[1.15] mb-0">
             Solutions Shaped
           </h1>
           <h1 className="text-4xl md:text-5xl montserrat-bold leading-[1.15] mb-6">

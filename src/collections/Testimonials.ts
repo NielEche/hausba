@@ -4,7 +4,7 @@ export const Testimonials: CollectionConfig = {
   slug: 'testimonials',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'company', 'createdAt'],
+    defaultColumns: ['name', 'company', 'featured', 'featuredOrder', 'createdAt'],
   },
   access: {
     read: () => true,
@@ -40,6 +40,17 @@ export const Testimonials: CollectionConfig = {
       defaultValue: false,
       admin: {
         description: 'Mark this testimonial as featured to highlight it',
+      },
+    },
+    // Featured Order — controls position in the featured testimonials view
+    {
+      name: 'featuredOrder',
+      type: 'number',
+      label: 'Featured Order',
+      admin: {
+        position: 'sidebar',
+        description: 'Lower numbers appear first. Only applies when featured.',
+        condition: (data) => data.featured,
       },
     },
   ],

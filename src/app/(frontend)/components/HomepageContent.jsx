@@ -25,7 +25,7 @@ const PROCESS_STEPS = [
   {
     num: '01',
     title: 'Customer Discovery',
-    desc: 'Understand how live and work',
+    desc: 'Understand how you live and work',
   },
   {
     num: '02',
@@ -58,12 +58,12 @@ function BadgeCircle({ children }) {
   return (
     <div className="badge-circle relative aspect-square flex flex-col items-center justify-center gap-2 cursor-default">
       <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200" fill="none">
-        <circle cx="100" cy="100" r="90" stroke="#374151" strokeWidth="1.5" />
+        <circle cx="100" cy="100" r="96" stroke="#374151" strokeWidth="1.5" />
         <circle
           className="orange-draw"
           cx="100"
           cy="100"
-          r="90"
+          r="96"
           strokeWidth="1.5"
           strokeLinecap="round"
         />
@@ -203,7 +203,7 @@ export default function HomepageContent({
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <BadgeCircle className="border border-gray-300">
-                <span className="lg:text-5xl text-4xl montserrat-bold text-gray-400">300+</span>
+                <span className="lg:text-5xl text-4xl montserrat-bold text-black">300+</span>
                 <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Spaces
                 </span>
@@ -217,7 +217,7 @@ export default function HomepageContent({
               transition={{ duration: 0.6, delay: 0.5 }}
             >
               <BadgeCircle className="border hausba-orange-border">
-                <span className="lg:text-5xl text-4xl montserrat-bold text-gray-400">200+</span>
+                <span className="lg:text-5xl text-4xl montserrat-bold text-black">200+</span>
                 <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Clients
                 </span>
@@ -231,15 +231,17 @@ export default function HomepageContent({
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <BadgeCircle className="border border-gray-300">
-                <div className="relative lg:w-30 lg:h-22 w-24 h-16">
+                <div className="flex items-center justify-center h-[44px] w-[104px] lg:h-[48px] lg:w-[122px]">
                   <Image
                     src="/avixalogo.png"
                     alt="AVIXA Member"
-                    fill
-                    className="object-contain"
+                    width={180}
+                    height={60}
+                    className="max-h-full max-w-full object-contain"
                     unoptimized
                   />
                 </div>
+
                 <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Member
                 </span>
@@ -253,15 +255,17 @@ export default function HomepageContent({
               transition={{ duration: 0.6, delay: 0.7 }}
             >
               <BadgeCircle className="border border-gray-300">
-                <div className="relative lg:w-30 lg:h-22 w-24 h-16">
+                <div className="flex items-center justify-center h-[44px] w-[104px] lg:h-[52px] lg:w-[122px]">
                   <Image
                     src="/cedia.png"
                     alt="CEDIA Certified"
-                    fill
-                    className="object-contain"
+                    width={180}
+                    height={60}
+                    className="max-h-full max-w-full object-contain"
                     unoptimized
                   />
                 </div>
+
                 <span className="text-[11px] montserrat-regular text-gray-500 uppercase tracking-[0.2em]">
                   Certified
                 </span>
