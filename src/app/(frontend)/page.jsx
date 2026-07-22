@@ -68,12 +68,17 @@ export default async function HomePage() {
         equals: true,
       },
     },
-    sort: '-createdAt',
+    sort: 'featuredOrder',
   })
 
   const brands = await payload.find({
     collection: 'brands',
     depth: 1,
+    where: {
+      type: {
+        equals: 'partner',
+      },
+    },
     sort: 'name',
     limit: 12,
   })

@@ -136,8 +136,11 @@ export default function Footer() {
               Contact
             </h4>
             <div className="space-y-2 text-sm montserrat-regular text-gray-300">
-              <a href="tel:+2348100999555" className="block hover:text-white transition-colors">
-                +234 8100 999 555
+              <a
+                href="https://wa.me/2348108846556"
+                className="block hover:text-white transition-colors"
+              >
+                +2348108846556
               </a>
               <a
                 href="mailto:experience@hausba.com"

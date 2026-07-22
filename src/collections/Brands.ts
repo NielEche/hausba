@@ -5,7 +5,7 @@ export const Brands: CollectionConfig = {
   slug: 'brands',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'website', 'createdAt'],
+    defaultColumns: ['name', 'type', 'website', 'createdAt'],
   },
   access: {
     read: () => true, // publicly readable
@@ -16,6 +16,21 @@ export const Brands: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Brand Name',
+    },
+    // Type — lets you distinguish Partners from Brands
+    {
+      name: 'type',
+      type: 'select',
+      required: true,
+      label: 'Type',
+      defaultValue: 'brand',
+      options: [
+        { label: 'Partner', value: 'partner' },
+        { label: 'Brand', value: 'brand' },
+      ],
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'image',

@@ -49,7 +49,6 @@ export const Faqs: CollectionConfig = {
       defaultValue: 0,
       admin: {
         position: 'sidebar',
-        description: 'Lower numbers show first in the accordion.',
       },
     },
   ],

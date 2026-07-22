@@ -14,38 +14,35 @@ export default function ProjectsPageContent({ projects = [] }) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* HERO SECTION */}
-      <section className="relative h-screen flex items-center justify-center">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/home1.jpg"
-            alt="Our Projects"
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-          />
-          {/* Bottom Black Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/20" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 text-center text-white px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+      {/* ── HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[85vh] flex items-end overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/home1.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+        <motion.div
+          className="relative z-10 max-w-3xl lg:px-16 px-4 pb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <h1 className="text-4xl md:text-6xl leading-[1.15] mb-2">
+            <span className="montserrat-regular italic!">Our</span>{' '}
+            <span className="montserrat-bold">Portfolio</span>
+          </h1>
+          <p className="text-sm montserrat-regular text-white max-w-md mb-8">
+            Some of our work and case studies for clients
+          </p>
+          <Link
+            href="https://wa.me/2348108846556"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block px-10 py-4 rounded-full hausba-orange-bg text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200! transition-colors duration-300"
           >
-            <h1 className="text-4xl lg:text-5xl montserrat-bold leading-tight mb-4">
-              Some of Our Works
-              <br />
-              and Case Studies for
-              <br />
-              Clients
-            </h1>
-          </motion.div>
-        </div>
+            Book a Consultation
+          </Link>
+        </motion.div>
       </section>
 
       {/* TABS SECTION */}

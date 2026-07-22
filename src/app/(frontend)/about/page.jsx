@@ -50,6 +50,11 @@ export default async function AboutPage() {
   const brands = await payload.find({
     collection: 'brands',
     depth: 1,
+    where: {
+      type: {
+        equals: 'brand',
+      },
+    },
     sort: 'name',
     limit: 60,
   })

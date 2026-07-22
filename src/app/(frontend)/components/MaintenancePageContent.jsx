@@ -43,7 +43,7 @@ const FEATURES = [
   },
   {
     title: 'Peak System Performance',
-    description: 'Firmware, calibration and tuning — always at their best.',
+    description: 'Firmware, calibration and tuning always at their best.',
     icon: (
       <svg
         viewBox="0 0 24 24"
@@ -165,7 +165,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
           <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.4em] uppercase mb-4">
             #HausbaCares
           </p>
-          <h1 className="text-4xl md:text-5xl montserrat-regular leading-[1.15] mb-2">
+          <h1 className="text-4xl md:text-5xl montserrat-regular leading-[1.15] mb-0">
             Keep Your Systems
           </h1>
           <h1 className="text-4xl md:text-5xl montserrat-bold leading-[1.15] mb-6">
@@ -177,7 +177,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
             peace of mind.
           </p>
           <Link
-            href="https://wa.me/+2348100999555"
+            href="https://wa.me/2348108846556"
             target="_blank"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full hausba-orange-bg text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200! transition-colors duration-300"
           >
@@ -323,7 +323,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
       {/* ── MID CTA ──────────────────────────────────────────────────── */}
       <section className="pb-28 px-6 text-center">
         <Link
-          href="https://wa.me/+2348100999555"
+          href="https://wa.me/2348108846556"
           target="_blank"
           className="inline-block px-10 py-4 rounded-full bg-white text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-300"
         >
