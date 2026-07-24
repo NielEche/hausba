@@ -32,6 +32,16 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      graphics: {
+        Logo: '/components/PayloadLogo',
+        Icon: '/components/PayloadIcon',
+      },
+    },
+    meta: {
+      titleSuffix: '- HAUSBA',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/favicon.png' }],
+    },
   },
   collections: [
     Users,
@@ -67,33 +77,33 @@ export default buildConfig({
         acl: 'public-read',
       },
     }),
-   seoPlugin({
-  collections: ['projects', 'solutions', 'applications'],
-  globals: ['homepage-seo', 'about-seo', 'maintenance-seo', 'projects-seo', 'solutions-seo'],
-  uploadsCollection: 'media',
-  tabbedUI: false,
-  generateTitle: ({ doc }) => `${doc?.title || 'HAUSBA'} | HAUSBA`,
-  generateDescription: ({ doc }) => doc?.excerpt || doc?.description || '',
-  fields: ({ defaultFields }) => [
-    ...defaultFields,
-    {
-      name: 'primaryKeywords',
-      type: 'text',
-      label: 'Primary Keywords',
-      admin: {
-        description: 'Comma-separated main search terms this page should rank for.',
-      },
-    },
-    {
-      name: 'secondaryKeywords',
-      type: 'text',
-      label: 'Secondary Keywords',
-      admin: {
-        description: 'Comma-separated supporting terms that broaden reach.',
-      },
-    },
-  ],
-}),
+    seoPlugin({
+      collections: ['projects', 'solutions', 'applications'],
+      globals: ['homepage-seo', 'about-seo', 'maintenance-seo', 'projects-seo', 'solutions-seo'],
+      uploadsCollection: 'media',
+      tabbedUI: false,
+      generateTitle: ({ doc }) => `${doc?.title || 'HAUSBA'} | HAUSBA`,
+      generateDescription: ({ doc }) => doc?.excerpt || doc?.description || '',
+      fields: ({ defaultFields }) => [
+        ...defaultFields,
+        {
+          name: 'primaryKeywords',
+          type: 'text',
+          label: 'Primary Keywords',
+          admin: {
+            description: 'Comma-separated main search terms this page should rank for.',
+          },
+        },
+        {
+          name: 'secondaryKeywords',
+          type: 'text',
+          label: 'Secondary Keywords',
+          admin: {
+            description: 'Comma-separated supporting terms that broaden reach.',
+          },
+        },
+      ],
+    }),
   ],
   // Debug logging to verify token is loaded — safe to remove once confirmed working.
   onInit: async (payload) => {
