@@ -321,6 +321,10 @@ export interface Project {
   id: number;
   title: string;
   slug: string;
+  /**
+   * Unlisted projects are excluded from the public project grid, sitemap, and other listing queries.
+   */
+  status: 'published' | 'unlisted';
   type: 'residential' | 'commercial';
   systems?:
     | {
@@ -762,6 +766,7 @@ export interface AwardsSelect<T extends boolean = true> {
 export interface ProjectsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  status?: T;
   type?: T;
   systems?:
     | T

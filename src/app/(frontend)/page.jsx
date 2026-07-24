@@ -48,6 +48,9 @@ export default async function HomePage() {
       featured: {
         equals: true,
       },
+      status: {
+        equals: 'published',
+      },
     },
     sort: 'homepageOrder',
     limit: 20,

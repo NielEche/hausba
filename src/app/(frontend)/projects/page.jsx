@@ -39,8 +39,10 @@ export default async function ProjectsPage() {
     collection: 'projects',
     limit: 100,
     sort: '-projectDate',
+    where: {
+      status: { equals: 'published' },
+    },
   })
-
   const transformedProjects = projects.docs.map((project) => ({
     ...project,
     coverImage: transformImageUrl(project.coverImage),
