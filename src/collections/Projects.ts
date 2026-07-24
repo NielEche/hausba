@@ -11,7 +11,7 @@ export const Projects: CollectionConfig = {
 
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'type', 'featured', 'tags'],
+    defaultColumns: ['title', 'type', 'status', 'featured', 'tags'],
   },
 
   // Auto-generate slug
@@ -50,6 +50,24 @@ export const Projects: CollectionConfig = {
       label: 'Slug',
       admin: {
         position: 'sidebar',
+      },
+    },
+
+    // Visibility / listing status
+    {
+      name: 'status',
+      type: 'select',
+      label: 'Status',
+      required: true,
+      defaultValue: 'published',
+      options: [
+        { label: 'Published', value: 'published' },
+        { label: 'Unlisted', value: 'unlisted' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description:
+          'Unlisted projects are excluded from the public project grid, sitemap, and other listing queries.',
       },
     },
 
