@@ -9,13 +9,21 @@ import { useState } from 'react'
 const serializeRichText = (content) => {
   if (!content) return null
 
-  if (typeof content === 'string') return content
+  // Strip characters/markup that can silently break word-wrapping:
+  // non-breaking spaces (from Word/Google Docs paste) and any inline
+  // style attributes (which can carry white-space: nowrap etc.)
+  const sanitize = (str) =>
+    typeof str === 'string'
+      ? str.replace(/\u00A0|&nbsp;/g, ' ').replace(/\sstyle="[^"]*"/gi, '')
+      : str
+
+  if (typeof content === 'string') return sanitize(content)
 
   const serialize = (node) => {
     if (!node) return ''
 
     if (node.text !== undefined) {
-      let text = node.text
+      let text = sanitize(node.text)
       if (node.bold) text = `<strong>${text}</strong>`
       if (node.italic) text = `<em>${text}</em>`
       if (node.underline) text = `<u>${text}</u>`
@@ -222,13 +230,13 @@ export default function ProjectDetailContent({ project }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="px-10 py-16 flex flex-col justify-center min-w-0"
+                className="px-10 py-16 flex flex-col justify-center min-w-0 w-full max-w-full overflow-hidden"
               >
                 <span className="text-xs uppercase tracking-wider text-[#ff6f3c] montserrat-regular block mb-4">
                   {solution.heading || 'The Solution'}
                 </span>
                 <div
-                  className="text-white/70 montserrat-regular leading-relaxed space-y-4 break-words"
+                  className="text-white/70 montserrat-regular leading-relaxed space-y-4 break-normal"
                   dangerouslySetInnerHTML={{ __html: serializeRichText(solution.content) }}
                 />
               </motion.div>
@@ -267,7 +275,7 @@ export default function ProjectDetailContent({ project }) {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
-                className="px-10 py-16 flex flex-col justify-center min-w-0"
+                className="px-10 py-16 flex flex-col justify-center min-w-0 w-full max-w-full overflow-hidden"
               >
                 {extraDetails.heading && (
                   <span className="text-xs uppercase tracking-wider text-white/50 montserrat-regular block mb-4">
@@ -275,7 +283,7 @@ export default function ProjectDetailContent({ project }) {
                   </span>
                 )}
                 <div
-                  className="text-white/70 montserrat-regular leading-relaxed break-words"
+                  className="text-white/70 montserrat-regular leading-relaxed break-normal"
                   dangerouslySetInnerHTML={{ __html: serializeRichText(extraDetails.content) }}
                 />
               </motion.div>
