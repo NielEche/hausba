@@ -72,7 +72,7 @@ export default async function SolutionDetailPage({ params }) {
   }
 }
 
-// Optional: Generate metadata
+// Generate metadata for SEO
 export async function generateMetadata({ params }) {
   const payload = await getPayload({ config })
   const resolvedParams = await params
@@ -97,9 +97,16 @@ export async function generateMetadata({ params }) {
       }
     }
 
+    const ogImage = transformImageUrl(solution.meta?.image)
+
     return {
-      title: `${solution.title} | Hausba Solutions`,
-      description: solution.description || `Learn more about ${solution.title}`,
+      title: solution.meta?.title || `${solution.title} | Hausba Solutions`,
+      description: solution.meta?.description || `Learn more about ${solution.title}`,
+      openGraph: {
+        title: solution.meta?.title || solution.title,
+        description: solution.meta?.description,
+        images: ogImage?.url ? [ogImage.url] : [],
+      },
     }
   } catch (error) {
     return {

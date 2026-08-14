@@ -1,240 +1,231 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import configPromise from '@payload-config'
 
-async function getSolutions() {
-  try {
-    const payload = await getPayloadHMR({ config: configPromise })
-    const solutions = await payload.find({
-      collection: 'solutions',
-      limit: 100,
-      sort: 'title',
-    })
-    return solutions.docs || []
-  } catch (error) {
-    console.error('Error fetching solutions:', error)
-    return []
-  }
+const NAV_LINKS = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Our Portfolio', href: '/projects' },
+  { label: 'Maintenance', href: '/maintenance' },
+  { label: 'Solutions', href: '/solutions' },
+]
+
+const SOLUTIONS_LINKS = [
+  { label: 'Audio', href: '/solutions/Audio' },
+  { label: 'Lighting', href: '/solutions/lighting' },
+  { label: 'Video', href: '/solutions/Video' },
+  { label: 'AV Collaboration', href: '/solutions/AV-Collaboration' },
+  { label: 'AV Distribution', href: '/solutions/AV-Distribution' },
+  { label: 'Security', href: '/solutions/Security' },
+  { label: 'Cinema', href: '/solutions/cinema' },
+]
+
+const EXPERIENCE_CENTRES = [
+  {
+    lines: ['Plot 24 Providence Street,', 'Lekki Phase 1, Lagos'],
+  },
+  {
+    lines: [
+      'Experience Center - Soundhous,',
+      '17 Adeyemo Alakija street,',
+      'Victoria island, Lagos',
+    ],
+  },
+]
+
+const SOCIALS = [
+  {
+    name: 'Facebook',
+    icon: '/social/fb.png',
+    href: 'https://www.facebook.com/3Dandstlprobables',
+  },
+  {
+    name: 'Instagram',
+    icon: '/social/insta.png',
+    href: 'https://www.instagram.com/hausbaexperience/',
+  },
+  { name: 'X', icon: '/social/x.png', href: 'https://x.com/hausba' },
+  {
+    name: 'LinkedIn',
+    icon: '/social/linkedin.png',
+    href: 'https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng',
+  },
+]
+
+function TaglineArrow() {
+  return (
+    <svg width="28" height="8" viewBox="0 0 28 8" fill="none" className="inline-block mx-2">
+      <line x1="0" y1="4" x2="22" y2="4" stroke="#FF7800" strokeWidth="1" />
+      <path
+        d="M19 1L23 4L19 7"
+        stroke="#FF7800"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
-export default async function Footer() {
-  const solutions = await getSolutions()
-
-  // Filter solutions by category and limit to 4 each
-  const residential = solutions.filter((s) => s.category === 'residential').slice(0, 4)
-  const commercial = solutions.filter((s) => s.category === 'commercial').slice(0, 4)
-
-  const socials = [
-    {
-      name: 'Facebook',
-      icon: '/social/fb.png',
-      href: 'https://www.facebook.com/3Dandstlprobables',
-    },
-    {
-      name: 'Instagram',
-      icon: '/social/insta.png',
-      href: 'https://www.instagram.com/hausbaexperience/',
-    },
-    { name: 'X', icon: '/social/x.png', href: 'https://x.com/hausba' },
-    {
-      name: 'LinkedIn',
-      icon: '/social/linkedin.png',
-      href: 'https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng',
-    },
-  ]
-
-  const menu = [
-    { label: 'About Us', href: '/about' },
-    { label: 'Our Portfolio', href: '/projects' },
-    { label: 'Applications', href: '/applications' },
-    { label: 'Solutions', href: '/solutions' },
-  ]
-
-  const experience = [
-    { label: 'Lagos Office - Plot 24 Providence Street, Lekki Phase 1, Lagos', href: '/' },
-    {
-      label: 'Experience  Center - Soundhous,  17 Adeyemo Alakija Street, Victoria Island Lagos',
-      href: '/',
-    },
-  ]
-
+export default function Footer() {
   return (
-    <footer className="bg-gray-100 text-black">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* NEWSLETTER SECTION */}
-        <div className="bg-gray-100 py-20">
-          <div className="max-w-7xl mx-auto text-black">
-            {/* Heading */}
-            <h3 className="text-3xl montserrat-bold mb-4">Stay up to date with our Newsletter</h3>
+    <footer className="w-full">
+      {/* ── NEWSLETTER ───────────────────────────────────────────────────── */}
+      <div className="bg-white w-full">
+        <div className="text-black max-w-7xl mx-auto px-6 pt-24 pb-26">
+          <h3 className="text-4xl md:text-5xl leading-tight mb-6">
+            <span className="montserrat-regular">Stay ahead of the standard, </span>
+            <br className="hidden sm:block" />
+            <span className="montserrat-regular">with our </span>
+            <span className="montserrat-bold">Newsletter</span>
+          </h3>
 
-            {/* Description */}
-            <p className="text-sm md:text-sm montserrat-regular mb-8 leading-relaxed lg:w-200">
-              Be the first to get informed when we roll out latest products, offers and new
-              services.
-              <br />
-              Your data is kept safe and confidential under our privacy and policy.
-              <br />
-              <br />
-              By subscribing to receive email newsletter, you agree to receive recurring autodialed
-              marketing emails to the email address used at opt-in. Email frequency may vary.
+          <p className="text-sm montserrat-regular text-black leading-relaxed max-w-2xl mb-8">
+            Be the first to get informed when we roll out latest products, offers and new services.
+            <br />
+            Your data is kept safe and confidential under our privacy and policy.
+            <br />
+            By subscribing to receive email newsletter, you agree to receive recurring autodialed
+            marketing emails to the email address used at opt-in. Email frequency may vary.
+          </p>
+
+          <form className="flex flex-col sm:flex-row gap-3 max-w-6xl">
+            <input
+              type="text"
+              placeholder="Your Name"
+              className="flex-1 bg-[#CCCCCC] border border-gray-900 rounded text-black text-sm montserrat-bold px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-600"
+            />
+            <input
+              type="email"
+              placeholder="Your Email"
+              className="flex-1 bg-[#CCCCCC] border border-gray-900 rounded text-black text-sm montserrat-bold px-4 py-4 focus:outline-none focus:border-gray-500 placeholder-gray-600"
+            />
+            <button
+              type="submit"
+              className="bg-[#FF7800] rounded text-black text-sm montserrat-bold uppercase tracking-widest px-8 py-4 hover:bg-[#e06800] transition-colors duration-300 whitespace-nowrap cursor-pointer"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* ── LINKS GRID ───────────────────────────────────────────────────── */}
+      <div className="bg-black  max-w-7xl mx-auto px-6 py-16">
+        <div className="flex flex-col md:flex-row md:justify-between gap-12 md:gap-24">
+          {/* Logo / tagline / contact */}
+          <div className="md:w-1/4 md:flex-shrink-0">
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/hausba-logo-wh.png"
+                alt="Hausba — luxury audiovisual and smart home systems, Nigeria"
+                width={135}
+                height={39}
+                className="filter"
+                unoptimized
+              />
+            </Link>
+
+            <p className="text-[10px] montserrat-bold text-gray-400 uppercase tracking-widest mb-8 flex items-center">
+              Lifestyle
+              <TaglineArrow />
+              Experience
+              <TaglineArrow />
+              Technology
             </p>
 
-            {/* Form */}
-            <form className="flex flex-col md:flex-row items-center gap-4 md:gap-2">
-              {/* Name */}
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="flex-1 w-full px-4 py-3 bg-[#E7E6E6] focus:outline-none montserrat-regular"
-              />
-
-              {/* Email */}
-              <input
-                type="email"
-                placeholder="Your Email"
-                className="flex-1 w-full px-4 py-3 bg-[#E7E6E6] focus:outline-none montserrat-regular"
-              />
-
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="bg-[#FF6F3C] mons text-white font-semibold px-6 montserrat-reular py-3 hover:bg-[#d94d1a] transition"
+            <h4 className="text-[11px] montserrat-bold uppercase tracking-widest text-gray-500 mb-4">
+              Contact
+            </h4>
+            <div className="space-y-2 text-sm montserrat-regular text-gray-300">
+              <a
+                href="https://wa.me/2348108846556"
+                className="block hover:text-white transition-colors"
               >
-                SUBSCRIBE
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* LOGO */}
-        <div className="pt-6 pb-8 flex justify-center md:justify-start">
-          <Link href="/" className="pb-4">
-            <Image
-              src="/hausba-logo-bl.png"
-              alt="Hausba Logo"
-              width={160}
-              height={50}
-              className="cursor-pointer"
-              unoptimized
-            />
-          </Link>
-        </div>
-
-        {/* FOOTER GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-6">
-          {/* Menu */}
-          <div>
-            <h4 className="text-lg montserrat-bold mb-4">Menu</h4>
-            <ul className="space-y-2 text-sm">
-              {menu.map((item, i) => (
-                <li key={i}>
-                  <Link href={item.href} className="hover:underline montserrat-regular">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-
-            <div className="pt-10">
-              <h4 className="text-lg montserrat-bold mb-4">Contact</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <Link href="tel:+2348100999555" className="hover:underline montserrat-regular">
-                    +234 8100 999 555
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    href="mailto:experience@hausba.com"
-                    className="hover:underline montserrat-regular"
-                  >
-                    experience@hausba.com
-                  </Link>
-                </li>
-              </ul>
+                +2348108846556
+              </a>
+              <a
+                href="mailto:experience@hausba.com"
+                className="block hover:text-white transition-colors"
+              >
+                experience@hausba.com
+              </a>
             </div>
           </div>
 
-          {/* Residential Solutions */}
-          <div>
-            <h4 className="text-lg montserrat-bold mb-4">Residential Solutions</h4>
-            <ul className="space-y-2 text-sm">
-              {residential.length > 0 ? (
-                residential.map((solution) => (
-                  <li key={solution.id}>
-                    <Link
-                      href={`/solutions/${solution.slug}`}
-                      className="hover:underline montserrat-regular"
-                    >
-                      {solution.title}
+          {/* Navigate / Solutions / Technology — grouped tighter together */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 md:gap-16">
+            {/* Navigate */}
+            <div>
+              <h4 className="text-[11px] montserrat-bold uppercase tracking-widest text-gray-500 mb-4">
+                Navigate
+              </h4>
+              <ul className="space-y-3 text-sm montserrat-regular text-gray-300">
+                {NAV_LINKS.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="hover:text-white transition-colors">
+                      {item.label}
                     </Link>
                   </li>
-                ))
-              ) : (
-                <li className="text-sm opacity-60 montserrat-regular">No solutions available</li>
-              )}
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </div>
 
-          {/* Commercial Solutions */}
-          <div>
-            <h4 className="text-lg montserrat-bold mb-4">Commercial Solutions</h4>
-            <ul className="space-y-2 text-sm">
-              {commercial.length > 0 ? (
-                commercial.map((solution) => (
-                  <li key={solution.id}>
-                    <Link
-                      href={`/solutions/${solution.slug}`}
-                      className="hover:underline montserrat-regular"
-                    >
-                      {solution.title}
+            {/* Solutions */}
+            <div>
+              <h4 className="text-[11px] montserrat-bold uppercase tracking-widest text-gray-500 mb-4">
+                Solutions
+              </h4>
+              <ul className="space-y-3 text-sm montserrat-regular text-gray-300">
+                {SOLUTIONS_LINKS.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="hover:text-white transition-colors">
+                      {item.label}
                     </Link>
                   </li>
-                ))
-              ) : (
-                <li className="text-sm opacity-60 montserrat-regular">No solutions available</li>
-              )}
-            </ul>
-          </div>
+                ))}
+              </ul>
+            </div>
 
-          {/* Experience Centers */}
-          <div>
-            <h4 className="text-lg montserrat-bold mb-4">Experience Centers</h4>
-            <ul className="space-y-2 text-sm">
-              {experience.map((item, i) => (
-                <li key={i}>
-                  <Link href={item.href} className="hover:underline montserrat-regular">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Experience Centres */}
+            <div>
+              <h4 className="text-[11px] montserrat-bold uppercase tracking-widest text-gray-500 mb-4">
+                Technology
+              </h4>
+              <ul className="space-y-5 text-sm montserrat-regular text-gray-300">
+                {EXPERIENCE_CENTRES.map((centre, i) => (
+                  <li key={i}>
+                    {centre.lines.map((line, j) => (
+                      <p key={j} className={j === 0 ? 'text-white montserrat-bold mb-1' : ''}>
+                        {line}
+                      </p>
+                    ))}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="lg:flex items-center justify-between max-w-7xl mx-auto pt-2 pb-8">
-          {/* Socials */}
+      {/* ── BOTTOM BAR ───────────────────────────────────────────────────── */}
+      <div className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex gap-4">
-            {socials.map((social) => (
-              <Link key={social.name} href={social.href} target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={social.icon}
-                  alt={social.name}
-                  width={24}
-                  height={24}
-                  className="hover:opacity-80 transition-opacity"
-                  unoptimized
-                />
-              </Link>
+            {SOCIALS.map((social) => (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-white transition-colors"
+              >
+                <Image src={social.icon} alt={social.name} width={16} height={16} unoptimized />
+              </a>
             ))}
           </div>
 
-          {/* Copyright */}
-          <div className="text-sm opacity-60 py-4">
-            &copy; {new Date().getFullYear()} Hausba. All rights reserved.
-          </div>
+          <p className="text-[11px] montserrat-regular text-gray-500">
+            {new Date().getFullYear()} Hausba. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

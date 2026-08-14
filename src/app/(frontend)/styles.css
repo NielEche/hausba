@@ -67,7 +67,7 @@ svg {
 }
 
 .hausba-orange {
-  color: #ff6f3c;
+  color: #ff7800;
 }
 
 .hausba-black {
@@ -79,13 +79,31 @@ svg {
 }
 
 .hausba-orange-border {
-  border-color: #ff6f3c;
+  border-color: #ff7800;
 }
 
 .hausba-orange-bg {
-  background-color: #ff6f3c;
+  background-color: #ff7800;
 }
 
 .hausba-grey-bg {
   background-color: #686666;
+}
+
+.hausba-grey-bg2 {
+  background-color: #1a1a1a;
+}
+
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
 }

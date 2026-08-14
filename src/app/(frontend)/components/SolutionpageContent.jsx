@@ -45,7 +45,7 @@ export default function SolutionpageContent({ solutions = [] }) {
       icon: '/icons/ea.png',
       title: 'Experience Assurance',
       description:
-        'Using remote monitoring tools, our dedicated support teams ensure the experiences we promised you are maintained for life. We are the best at smart home automation in Nigeria.',
+        'Using remote monitoring tools, our dedicated support teams ensure the experiences we promised you are maintained for life. We are committed to maintaining the experiences we create, for life.',
     },
   ]
 
@@ -102,45 +102,39 @@ export default function SolutionpageContent({ solutions = [] }) {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* HERO SECTION */}
-      <section className="relative h-screen flex items-center justify-start">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/home1.jpg"
-            alt="Solutions"
-            fill
-            className="object-cover"
-            priority
-            unoptimized
-          />
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-7xl lg:px-16 px-4 text-left text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+      {/* ── HERO ──────────────────────────────────────────────────────── */}
+      <section className="relative min-h-[85vh] flex items-end overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/home1.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/20" />
+        <motion.div
+          className="relative z-10 max-w-3xl lg:px-16 px-4 pb-20"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.4em] uppercase mb-4">
+            What We Offer
+          </p>
+          <h1 className="text-4xl md:text-5xl montserrat-regular leading-[1.15] mb-0">
+            Solutions Shaped
+          </h1>
+          <h1 className="text-4xl md:text-5xl montserrat-bold leading-[1.15] mb-6">
+            Around Your Space
+          </h1>
+          <p className="text-sm montserrat-regular text-white max-w-md mb-8">
+            Every solution we deliver is built with precision and intent, we design each system
+            around the specific needs of your space.
+          </p>
+          <Link
+            href="/projects"
+            className="inline-block px-10 py-4 rounded-full hausba-orange-bg text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200! transition-colors duration-300"
           >
-            <span className="text-xs montserrat-regular mb-6 block">[ WHAT WE DO ]</span>
-            <h1 className="text-3xl lg:text-4xl montserrat-bold leading-tight my-12">
-              We deliver premium
-              <br />
-              home automation and
-              <br />
-              home cinema solutions
-            </h1>
-            <Link
-              href="/projects"
-              className="hausba-orange-bg hover:bg-[#ff8a1a] text-white px-8 py-3  montserrat-regular text-sm transition-colors duration-300 cursor-pointer mt-4"
-            >
-              VIEW PROJECTS
-            </Link>
-          </motion.div>
-        </div>
+            View Projects
+          </Link>
+        </motion.div>
       </section>
 
       {/* FEATURED SOLUTIONS GRID */}
@@ -193,46 +187,51 @@ export default function SolutionpageContent({ solutions = [] }) {
 
       {/* CATEGORY FILTER TABS */}
       <section className="bg-black px-6 pt-24">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-start gap-4 flex-wrap">
+        <div className="max-w-7xl mx-auto flex justify-start">
+          <div className="relative flex bg-[#545050] rounded-full p-1">
             <button
               onClick={() => setActiveCategory('all')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeCategory === 'all'
-                    ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 text-[#ff6f3c]'
-                    : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeCategory === 'all' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              All Solutions
+              {activeCategory === 'all' && (
+                <motion.span
+                  layoutId="solutions-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">All Solutions</span>
             </button>
+
             <button
               onClick={() => setActiveCategory('residential')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeCategory === 'residential'
-                    ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 text-[#ff6f3c]'
-                    : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeCategory === 'residential' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              Residential
+              {activeCategory === 'residential' && (
+                <motion.span
+                  layoutId="solutions-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Residential</span>
             </button>
+
             <button
               onClick={() => setActiveCategory('commercial')}
-              className={`
-                px-8 py-3 text-sm montserrat-regular border transition-all duration-300 cursor-pointer
-                ${
-                  activeCategory === 'commercial'
-                    ? 'border-[#ff6f3c] bg-[#ff6f3c]/10 text-[#ff6f3c]'
-                    : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-                }
-              `}
+              className={`relative z-10 px-7 py-2 rounded-full lg:text-[11px] text-[7px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeCategory === 'commercial' ? 'text-black' : 'text-white hover:text-white'}`}
             >
-              Commercial
+              {activeCategory === 'commercial' && (
+                <motion.span
+                  layoutId="solutions-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Commercial</span>
             </button>
           </div>
         </div>
@@ -361,117 +360,6 @@ export default function SolutionpageContent({ solutions = [] }) {
           `}</style>
         </div>
       </section>
-
-      {/* CONTACT US SECTION */}
-      <div className="bg-black">
-        <div className="max-w-7xl mx-auto px-4 py-20 ">
-          <div
-            className="relative border-2 hausba-orange-border overflow-hidden flex items-center"
-            style={{ minHeight: '220px' }}
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url('/estimate.jpg')` }}
-            ></div>
-
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0) 100%)',
-              }}
-            ></div>
-
-            <div className="relative z-10  flex flex-col md:flex-row items-center justify-between w-full px-8 py-16">
-              <div className=" flex justify-center md:justify-center w-full  py-2">
-                <h3 className="text-xl md:text-2xl montserrat-bold mb-2">Contact us today</h3>
-              </div>
-
-              <div className=" flex justify-center md:justify-center w-full  py-2">
-                <div className="space-y-4">
-                  <a
-                    href="tel:+2348100999555"
-                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
-                  >
-                    +234 8100 999 555
-                  </a>
-                  <a
-                    href="mailto:experience@hausba.com"
-                    className="block text-white/80 hover:text-[#FF7800] transition-colors text-sm montserrat-regular"
-                  >
-                    experience@hausba.com
-                  </a>
-                </div>
-              </div>
-
-              <div className="mt-4 md:mt-0 flex justify-center md:justify-center w-full  py-4">
-                <div className="flex gap-4">
-                  <a
-                    href="https://www.facebook.com/3Dandstlprobables"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/fb.png"
-                      alt="Facebook"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/hausbaexperience/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/insta.png"
-                      alt="Instagram"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://x.com/hausba"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/x.png"
-                      alt="X"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition-opacity"
-                  >
-                    <Image
-                      src="/social/linkedin.png"
-                      alt="LinkedIn"
-                      width={35}
-                      height={35}
-                      className="filter invert"
-                      unoptimized
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

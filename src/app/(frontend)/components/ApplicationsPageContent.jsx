@@ -80,39 +80,53 @@ export default function ApplicationsPageContent({ applications = [] }) {
 
       {/* FILTER TABS */}
       <section className="bg-black px-6 pt-24">
-        <div className="max-w-7xl mx-auto flex gap-4 flex-wrap">
-          <button
-            onClick={() => setActiveType('all')}
-            className={`px-8 py-3 text-sm border montserrat-regular transition-all duration-300 ${
-              activeType === 'all'
-                ? 'border-[#ff6f3c] text-[#ff6f3c] bg-[#ff6f3c]/10'
-                : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-            }`}
-          >
-            All Applications
-          </button>
+        <div className="max-w-7xl mx-auto flex justify-start">
+          <div className="relative flex bg-[#545050] rounded-full p-1">
+            <button
+              onClick={() => setActiveType('all')}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeType === 'all' ? 'text-black' : 'text-white hover:text-white'}`}
+            >
+              {activeType === 'all' && (
+                <motion.span
+                  layoutId="applications-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">All Applications</span>
+            </button>
 
-          <button
-            onClick={() => setActiveType('residential')}
-            className={`px-8 py-3 text-sm border montserrat-regular transition-all duration-300 ${
-              activeType === 'residential'
-                ? 'border-[#ff6f3c] text-[#ff6f3c] bg-[#ff6f3c]/10'
-                : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-            }`}
-          >
-            Residential
-          </button>
+            <button
+              onClick={() => setActiveType('residential')}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeType === 'residential' ? 'text-black' : 'text-white hover:text-white'}`}
+            >
+              {activeType === 'residential' && (
+                <motion.span
+                  layoutId="applications-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Residential</span>
+            </button>
 
-          <button
-            onClick={() => setActiveType('commercial')}
-            className={`px-8 py-3 text-sm border montserrat-regular transition-all duration-300 ${
-              activeType === 'commercial'
-                ? 'border-[#ff6f3c] text-[#ff6f3c] bg-[#ff6f3c]/10'
-                : 'border-[#2B2B2B] text-white hover:border-[#ff6f3c]/50'
-            }`}
-          >
-            Commercial
-          </button>
+            <button
+              onClick={() => setActiveType('commercial')}
+              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeType === 'commercial' ? 'text-black' : 'text-white hover:text-white'}`}
+            >
+              {activeType === 'commercial' && (
+                <motion.span
+                  layoutId="applications-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Commercial</span>
+            </button>
+          </div>
         </div>
       </section>
 

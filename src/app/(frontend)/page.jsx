@@ -5,11 +5,9 @@ import HomepageContent from './components/HomepageContent'
 
 export const revalidate = 60
 
-// Helper to transform image URLs to use UploadThing
 function transformImageUrl(image) {
   if (!image) return null
 
-  // If _key exists, construct the UploadThing URL
   if (image._key) {
     return {
       ...image,
@@ -17,17 +15,44 @@ function transformImageUrl(image) {
     }
   }
 
-  // Fallback to original URL
   return image
+}
+
+export async function generateMetadata() {
+  const payload = await getPayload({ config })
+
+  const seo = await payload.findGlobal({
+    slug: 'homepage-seo',
+  })
+
+  const ogImage = transformImageUrl(seo?.meta?.image)
+
+  return {
+    title: seo?.meta?.title || 'HAUSBA | Luxury Smart Home & AV Integration',
+    description: seo?.meta?.description || '',
+    openGraph: {
+      title: seo?.meta?.title,
+      description: seo?.meta?.description,
+      images: ogImage?.url ? [ogImage.url] : [],
+    },
+  }
 }
 
 export default async function HomePage() {
   const payload = await getPayload({ config })
 
-  const applications = await payload.find({
-    collection: 'applications',
+  const projects = await payload.find({
+    collection: 'projects',
     depth: 1,
-    sort: 'createdAt',
+    where: {
+      featured: {
+        equals: true,
+      },
+      status: {
+        equals: 'published',
+      },
+    },
+    sort: 'homepageOrder',
     limit: 20,
   })
 
@@ -46,20 +71,24 @@ export default async function HomePage() {
         equals: true,
       },
     },
-    sort: '-createdAt',
+    sort: 'featuredOrder',
   })
 
   const brands = await payload.find({
     collection: 'brands',
     depth: 1,
+    where: {
+      type: {
+        equals: 'partner',
+      },
+    },
     sort: 'name',
     limit: 12,
   })
 
-  // Transform all image URLs to use UploadThing
-  const transformedApps = applications.docs.map((app) => ({
-    ...app,
-    image: transformImageUrl(app.image),
+  const transformedProjects = projects.docs.map((project) => ({
+    ...project,
+    image: transformImageUrl(project.coverImage),
   }))
 
   const transformedSolutions = solutions.docs.map((sol) => ({
@@ -77,15 +106,9 @@ export default async function HomePage() {
     image: transformImageUrl(b.image),
   }))
 
-  // Debug: Check transformed URLs
-  console.log('=== TRANSFORMED IMAGE CHECK ===')
-  console.log('First app image URL:', transformedApps[0]?.image?.url)
-  console.log('First brand image URL:', transformedBrands[0]?.image?.url)
-  console.log('===============================')
-
   return (
     <HomepageContent
-      applications={transformedApps}
+      projects={transformedProjects}
       solutions={transformedSolutions}
       testimonials={transformedTestimonials}
       brands={transformedBrands}
