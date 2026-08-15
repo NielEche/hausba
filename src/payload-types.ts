@@ -452,7 +452,7 @@ export interface ServicePlan {
   /**
    * Which toggle tab this plan appears under on the Maintenance page.
    */
-  planType: 'residential' | 'commercial';
+  planType: 'residential' | 'commercial' | 'hospitality';
   /**
    * Lower numbers show first (e.g. Basic = 1, Standard = 2, Premium = 3).
    */

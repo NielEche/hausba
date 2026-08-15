@@ -54,7 +54,7 @@ export default async function MaintenancePage() {
     }),
     payload.find({
       collection: 'testimonials',
-      limit: 3,
+      limit: 10,
       sort: '-createdAt',
     }),
   ])
