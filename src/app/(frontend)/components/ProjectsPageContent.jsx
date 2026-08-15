@@ -106,7 +106,7 @@ export default function ProjectsPageContent({ projects = [] }) {
                   transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                 />
               )}
-              <span className="relative z-10">Hospitability</span>
+              <span className="relative z-10">Hospitality</span>
             </button>
           </div>
         </div>
