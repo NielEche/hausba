@@ -448,7 +448,6 @@ export default function HomepageContent({
         <section className="bg-black py-20 px-6">
           <div className="max-w-7xl mx-auto">
             <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
               SELECTED WORK
             </p>
 
