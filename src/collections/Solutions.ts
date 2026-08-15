@@ -60,6 +60,7 @@ export const Solutions: CollectionConfig = {
       options: [
         { label: 'Residential', value: 'residential' },
         { label: 'Commercial', value: 'commercial' },
+        { label: 'Hospitality', value: 'hospitality' },
       ],
     },
 

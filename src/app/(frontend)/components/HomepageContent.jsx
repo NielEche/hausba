@@ -1,9 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ChevronRight } from 'lucide-react'
 
 const BADGE_CIRCLE_STYLE = `
   .badge-circle .orange-draw {
@@ -54,17 +55,59 @@ const PROCESS_STEPS = [
   },
 ]
 
+const WHAT_WE_DO_CARDS = [
+  {
+    num: '01',
+    title: 'Residential',
+    desc: 'Private homes and residences, from single systems to smart-home integration',
+    label: 'Solutions For Residential',
+    href: '/solutions?type=residential',
+  },
+  {
+    num: '02',
+    title: 'Commercial',
+    desc: 'Offices and commercial spaces built for performance, control and scale.',
+    label: 'Solutions For Commercial',
+    href: '/solutions?type=commercial',
+  },
+  {
+    num: '03',
+    title: 'Hospitality',
+    desc: 'Hotels and hospitality venues where seamless experience is the standard',
+    label: 'Solutions For Hospitality',
+    href: '/solutions?type=hospitality',
+  },
+]
+
+const SOCIALS = [
+  {
+    name: 'Facebook',
+    icon: '/social/fb.png',
+    href: 'https://www.facebook.com/3Dandstlprobables',
+  },
+  {
+    name: 'Instagram',
+    icon: '/social/insta.png',
+    href: 'https://www.instagram.com/hausbaexperience/',
+  },
+  { name: 'X', icon: '/social/x.png', href: 'https://x.com/hausba' },
+  {
+    name: 'LinkedIn',
+    icon: '/social/linkedin.png',
+    href: 'https://www.linkedin.com/company/hausbaexperience?originalSubdomain=ng',
+  },
+]
+
 function BadgeCircle({ children }) {
   return (
-    <div className="badge-circle relative aspect-square flex flex-col items-center justify-center gap-2 cursor-default">
+    <div className="badge-circle relative aspect-square w-full max-w-[200px] mx-auto rounded-full bg-[#CCCCCC] flex flex-col items-center justify-center gap-2 cursor-default">
       <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200" fill="none">
-        <circle cx="100" cy="100" r="96" stroke="#374151" strokeWidth="1.5" />
         <circle
           className="orange-draw"
           cx="100"
           cy="100"
-          r="96"
-          strokeWidth="1.5"
+          r="97"
+          strokeWidth="2.5"
           strokeLinecap="round"
         />
       </svg>
@@ -77,6 +120,7 @@ function BadgeCircle({ children }) {
 
 export default function HomepageContent({
   projects = [],
+  solutionProjects = [],
   solutions = [],
   testimonials = [],
   brands = [],
@@ -115,6 +159,22 @@ export default function HomepageContent({
   const [activeProjectTab, setActiveProjectTab] = useState(projectTypes[0] || '')
   const [testimonialIndex, setTestimonialIndex] = useState(0)
   const activeTestimonial = testimonials[testimonialIndex]
+
+  const [solutionsSliderIndex, setSolutionsSliderIndex] = useState(0)
+  const [isSolutionsSliderPaused, setIsSolutionsSliderPaused] = useState(false)
+
+  // Flat list of project images to slide through — falls back gracefully if a project has no image
+  const sliderProjects = solutionProjects.filter((p) => p.image?.url)
+
+  useEffect(() => {
+    if (sliderProjects.length <= 1 || isSolutionsSliderPaused) return
+
+    const interval = setInterval(() => {
+      setSolutionsSliderIndex((i) => (i + 1) % sliderProjects.length)
+    }, 4000)
+
+    return () => clearInterval(interval)
+  }, [sliderProjects.length, isSolutionsSliderPaused])
 
   return (
     <div className="text-white bg-white">
@@ -184,16 +244,31 @@ export default function HomepageContent({
             Lighting, sound, security and climate, working as one system
           </motion.p>
 
-          <motion.a
-            href="/solutions"
-            className="inline-block border border-gray-600 bg-[#CCCCCC] text-black text-xs montserrat-bold px-8 py-4 uppercase tracking-[0.2em] rounded-full hover:bg-black hover:text-white! transition-colors duration-300 mb-16"
+          {/* Residential / Commercial / Hospitality cards */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-3 border border-gray-200 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 mb-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Explore Our Solutions
-          </motion.a>
+            {WHAT_WE_DO_CARDS.map((card) => (
+              <div key={card.num} className="p-8 flex flex-col">
+                <span className="text-xs montserrat-bold text-gray-500 mb-4">{card.num}</span>
+                <h3 className="text-2xl montserrat-bold text-black mb-3">{card.title}</h3>
+                <p className="text-sm montserrat-regular text-gray-600 leading-relaxed mb-8">
+                  {card.desc}
+                </p>
+                <Link
+                  href={card.href}
+                  className="mt-auto inline-flex items-center gap-1.5 text-sm montserrat-bold hausba-orange hover:gap-2.5 transition-all duration-300 w-fit"
+                >
+                  {card.label}
+                  <ChevronRight size={16} />
+                </Link>
+              </div>
+            ))}
+          </motion.div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:gap-8 gap-4 max-w-7xl">
             <motion.div
@@ -531,7 +606,7 @@ export default function HomepageContent({
       </section>
 
       {/* ── OUR SOLUTIONS ────────────────────────────────────────────────── */}
-      {solutionTypes.length > 0 && (
+      {sliderProjects.length > 0 && (
         <section className="bg-white py-20 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Eyebrow */}
@@ -539,68 +614,115 @@ export default function HomepageContent({
               <span className="hausba-grey">OUR SOLUTIONS</span>
             </p>
 
-            <h2 className="text-3xl md:text-4xl montserrat-bold text-black text-center mb-8">
+            <h2 className="text-3xl md:text-4xl montserrat-bold text-black text-center mb-10">
               Engineered for the extraordinary
             </h2>
 
-            {/* Sliding pill tab switcher */}
-            <div className="flex justify-center mb-10">
-              <div className="relative flex bg-[#545050] rounded-full p-1">
-                {solutionTypes.map((type) => (
+            {/* Image slider */}
+            <div
+              className="relative w-full h-[420px] md:h-[560px] overflow-hidden mb-10"
+              onMouseEnter={() => setIsSolutionsSliderPaused(true)}
+              onMouseLeave={() => setIsSolutionsSliderPaused(false)}
+            >
+              {sliderProjects.map((project, index) => (
+                <motion.div
+                  key={project.id || index}
+                  className="absolute inset-0 bg-cover bg-center rounded-lg"
+                  style={{ backgroundImage: `url(${project.image.url})` }}
+                  initial={false}
+                  animate={{ opacity: index === solutionsSliderIndex ? 1 : 0 }}
+                  transition={{ duration: 0.6 }}
+                />
+              ))}
+              <div className="absolute inset-0 bg-gradient-to-t rounded-lg from-black/50 via-transparent to-transparent" />
+
+              {sliderProjects.length > 1 && (
+                <>
                   <button
-                    key={type}
-                    onClick={() => setActiveSolTab(type)}
-                    className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
-                  ${activeSolTab === type ? 'text-black' : 'text-white hover:text-white'}`}
+                    onClick={() =>
+                      setSolutionsSliderIndex(
+                        (i) => (i - 1 + sliderProjects.length) % sliderProjects.length,
+                      )
+                    }
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-white hover:bg-black/60 transition-colors cursor-pointer"
+                    aria-label="Previous project"
                   >
-                    {activeSolTab === type && (
-                      <motion.span
-                        layoutId="sol-pill"
-                        className="absolute inset-0 bg-[#CCCCCC] rounded-full"
-                        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        d="M15 18l-6-6 6-6"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
-                    )}
-                    <span className="relative z-10">{type}</span>
+                    </svg>
                   </button>
-                ))}
-              </div>
+                  <button
+                    onClick={() => setSolutionsSliderIndex((i) => (i + 1) % sliderProjects.length)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-white hover:bg-black/60 transition-colors cursor-pointer"
+                    aria-label="Next project"
+                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        d="M9 18l6-6-6-6"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2">
+                    {sliderProjects.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSolutionsSliderIndex(i)}
+                        className={`w-1.5 h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                          i === solutionsSliderIndex ? 'bg-[#FF7800] w-4' : 'bg-white/60'
+                        }`}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
-            {/* Cards grid */}
-            {groupedSolutions[activeSolTab] && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {groupedSolutions[activeSolTab].map((solution, index) => (
-                  <Link key={solution.id} href={`/solutions/${solution.slug}`}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.07 }}
-                      className="relative h-86 overflow-hidden group cursor-pointer"
-                    >
-                      <div
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-                        style={{
-                          backgroundImage: solution.image?.url
-                            ? `url(${solution.image.url})`
-                            : 'linear-gradient(160deg, #5badec 0%, #3a7fc1 50%, #2d3e50 100%)',
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                      {/* Title */}
-                      <div className="absolute bottom-0 left-0 p-5 z-10">
-                        {/* Number sits just above title */}
-                        <span className="text-[11px] montserrat-bold hausba-orange tracking-widest pb-4">
-                          {String(index + 1).padStart(2, '0')}
-                        </span>
-                        <h3 className="text-lg montserrat-regular text-white">{solution.title}</h3>
-                      </div>
-                    </motion.div>
-                  </Link>
-                ))}
-              </div>
-            )}
+            {/* Social pills */}
+            <div className="flex justify-center gap-4 flex-wrap">
+              {SOCIALS.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-[#545050] hover:bg-[#3d3d3d] transition-colors duration-300"
+                >
+                  <Image
+                    src={social.icon}
+                    alt={social.name}
+                    width={16}
+                    height={16}
+                    unoptimized
+                    className="invert"
+                  />
+                  <span className="text-white text-[11px] montserrat-bold uppercase tracking-widest">
+                    {social.name}
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </section>
       )}
