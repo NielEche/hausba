@@ -51,7 +51,7 @@ export default function ProjectsPageContent({ projects = [] }) {
           <div className="relative flex bg-[#545050] rounded-full p-1">
             <button
               onClick={() => setActiveTab('all')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 lg:px-7 px-4 py-2 rounded-full lg:text-[11px] text-[8px]  montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeTab === 'all' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeTab === 'all' && (
@@ -66,7 +66,7 @@ export default function ProjectsPageContent({ projects = [] }) {
 
             <button
               onClick={() => setActiveTab('residential')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 lg:px-7 px-4 py-2 rounded-full lg:text-[11px] text-[8px]  montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeTab === 'residential' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeTab === 'residential' && (
@@ -81,7 +81,7 @@ export default function ProjectsPageContent({ projects = [] }) {
 
             <button
               onClick={() => setActiveTab('commercial')}
-              className={`relative z-10 px-7 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+              className={`relative z-10 lg:px-7 px-4 py-2 rounded-full lg:text-[11px] text-[8px]  montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
                 ${activeTab === 'commercial' ? 'text-black' : 'text-white hover:text-white'}`}
             >
               {activeTab === 'commercial' && (
@@ -92,6 +92,21 @@ export default function ProjectsPageContent({ projects = [] }) {
                 />
               )}
               <span className="relative z-10">Commercial</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('hospitality')}
+              className={`relative z-10 lg:px-7 px-4 py-2 rounded-full lg:text-[11px] text-[8px]  montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                ${activeTab === 'hospitality' ? 'text-black' : 'text-white hover:text-white'}`}
+            >
+              {activeTab === 'hospitality' && (
+                <motion.span
+                  layoutId="projects-page-pill"
+                  className="absolute inset-0 bg-[#CCCCCC] rounded-full"
+                  transition={{ type: 'spring', stiffness: 400, damping: 35 }}
+                />
+              )}
+              <span className="relative z-10">Hospitability</span>
             </button>
           </div>
         </div>

@@ -80,6 +80,7 @@ export const Projects: CollectionConfig = {
       options: [
         { label: 'Residential', value: 'residential' },
         { label: 'Commercial', value: 'commercial' },
+        { label: 'Hospitality', value: 'hospitality' },
       ],
       admin: {
         position: 'sidebar',

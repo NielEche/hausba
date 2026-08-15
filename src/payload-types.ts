@@ -235,7 +235,7 @@ export interface Solution {
   id: number;
   title: string;
   slug: string;
-  category: 'residential' | 'commercial';
+  category: 'residential' | 'commercial' | 'hospitality';
   image: number | Media;
   description?: string | null;
   sections?:
@@ -325,7 +325,7 @@ export interface Project {
    * Unlisted projects are excluded from the public project grid, sitemap, and other listing queries.
    */
   status: 'published' | 'unlisted';
-  type: 'residential' | 'commercial';
+  type: 'residential' | 'commercial' | 'hospitality';
   systems?:
     | {
         system: string;
