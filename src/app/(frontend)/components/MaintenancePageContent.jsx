@@ -254,7 +254,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
                   <button
                     key={type}
                     onClick={() => setActivePlanTab(type)}
-                    className={`relative z-10 px-6 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+                    className={`relative z-10 px-6 py-2 rounded-full lg:text-[11px] text-[8px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
       ${activePlanTab === type ? 'text-white' : 'text-gray-500 hover:text-white'}`}
                   >
                     {activePlanTab === type && (
