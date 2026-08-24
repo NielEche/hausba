@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import SolutionpageContent from '../components/SolutionpageContent'
@@ -46,5 +47,9 @@ export default async function SolutionPage() {
     image: transformImageUrl(solution.image),
   }))
 
-  return <SolutionpageContent solutions={transformedSolutions} />
+  return (
+    <Suspense fallback={null}>
+      <SolutionpageContent solutions={transformedSolutions} />
+    </Suspense>
+  )
 }

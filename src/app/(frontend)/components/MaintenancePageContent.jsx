@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+
+const PLAN_TYPE_ORDER = ['residential', 'commercial', 'hospitality']
 
 const FEATURES = [
   {
@@ -131,14 +133,17 @@ function FaqItem({ faq, isOpen, onToggle }) {
 }
 
 export default function MaintenancePageContent({ plans = [], faqs = [], testimonials = [] }) {
-  const [activePlanTab, setActivePlanTab] = useState('residential')
+  const availableTypes = useMemo(
+    () => PLAN_TYPE_ORDER.filter((type) => plans.some((p) => p.planType === type)),
+    [plans],
+  )
+
+  const [activePlanTab, setActivePlanTab] = useState(() => availableTypes[0] ?? 'residential')
   const [openFaqIndex, setOpenFaqIndex] = useState(0)
   const [testimonialPage, setTestimonialPage] = useState(0)
 
   const filteredPlans = plans.filter((plan) => plan.planType === activePlanTab)
-  const hasBothTypes =
-    plans.some((p) => p.planType === 'residential') &&
-    plans.some((p) => p.planType === 'commercial')
+  const showTabs = availableTypes.length > 1
 
   const TESTIMONIALS_PER_PAGE = 3
   const totalTestimonialPages = Math.ceil(testimonials.length / TESTIMONIALS_PER_PAGE)
@@ -243,14 +248,14 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
               </h2>
             </div>
 
-            {hasBothTypes && (
+            {showTabs && (
               <div className="relative flex border border-gray-700 rounded-full p-1">
-                {['residential', 'commercial'].map((type) => (
+                {availableTypes.map((type) => (
                   <button
                     key={type}
                     onClick={() => setActivePlanTab(type)}
-                    className={`relative z-10 px-6 py-2 rounded-full text-[11px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
-                ${activePlanTab === type ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                    className={`relative z-10 px-6 py-2 rounded-full lg:text-[11px] text-[8px] montserrat-bold uppercase tracking-widest transition-colors duration-300 cursor-pointer
+      ${activePlanTab === type ? 'text-white' : 'text-gray-500 hover:text-white'}`}
                   >
                     {activePlanTab === type && (
                       <motion.span
@@ -351,7 +356,6 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
         <section className="pb-28 px-6">
           <div className="max-w-7xl mx-auto text-left">
             <p className="text-[11px] montserrat-bold hausba-orange tracking-[0.25em] uppercase mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#FF7800] inline-block" />
               CLIENT WORDS
             </p>
             <h2 className="text-2xl md:text-3xl montserrat-bold mb-12">
@@ -389,7 +393,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
             </div>
 
             {totalTestimonialPages > 1 && (
-              <div className="flex items-center gap-6 mt-10">
+              <div className="flex justify-end items-center gap-6 mt-10">
                 <button
                   onClick={() =>
                     setTestimonialPage(

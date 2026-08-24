@@ -23,6 +23,7 @@ export const ServicePlans: CollectionConfig = {
       options: [
         { label: 'Residential', value: 'residential' },
         { label: 'Commercial', value: 'commercial' },
+        { label: 'Hospitality', value: 'hospitality' },
       ],
       admin: {
         description: 'Which toggle tab this plan appears under on the Maintenance page.',

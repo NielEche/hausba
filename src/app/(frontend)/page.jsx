@@ -86,6 +86,18 @@ export default async function HomePage() {
     limit: 12,
   })
 
+  const solutionProjects = await payload.find({
+    collection: 'projects',
+    depth: 1,
+    where: {
+      status: {
+        equals: 'published',
+      },
+    },
+    sort: 'homepageOrder',
+    limit: 10,
+  })
+
   const transformedProjects = projects.docs.map((project) => ({
     ...project,
     image: transformImageUrl(project.coverImage),
@@ -106,9 +118,15 @@ export default async function HomePage() {
     image: transformImageUrl(b.image),
   }))
 
+  const transformedSolutionProjects = solutionProjects.docs.map((project) => ({
+    ...project,
+    image: transformImageUrl(project.coverImage),
+  }))
+
   return (
     <HomepageContent
       projects={transformedProjects}
+      solutionProjects={transformedSolutionProjects}
       solutions={transformedSolutions}
       testimonials={transformedTestimonials}
       brands={transformedBrands}
