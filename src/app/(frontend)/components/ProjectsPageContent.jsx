@@ -35,7 +35,7 @@ export default function ProjectsPageContent({ projects = [] }) {
             Some of our work and case studies for clients
           </p>
           <Link
-            href="https://wa.me/2348108846556"
+            href="https://wa.me/2348100999555"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-10 py-4 rounded-full hausba-orange-bg text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200! transition-colors duration-300"
