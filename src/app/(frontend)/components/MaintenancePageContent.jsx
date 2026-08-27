@@ -182,7 +182,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
             peace of mind.
           </p>
           <Link
-            href="https://wa.me/2348108846556"
+            href="https://wa.me/2348100999555"
             target="_blank"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-full hausba-orange-bg text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200! transition-colors duration-300"
           >
@@ -328,7 +328,7 @@ export default function MaintenancePageContent({ plans = [], faqs = [], testimon
       {/* ── MID CTA ──────────────────────────────────────────────────── */}
       <section className="pb-28 px-6 text-center">
         <Link
-          href="https://wa.me/2348108846556"
+          href="https://wa.me/2348100999555"
           target="_blank"
           className="inline-block px-10 py-4 rounded-full bg-white text-black! text-[11px] montserrat-bold uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-300"
         >

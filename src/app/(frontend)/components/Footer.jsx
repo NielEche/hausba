@@ -137,10 +137,10 @@ export default function Footer() {
             </h4>
             <div className="space-y-2 text-sm montserrat-regular text-gray-300">
               <a
-                href="https://wa.me/2348108846556"
+                href="https://wa.me/2348100999555"
                 className="block hover:text-white transition-colors"
               >
-                +2348108846556
+                +2348100999555
               </a>
               <a
                 href="mailto:experience@hausba.com"
