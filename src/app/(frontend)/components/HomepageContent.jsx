@@ -604,17 +604,17 @@ export default function HomepageContent({
         </div>
       </section>
 
-      {/* ── OUR SOLUTIONS ────────────────────────────────────────────────── */}
+      {/* ── OUR Gallery ────────────────────────────────────────────────── */}
       {sliderProjects.length > 0 && (
         <section className="bg-white py-20 px-6">
           <div className="max-w-7xl mx-auto">
             {/* Eyebrow */}
             <p className="text-[12px] montserrat-bold tracking-[0.3em] uppercase text-center mb-6 flex items-center justify-center gap-3">
-              <span className="hausba-grey">OUR SOLUTIONS</span>
+              <span className="hausba-grey">THE GALLERY</span>
             </p>
 
             <h2 className="text-3xl md:text-4xl montserrat-bold text-black text-center mb-10">
-              Engineered for the extraordinary
+              Photos from our projects
             </h2>
 
             {/* Image slider */}
